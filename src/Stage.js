@@ -13,6 +13,16 @@ class Stage {
     findOtherWorkplaces(wp) {
         return this.workplaces.filter(o => o.id !== wp.id);
     }
+
+    get minMaxBounds() {
+        let bbox = this.svg.bbox();
+        return {
+            minX: bbox.x,
+            minY: bbox.y,
+            maxX: bbox.w,
+            maxY: bbox.h
+        }        
+    }
 }
 
 SVG.on(document, 'DOMContentLoaded', () => stage = new Stage());

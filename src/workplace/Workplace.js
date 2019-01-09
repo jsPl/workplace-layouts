@@ -3,9 +3,10 @@ import { isPathColliding } from '../util/collisions'
 import 'svg.draggy.js'
 import { generateRandomString } from '../util/utils'
 import { stage } from '../Stage'
+import { selection } from '../util/selection'
 
 const defaults = {
-    title: 'untitled workplace', 
+    title: 'untitled workplace',
     color: '#FFCF60',
     width: 100,
     height: 100
@@ -20,11 +21,13 @@ export default class Workplace {
         this.svg = drawSvg.rect(this.width, this.height).toPath(true)
             .fill(this.color)
             .stroke({ color: this.color, width: 2 })
-            .draggy();
+            .draggy(stage.minMaxBounds);
 
         this.svg.on("dragstart", evt => this.handleDragStart(evt));
         this.svg.on("dragmove", evt => this.handleDragMove(evt));
         this.svg.on("dragend", evt => this.handleDragEnd(evt));
+
+        selection.addSelectable(this);
     }
 
     handleDragStart() {
@@ -40,7 +43,7 @@ export default class Workplace {
 
         let isColliding = collidingWorkplaces.length > 0;
         this.isColliding = isColliding;
-        if (isColliding) this.svg.addClass('colliding'); else this.svg.removeClass('colliding'); 
+        if (isColliding) this.svg.addClass('colliding'); else this.svg.removeClass('colliding');
 
         console.log('isColliding', isColliding, 'collidingWorkplaces', collidingWorkplaces);
     }
