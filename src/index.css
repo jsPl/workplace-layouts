@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+#svg-container {
+  border: 1px solid black;
+  margin: 1em;
+}
+.colliding {
+  fill: red;
+}
