@@ -22,5 +22,5 @@ code {
 .selected {
   stroke: #3F51B5;
   stroke-width: 3px;
-  stroke-dasharray: 10;
+  stroke-dasharray: 5;
 }
