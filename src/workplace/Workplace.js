@@ -5,6 +5,8 @@ import { generateRandomString } from '../util/utils'
 import { productionHall } from '../ProductionHall'
 import { selection } from '../util/selection'
 import throttle from 'lodash/throttle'
+import * as actions from '../actions'
+import { store } from '../reducers'
 
 const defaults = {
     title: 'untitled workplace',
@@ -20,7 +22,8 @@ export default class Workplace {
     constructor(options) {
         this.id = generateRandomString();
         Object.assign(this, defaults, options);
-        //console.log(this);
+        //console.log(Object.assign({}, defaults, options));
+        store.dispatch(actions.updateWorkplace({ id: this.id, ...Object.assign({}, defaults, options) }));
         this.handleDetectCollisionThrottled = throttle(this.handleDetectCollision, 100);
     }
 
@@ -41,12 +44,12 @@ export default class Workplace {
             this.svg.move(this.startX, this.startY);
             this.svg.removeClass('colliding');
         }
+        store.dispatch(actions.updateSvgPosition(this.id, this.svg.x(), this.svg.y()));
     }
 
     handleDelete() {
         console.log('handleDelete', this);
         productionHall.removeWorkplace(this);
-        console.log('workplaces on productionHall', productionHall.workplaces);
     }
 
     handleDetectCollision() {

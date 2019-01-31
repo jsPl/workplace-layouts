@@ -2,40 +2,32 @@ import SVG from 'svg.js'
 import { drawSvg } from './util/draw'
 import { isPathColliding } from './util/collisions'
 import { generateRandomString } from './util/utils'
-import Workplace from './workplace/Workplace';
-
-let state = {
-    color: '#faebd7',
-    width: 1000,
-    height: 350,
-    workplaces: [
-        { title: 'wp1', color: '#e5c8e7', width: 200, height: 100, y: 200 },
-        { title: 'wp2', color: '#309EFF' },
-        { title: 'wp3', color: '#FFCF60', x: 300 },
-        { title: 'wp4', color: '#46ccac', x: 500 }
-    ]
-}
+import Workplace from './workplace/Workplace'
+import { selection } from './util/selection'
+import { store } from './reducers'
+import * as actions from './actions'
 
 class ProductionHall {
-    constructor(options) {
+    constructor(options = {}) {
         this.id = generateRandomString();
         Object.assign(this, options);
 
-        this.workplaces = this.workplaces.map(o => new Workplace(o));
+        this.workplaces = store.getState().workplaces.map(o => new Workplace(o));
     }
 
-    addWorkplace(...workplaces) {
-        let existing = this.workplaces.map(o => o.id);
-        workplaces.forEach(workplace => {
-            if (!existing.includes(workplace.id)) {
-                this.workplaces.push(workplace);
-            }
-        })
-        return this;
-    }
+    // addWorkplace(...workplaces) {
+    //     let existing = this.workplaces.map(o => o.id);
+    //     workplaces.forEach(workplace => {
+    //         if (!existing.includes(workplace.id)) {
+    //             this.workplaces.push(workplace);
+    //         }
+    //     })
+    //     return this;
+    // }
 
     removeWorkplace(workplace) {
         this.workplaces = this.workplaces.filter(o => o.id !== workplace.id);
+        store.dispatch(actions.removeWorkplace(workplace.id));
         workplace.svg.remove();
         return this;
     }
@@ -50,14 +42,16 @@ class ProductionHall {
         return collidingObjects;
     }
 
+    findWorkplaceById(id) {
+        if (!id) {
+            return null;
+        }
+        return this.workplaces.find(o => o.id === id);
+    }
+
     get minMaxBounds() {
         let bbox = this.svg.bbox();
-        return {
-            minX: bbox.x,
-            minY: bbox.y,
-            maxX: bbox.w,
-            maxY: bbox.h
-        }
+        return { minX: bbox.x, minY: bbox.y, maxX: bbox.w, maxY: bbox.h }
     }
 
     render = () => {
@@ -66,9 +60,14 @@ class ProductionHall {
             .back();
 
         this.workplaces.forEach(wp => wp.render());
+
+        let selectedWorkplaceObj = this.findWorkplaceById(store.getState().selectedWorkplace);
+        if (selectedWorkplaceObj) {
+            selection.current = selectedWorkplaceObj.svg.node;
+        }
     }
 }
 
-SVG.on(document, 'DOMContentLoaded', () => productionHall = new ProductionHall(state));
+SVG.on(document, 'DOMContentLoaded', () => productionHall = new ProductionHall(store.getState().productionHall));
 
 export let productionHall;

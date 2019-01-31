@@ -1,4 +1,6 @@
-import SVG from 'svg.js'
+import SVG from 'svg.js';
+import { store } from '../reducers';
+import * as actions from '../actions';
 
 class Selection {
     constructor() {
@@ -6,20 +8,22 @@ class Selection {
     }
 
     get current() {
-        return this._current;
+        return this._currentEl;
     }
 
-    set current(selectedObject) {
-        if (this._current) {
-            this._current.classList.remove('selected');
+    set current(selectedEl) {
+        if (this._currentEl) {
+            this._currentEl.classList.remove('selected');
         }
 
-        if (selectedObject) {
-            selectedObject.classList.add('selected');
+        if (selectedEl) {
+            selectedEl.classList.add('selected');
             //console.log('selected', this.svgElementToJavascriptClassInstance(selectedObject).constructor.name);
         }
 
-        this._current = selectedObject;
+        this._currentEl = selectedEl;
+        let selectedObj = this.svgElementToJavascriptClassInstance(selectedEl);
+        store.dispatch(actions.selectWorkplace(selectedObj ? selectedObj.id : null));
     }
 
     addSelectable = (obj) => {

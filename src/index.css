@@ -10,9 +10,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+#ui {
+  border: 1px solid grey;
+  margin: 0.5em;
+  flex: 1;
+}
+
+.controlPanel {
+  border: 1px solid grey;
+  margin: 0.5em;
+}
+
+.controlPanel .wpDetails, .wpList {
+  border: 1px solid grey;
+  margin: 0.5em;
+}
+
+.controlPanel .wpList li.selected {
+  background-color: #3F51B5;
+}
+
 #svg-container {
   border: 1px solid black;
-  margin: 1em;
+  margin: 0.5em;
+  flex: 3;
 }
 
 .colliding {
