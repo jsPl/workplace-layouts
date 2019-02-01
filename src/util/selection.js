@@ -12,6 +12,10 @@ class Selection {
     }
 
     set current(selectedEl) {
+        if (selectedEl === this._currentEl) {
+            return;
+        }
+
         if (this._currentEl) {
             this._currentEl.classList.remove('selected');
         }

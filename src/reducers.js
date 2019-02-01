@@ -52,6 +52,28 @@ export const svgLayoutsApp = (state = initialState, action) => {
     }
 }
 
+/**
+ * https://github.com/reduxjs/redux/issues/303#issuecomment-125184409
+ * @param {Object} store 
+ * @param {Function} select 
+ * @param {Function} onChange 
+ */
+export function observeStore(store, select, onChange) {
+    let currentState;
+
+    function handleChange() {
+        let nextState = select(store.getState());
+        if (nextState !== currentState) {
+            currentState = nextState;
+            onChange(currentState);
+        }
+    }
+
+    let unsubscribe = store.subscribe(handleChange);
+    handleChange();
+    return unsubscribe;
+}
+
 export const store = createStore(
     svgLayoutsApp,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

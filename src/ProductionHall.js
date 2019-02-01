@@ -4,7 +4,7 @@ import { isPathColliding } from './util/collisions'
 import { generateRandomString } from './util/utils'
 import Workplace from './workplace/Workplace'
 import { selection } from './util/selection'
-import { store } from './reducers'
+import { store, observeStore } from './reducers'
 import * as actions from './actions'
 
 class ProductionHall {
@@ -61,10 +61,14 @@ class ProductionHall {
 
         this.workplaces.forEach(wp => wp.render());
 
-        let selectedWorkplaceObj = this.findWorkplaceById(store.getState().selectedWorkplace);
-        if (selectedWorkplaceObj) {
-            selection.current = selectedWorkplaceObj.svg.node;
+        const handleSelectedWorkplaceChange = (id) => {
+            let selectedWorkplaceObj = this.findWorkplaceById(id);
+            if (selectedWorkplaceObj) {
+                selection.current = selectedWorkplaceObj.svg.node;
+            }
         }
+
+        observeStore(store, (state) => state.selectedWorkplace, (state) => handleSelectedWorkplaceChange(state));
     }
 }
 
