@@ -2,16 +2,17 @@ import React from 'react';
 import WorkplaceDetails from './WorkplaceDetails';
 import WorkplaceList from './WorkplaceList';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-let ControlPanel = ({ workplaces, selectedWorkplaceId }) => {
+let ControlPanel = ({ workplaces, selectedWorkplace }) => {
 
     return (
         <div className='controlPanel'>
             <WorkplaceList
                 workplaces={workplaces}
-                selectedWorkplaceId={selectedWorkplaceId}
+                selectedWorkplace={selectedWorkplace}
             />
-            {selectedWorkplaceId && <WorkplaceDetails />}
+            {selectedWorkplace && <WorkplaceDetails workplace={selectedWorkplace} />}
         </div>
     )
 }
@@ -19,8 +20,13 @@ let ControlPanel = ({ workplaces, selectedWorkplaceId }) => {
 const mapStateToProps = state => {
     return {
         workplaces: state.workplaces,
-        selectedWorkplaceId: state.selectedWorkplace
+        selectedWorkplace: state.workplaces.find(o => o.id === state.selectedWorkplace)
     }
+}
+
+ControlPanel.propTypes = {
+    workplaces: PropTypes.array.isRequired,
+    selectedWorkplace: PropTypes.object
 }
 
 export default connect(mapStateToProps)(ControlPanel)

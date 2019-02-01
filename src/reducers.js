@@ -52,4 +52,7 @@ export const svgLayoutsApp = (state = initialState, action) => {
     }
 }
 
-export const store = createStore(svgLayoutsApp)
+export const store = createStore(
+    svgLayoutsApp,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)

@@ -11,15 +11,15 @@ import { Provider } from 'react-redux';
 SVG.on(document, 'DOMContentLoaded', () => {
     productionHall.render();
 
-    store.subscribe(() => console.log(store.getState()));
-    console.log('initial state', store.getState());
+    // store.subscribe(() => console.log(store.getState()));
+    // console.log('initial state', store.getState());
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <ControlPanel />
+        </Provider>,
+        document.getElementById('ui')
+    );
 });
 
 InitKeyboardEventHandlers();
-
-ReactDOM.render(
-    <Provider store={store}>
-        <ControlPanel />
-    </Provider>,
-    document.getElementById('ui')
-);
