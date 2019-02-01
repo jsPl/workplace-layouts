@@ -1,34 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { List, Empty, Tag } from 'antd';
+import { selectWorkplace } from '../actions';
+import { connect } from 'react-redux'
 
 export default function WorkplaceList({ workplaces, selectedWorkplace }) {
     const listItems = workplaces.length === 0 ?
-        <span> none</span>
+        <Empty />
         :
-        <ol>
+        <List size='small'>
             {workplaces.map(wp =>
                 <WorkplaceListItem key={wp.id} workplace={wp} isSelected={selectedWorkplace === wp} />
             )}
-        </ol>
+        </List>
 
     return (
-        <div className='wpList'>
-            <label>Workplaces:</label>
+        <>
             {listItems}
-        </div>
+        </>
     )
 }
 
-function WorkplaceListItem({ workplace, isSelected }) {
-    const colorBox = <div style={{ backgroundColor: workplace.color }} className='colorBox'></div>;
+let WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceListClick }) => {
 
     return (
-        <li className={isSelected ? 'selected' : null}>
-            {colorBox}
+        <List.Item className={isSelected ? 'selected' : null} onClick={() => handleWorkplaceListClick(workplace.id)}>
+            <Tag color={workplace.color} className='colorBox' />
             {workplace.title}
-        </li>
+        </List.Item>
     )
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        handleWorkplaceListClick: id => {
+            dispatch(selectWorkplace(id))
+        }
+    }
+}
+
+WorkplaceListItem = connect(null, mapDispatchToProps)(WorkplaceListItem);
 
 WorkplaceList.propTypes = {
     workplaces: PropTypes.array.isRequired,
