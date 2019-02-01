@@ -39,16 +39,24 @@ class Selection {
 }
 
 SVG.on(document, 'DOMContentLoaded', () => {
-    selection = new Selection()
+    selection = new Selection();
 
     SVG.on(window, 'mousedown', (evt) => {
-        if (evt.target && evt.target.classList.contains('selectable')) {
-            if (selection.current !== evt.target) {
-                selection.current = evt.target;
+        const isLeftClick = evt.button === 0;
+
+        if (isLeftClick) {
+            const isSvgClick = evt.target.closest('svg.drawSvg') != null;
+
+            if (isSvgClick) {
+                if (evt.target && evt.target.classList.contains('selectable')) {
+                    if (selection.current !== evt.target) {
+                        selection.current = evt.target;
+                    }
+                }
+                else {
+                    selection.current = null;
+                }
             }
-        }
-        else {
-            selection.current = null;
         }
     });
 });
