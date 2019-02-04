@@ -11,8 +11,10 @@
     "react-scripts": "2.1.3",
     "redux": "^4.0.1",
     "svg.draggy.js": "^1.1.1",
+    "svg.draw.js": "^2.0.3",
     "svg.intersections.js": "^1.1.3",
-    "svg.js": "^2.7.1"
+    "svg.js": "^2.7.1",
+    "svgdom": "0.0.18"
   },
   "scripts": {
     "start": "react-scripts start",

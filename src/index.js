@@ -9,7 +9,7 @@ import ControlPanel from './components/ControlPanel';
 import { Provider } from 'react-redux';
 
 SVG.on(document, 'DOMContentLoaded', () => {
-    productionHall.render();
+    //productionHall.render();
 
     // console.log('initial state', store.getState());
 
