@@ -29,6 +29,7 @@ export default class Workplace {
 
     handleDragStart() {
         console.log('startdrag');
+        this.svg.front();
         this.startX = this.svg.x();
         this.startY = this.svg.y();
     }

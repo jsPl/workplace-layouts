@@ -1,6 +1,6 @@
 import SVG from 'svg.js'
 import { drawSvg } from './util/draw'
-import { isPathColliding } from './util/collisions'
+import { isRectColliding } from './util/collisions'
 import { generateRandomString } from './util/utils'
 import Workplace from './workplace/Workplace'
 import { selection } from './util/selection'
@@ -10,6 +10,7 @@ import * as actions from './actions'
 class ProductionHall {
     constructor(options = {}) {
         this.id = generateRandomString();
+
         Object.assign(this, options);
 
         this.workplaces = store.getState().workplaces.map(o => new Workplace(o));
@@ -37,9 +38,10 @@ class ProductionHall {
     }
 
     findCollisionsWith(obj) {
-        let collidingObjects = [this, ...this.findWorkplacesOtherThan(obj)] //this.findWorkplacesOtherThan(obj)
-            .filter(o => isPathColliding(o.svg, obj.svg));
-        return collidingObjects;
+        let collidingWorkplaces = this.findWorkplacesOtherThan(obj)
+            .filter(o => isRectColliding(o.svg, obj.svg));
+
+        return collidingWorkplaces;
     }
 
     findWorkplaceById(id) {
@@ -61,14 +63,14 @@ class ProductionHall {
 
         this.workplaces.forEach(wp => wp.render());
 
-        const handleSelectedWorkplaceChange = (id) => {
+        const handleWorkplaceSelectionChange = (id) => {
             let selectedWorkplaceObj = this.findWorkplaceById(id);
             if (selectedWorkplaceObj) {
                 selection.current = selectedWorkplaceObj.svg.node;
             }
         }
 
-        observeStore(store, (state) => state.selectedWorkplace, (state) => handleSelectedWorkplaceChange(state));
+        observeStore(store, (state) => state.selectedWorkplace, (state) => handleWorkplaceSelectionChange(state));
     }
 }
 

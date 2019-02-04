@@ -47,9 +47,10 @@ body {
 }
 
 #svg-container {
-  border: 1px solid black;
+  border: 1px solid #e7e7e7;
   margin: 0.5em;
   flex: 3;
+  background: url(./assets/grid.png) #fff;
 }
 
 .colliding {
@@ -60,4 +61,10 @@ body {
   stroke: #3F51B5;
   stroke-width: 3px;
   stroke-dasharray: 5;
+}
+
+.productionHall {
+  stroke: #3F51B5;
+  stroke-width: 1px;
+  fill: #faebd7;
 }

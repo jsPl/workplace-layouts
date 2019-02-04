@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function WorkplaceDetails({ workplace }) {
     return (
-        <div className='wpDetails'>
+        <div>
             <div>id: {workplace.id}</div>
             <div>title: {workplace.title}</div>
             <div>x: {workplace.x} y: {workplace.y}</div>
