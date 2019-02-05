@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import SVG from 'svg.js';
-import { productionHall } from './ProductionHall';
+import './production_hall/ProductionHall';
 import InitKeyboardEventHandlers from './util/keyboard';
 import { store } from './reducers';
 import ControlPanel from './components/ControlPanel';

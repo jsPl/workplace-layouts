@@ -11,7 +11,7 @@ const Panel = Collapse.Panel;
 let ControlPanel = ({ workplaces, selectedWorkplace, productionHall }) => {
 
     return (
-        <Collapse defaultActiveKey={['2', '3']}>
+        <Collapse defaultActiveKey={['1', '2', '3']}>
             <Panel header='Production hall' key='1'>
                 <ProductionHallDetails productionHall={productionHall} />
             </Panel>

@@ -1,11 +1,11 @@
 import SVG from 'svg.js'
-import { drawSvg } from './util/draw'
-import { isRectColliding } from './util/collisions'
-import { generateRandomString } from './util/utils'
-import Workplace from './workplace/Workplace'
-import { selection } from './util/selection'
-import { store, observeStore } from './reducers'
-import * as actions from './actions'
+import { drawSvg } from '../util/draw'
+import { isRectColliding } from '../util/collisions'
+import { generateRandomString } from '../util/utils'
+import Workplace from '../workplace/Workplace'
+import { selection } from '../util/selection'
+import { store, observeStore } from '../reducers'
+import * as actions from '../actions'
 
 class ProductionHall {
     constructor(options = {}) {
@@ -56,11 +56,8 @@ class ProductionHall {
         return { minX: bbox.x, minY: bbox.y, maxX: bbox.w, maxY: bbox.h }
     }
 
-    render = () => {
-        this.svg = drawSvg.rect(this.width, this.height).toPath(true)
-            .fill(this.color)
-            .back();
-
+    render = (points) => {
+        this.svg = drawSvg.polygon(points).toPath(true).addClass('productionHall').back();
         this.workplaces.forEach(wp => wp.render());
 
         const handleWorkplaceSelectionChange = (id) => {
@@ -74,6 +71,28 @@ class ProductionHall {
     }
 }
 
-SVG.on(document, 'DOMContentLoaded', () => productionHall = new ProductionHall(store.getState().productionHall));
+SVG.on(document, 'DOMContentLoaded', () => {
+    if (store.getState().productionHall) {
+        console.log('init productionHall from state', store.getState().productionHall);
+        productionHall = new ProductionHall(store.getState().productionHall);
+        productionHall.render(store.getState().productionHall.points);
+    }
 
-export let productionHall;
+    observeStore(store, (state) => state.productionHall, (newState) => {
+        console.log('changedProductionHallState', newState);
+        console.log('productionHall', productionHall);
+
+        if (!productionHall && newState) {
+            productionHall = new ProductionHall(newState);
+            console.log('new productionHall', productionHall);
+
+
+            if (newState.points) {
+                console.log('render with points', newState);
+                productionHall.render(newState.points);
+            }
+        }
+    });
+});
+
+export let productionHall = null;

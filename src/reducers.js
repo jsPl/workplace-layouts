@@ -3,7 +3,10 @@ import { createStore } from 'redux'
 export const initialState = {
     productionHall: null,
     workplaces: [],
-    selectedWorkplace: null
+    selectedWorkplace: null,
+    app: {
+        isDrawingMode: false
+    }
 }
 
 // export const initialState = {
@@ -53,6 +56,11 @@ export const svgLayoutsApp = (state = initialState, action) => {
                         : workplace
                 )
             })
+        case 'TOGGLE_DRAWING_MODE':
+            return { ...state, app: { isDrawingMode: !state.app.isDrawingMode } }
+
+        case 'UPDATE_PRODUCTION_HALL':
+            return { ...state, productionHall: { ...action.data } }
         default:
             return state
     }
