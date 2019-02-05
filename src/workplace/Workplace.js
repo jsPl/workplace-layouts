@@ -45,7 +45,7 @@ export default class Workplace {
             this.svg.move(this.startX, this.startY);
             this.svg.removeClass('colliding');
         }
-        store.dispatch(actions.updateSvgPosition(this.id, this.svg.x(), this.svg.y()));
+        store.dispatch(actions.updateWorkplace({ id: this.id, x: this.svg.x(), y: this.svg.y() }));
     }
 
     handleDelete() {

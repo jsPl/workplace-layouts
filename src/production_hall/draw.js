@@ -6,7 +6,7 @@ import * as actions from '../actions'
 document.addEventListener('DOMContentLoaded', () => {
     let productionHallSvg = null;
     observeStore(store,
-        state => state.app.isDrawingMode,
+        state => state.appUi.isDrawingMode,
         isDrawingMode => productionHallSvg = handleDrawing(isDrawingMode, productionHallSvg));
 });
 

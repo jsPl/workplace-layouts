@@ -67,7 +67,7 @@ class ProductionHall {
             }
         }
 
-        observeStore(store, (state) => state.selectedWorkplace, (state) => handleWorkplaceSelectionChange(state));
+        observeStore(store, (state) => state.appUi.selectedWorkplace, (state) => handleWorkplaceSelectionChange(state));
     }
 }
 

@@ -34,7 +34,7 @@ let ControlPanel = ({ workplaces, selectedWorkplace, productionHall }) => {
 const mapStateToProps = state => {
     return {
         workplaces: state.workplaces,
-        selectedWorkplace: state.workplaces.find(o => o.id === state.selectedWorkplace),
+        selectedWorkplace: state.workplaces.find(o => o.id === state.appUi.selectedWorkplace),
         productionHall: state.productionHall
     }
 }

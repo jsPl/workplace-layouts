@@ -28,7 +28,7 @@ let DrawingControls = ({ isDrawing, handleToggleDrawingMode }) => {
 
 const mapStateToProps = state => {
     return {
-        isDrawing: state.app.isDrawingMode
+        isDrawing: state.appUi.isDrawingMode
     }
 }
 
