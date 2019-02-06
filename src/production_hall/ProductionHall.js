@@ -1,5 +1,5 @@
 import SVG from 'svg.js'
-import { drawSvg } from '../util/draw'
+import { drawSvg, snapToGrid } from '../util/draw'
 import { isRectColliding } from '../util/collisions'
 import { generateRandomString } from '../util/utils'
 import Workplace from '../workplace/Workplace'
@@ -57,7 +57,7 @@ class ProductionHall {
     }
 
     render = (points) => {
-        this.svg = drawSvg.polygon(points).toPath(true).addClass('productionHall').back();
+        this.svg = drawSvg.polygon(points).toPath(true).draggy(snapToGrid).addClass('productionHall').back();
         this.workplaces.forEach(wp => wp.render());
 
         const handleWorkplaceSelectionChange = (id) => {
