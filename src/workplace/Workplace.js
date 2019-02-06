@@ -6,7 +6,7 @@ import { productionHall } from '../production_hall/ProductionHall'
 import { selection } from '../util/selection'
 import throttle from 'lodash/throttle'
 import * as actions from '../actions'
-import { store } from '../reducers'
+import { store } from '../configureStore'
 
 const defaults = {
     title: 'untitled workplace',

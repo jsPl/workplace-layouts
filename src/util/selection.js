@@ -1,5 +1,5 @@
 import SVG from 'svg.js';
-import { store } from '../reducers';
+import { store } from '../configureStore';
 import * as actions from '../actions';
 
 class Selection {

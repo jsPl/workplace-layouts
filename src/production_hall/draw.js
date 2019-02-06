@@ -1,6 +1,6 @@
 import { drawSvg, GRID_SIZE } from '../util/draw'
 import 'svg.draw.js'
-import { store, observeStore } from '../reducers'
+import { store, observeStore } from '../configureStore';
 import * as actions from '../actions'
 
 document.addEventListener('DOMContentLoaded', () => {

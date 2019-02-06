@@ -4,7 +4,7 @@ import './index.css';
 import SVG from 'svg.js';
 import './production_hall/ProductionHall';
 import InitKeyboardEventHandlers from './util/keyboard';
-import { store } from './reducers';
+import { store } from './configureStore';
 import ControlPanel from './components/ControlPanel';
 import { Provider } from 'react-redux';
 

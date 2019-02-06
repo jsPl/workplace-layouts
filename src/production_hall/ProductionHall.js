@@ -4,7 +4,7 @@ import { isRectColliding } from '../util/collisions'
 import { generateRandomString } from '../util/utils'
 import Workplace from '../workplace/Workplace'
 import { selection } from '../util/selection'
-import { store, observeStore } from '../reducers'
+import { store, observeStore } from "../configureStore";
 import * as actions from '../actions'
 
 class ProductionHall {
