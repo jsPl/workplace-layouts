@@ -35,7 +35,7 @@ export default class Workplace {
     }
 
     handleDragMove() {
-        // console.log('drag');
+        //console.log('drag');
         this.handleDetectCollisionThrottled();
     }
 

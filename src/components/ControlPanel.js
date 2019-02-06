@@ -1,7 +1,7 @@
 import React from 'react';
-import WorkplaceDetails from './WorkplaceDetails';
-import WorkplaceList from './WorkplaceList';
-import ProductionHallDetails from './ProductionHallDetails';
+import WorkplaceDetails from './workplace/WorkplaceDetails';
+import WorkplaceList from './workplace/WorkplaceList';
+import ProductionHallDetails from './production_hall/ProductionHallDetails';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Collapse } from 'antd';
@@ -26,7 +26,6 @@ let ControlPanel = ({ workplaces, selectedWorkplace, productionHall }) => {
                     <WorkplaceDetails workplace={selectedWorkplace} />
                 </Panel>
             }
-            {/* <Button>Default</Button> */}
         </Collapse>
     )
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Empty, Tag } from 'antd';
-import { selectWorkplace } from '../actions';
+import { selectWorkplace } from '../../actions';
 import { connect } from 'react-redux'
 
 export default function WorkplaceList({ workplaces, selectedWorkplace }) {

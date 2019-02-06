@@ -78,21 +78,23 @@ SVG.on(document, 'DOMContentLoaded', () => {
         productionHall.render(store.getState().productionHall.points);
     }
 
-    observeStore(store, (state) => state.productionHall, (newState) => {
-        console.log('changedProductionHallState', newState);
-        console.log('productionHall', productionHall);
-
-        if (!productionHall && newState) {
-            productionHall = new ProductionHall(newState);
-            console.log('new productionHall', productionHall);
-
-
-            if (newState.points) {
-                console.log('render with points', newState);
-                productionHall.render(newState.points);
-            }
-        }
-    });
+    observeStore(store, (state) => state.productionHall, (newState) => handleProductionHallStateUpdate(newState));
 });
+
+const handleProductionHallStateUpdate = (newState) => {
+    console.log('changedProductionHallState', newState);
+    console.log('productionHall', productionHall);
+
+    if (!productionHall && newState) {
+        productionHall = new ProductionHall(newState);
+        console.log('new productionHall', productionHall);
+
+
+        if (newState.points) {
+            console.log('render with points', newState);
+            productionHall.render(newState.points);
+        }
+    }
+}
 
 export let productionHall = null;
