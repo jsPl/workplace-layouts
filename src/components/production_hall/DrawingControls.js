@@ -10,18 +10,14 @@ const DrawingControls = ({ isDrawing, handleToggleDrawingMode }) => {
         <Button type="primary" onClick={handleToggleDrawingMode}>Start drawing</Button>);
 };
 
-const mapStateToProps = state => {
-    return {
-        isDrawing: state.appUi.isDrawingMode
-    }
-}
+const mapStateToProps = state => ({
+    isDrawing: state.appUi.isDrawingMode
+})
 
-const mapDispatchToProps = dispatch => {
-    return {
-        handleToggleDrawingMode: () => {
-            dispatch(toggleDrawingMode())
-        }
+const mapDispatchToProps = dispatch => ({
+    handleToggleDrawingMode() {
+        dispatch(toggleDrawingMode())
     }
-}
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawingControls);
