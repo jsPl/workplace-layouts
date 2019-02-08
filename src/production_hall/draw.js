@@ -1,31 +1,12 @@
 import { drawSvg, GRID_SIZE } from '../util/draw'
 import 'svg.draw.js'
-import { store, observeStore } from '../configureStore';
-import * as actions from '../actions'
+import { store } from '../configureStore';
+import { updateProductionHall, toggleDrawingMode } from '../actions'
 
-document.addEventListener('DOMContentLoaded', () => {
-    let productionHallSvg = null;
-    observeStore(store,
-        state => state.appUi.isDrawingMode,
-        isDrawingMode => productionHallSvg = handleDrawing(isDrawingMode, productionHallSvg));
-});
-
-function handleDrawing(isDrawingMode, currentDrawing) {
-    console.log('handleDrawing isDrawingMode', isDrawingMode, currentDrawing);
+export function handleProductionHallDrawing(isDrawingMode) {
+    console.log('handleDrawing isDrawingMode', isDrawingMode);
 
     if (!isDrawingMode) {
-        if (currentDrawing) {
-            const isPolygon = currentDrawing.array().value.length > 1;
-            if (isPolygon) {
-                console.log('stop drawing current element');
-                currentDrawing.draw('done');
-                currentDrawing.off('drawstart');
-            }
-            else {
-                currentDrawing.off('drawstart');
-                currentDrawing.remove();
-            }
-        }
         return null;
     }
 
@@ -36,15 +17,15 @@ function handleDrawing(isDrawingMode, currentDrawing) {
 
     document.addEventListener(...keydownEventListener);
 
-    drawing.on('drawstart', function (e) {
-        console.log('drawstart');
-    });
+    // drawing.on('drawstart', function (e) {
+    //     console.log('drawstart');
+    // });
 
     drawing.on('drawdone', () => {
         console.log('drawdone');
         let { width, height } = drawing.rbox();
 
-        store.dispatch(actions.updateProductionHall({
+        store.dispatch(updateProductionHall({
             title: 'New production hall',
             points: drawing.array().toString(),
             width, height
@@ -61,7 +42,7 @@ function handleDrawing(isDrawingMode, currentDrawing) {
     drawing.on('drawstop', (evt) => {
         console.log('drawstop');
         document.removeEventListener(...keydownEventListener);
-        store.dispatch(actions.toggleDrawingMode(false));
+        store.dispatch(toggleDrawingMode(false));
     });
 
     return drawing;

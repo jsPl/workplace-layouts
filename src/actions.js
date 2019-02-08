@@ -1,6 +1,18 @@
-export const addWorkplace = (id, title, color, width, height) => ({
-    type: 'ADD_WORKPLACE', id, title, color, width, height
-})
+const workplaceDefaults = {
+    title: 'untitled workplace',
+    color: '#FFCF60',
+    width: 100,
+    height: 100,
+    x: 0,
+    y: 0
+}
+
+export const addWorkplace = (data) => {
+    return {
+        type: 'ADD_WORKPLACE',
+        data: Object.assign({}, workplaceDefaults, data)
+    }
+}
 
 export const updateWorkplace = ({ id, ...data }) => ({
     type: 'UPDATE_WORKPLACE',

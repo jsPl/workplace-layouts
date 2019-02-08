@@ -3,7 +3,10 @@ import { combineReducers } from 'redux'
 const workplaces = (state = [], action) => {
     switch (action.type) {
         case 'ADD_WORKPLACE':
-            return [...state, { ...action }]
+            if (state.find(o => o.id === action.data.id)) {
+                return state;
+            }
+            return [...state, { ...action.data }];
         case 'REMOVE_WORKPLACE':
             return state.filter(workplace => workplace.id !== action.id)
         case 'UPDATE_WORKPLACE':
