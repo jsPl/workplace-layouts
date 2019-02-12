@@ -1,11 +1,11 @@
 import SVG from 'svg.js';
 import { store } from '../configureStore';
-import * as actions from '../actions';
+import { selectWorkplace } from '../actions';
 
 class Selection {
-    constructor() {
-        this.selectables = [];
-    }
+    // constructor() {
+    //     //this.selectables = [];
+    // }
 
     get current() {
         return this._currentEl;
@@ -22,24 +22,36 @@ class Selection {
 
         if (selectedEl) {
             selectedEl.classList.add('selected');
-            //console.log('selected', this.svgElementToJavascriptClassInstance(selectedObject).constructor.name);
         }
 
         this._currentEl = selectedEl;
-        let selectedObj = this.svgElementToJavascriptClassInstance(selectedEl);
-        store.dispatch(actions.selectWorkplace(selectedObj ? selectedObj.id : null));
+        const id = this.parseId(selectedEl);
+
+        if (store.getState().appUi.selectedWorkplace !== id) {
+            store.dispatch(selectWorkplace(isNaN(id) ? null : id));
+        }
     }
 
-    addSelectable = (obj) => {
-        obj.svg.addClass('selectable');
-        this.selectables.push(obj);
+    currentId() {
+        return this.parseId(this._currentEl);
+    }
+
+    parseId = (el) => {
+        let id = el && parseInt(el.dataset.workplaceId);
+        return isNaN(id) ? null : id;
+    }
+
+    addSelectable = (svgEl, obj) => {
+        //this.selectables.push(obj);
+        svgEl.addClass('selectable');
         return this;
     }
 
-    svgElementToJavascriptClassInstance = (svgEl) => {
-        if (!svgEl) return null;
-        return this.selectables.find(o => o.svg.id() === svgEl.id);
-    }
+    // svgElementToJavascriptClassInstance = (svgEl) => {
+    //     console.log('svgEl', svgEl, this.selectables)
+    //     if (!svgEl) return null;
+    //     return this.selectables.find(o => o.svg.id() === svgEl.id);
+    // }
 }
 
 SVG.on(document, 'DOMContentLoaded', () => {
@@ -47,19 +59,16 @@ SVG.on(document, 'DOMContentLoaded', () => {
 
     SVG.on(window, 'mousedown', (evt) => {
         const isLeftClick = evt.button === 0;
+        const isSvgClick = evt.target && evt.target.closest('svg.drawSvg') != null;
 
-        if (isLeftClick) {
-            const isSvgClick = evt.target.closest('svg.drawSvg') != null;
-
-            if (isSvgClick) {
-                if (evt.target && evt.target.classList.contains('selectable')) {
-                    if (selection.current !== evt.target) {
-                        selection.current = evt.target;
-                    }
-                }
-                else {
-                    selection.current = null;
-                }
+        if (isLeftClick && isSvgClick) {
+            let selectableEl = evt.target.closest('.selectable');
+            //console.log('click on', evt.target, selectableEl)
+            if (selectableEl) {
+                selection.current = selectableEl;
+            }
+            else {
+                selection.current = null;
             }
         }
     });

@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 import { addWorkplace, removeWorkplace } from '../../actions';
 
 const randomWorkplaces = [
-    { id: 1, title: 'wp1', color: '#e5c8e7', width: 200, height: 100, y: 200 },
-    { id: 2, title: 'wp2', color: '#309EFF' },
-    { id: 3, title: 'wp3', color: '#FFCF60', x: 300, width: 40, height: 40 },
-    { id: 4, title: 'wp4', color: '#46ccac', x: 500 }
+    { id: 1, title: 'Frezarka Mytrunnion 7G', color: '#e5c8e7', width: 200, height: 100, y: 200, imgPath: '/img/frezarka-mytrunnion-7g.png' },
+    { id: 2, title: 'Frezarka CNC Cormak-Mill 300-ecoline', color: '#309EFF', imgPath: '/img/frezarka-cnc-cormak-mill-300-ecoline.png' },
+    { id: 3, title: 'Tokarka Nakamura-Tome WT-100', color: '#FFCF60', x: 300, width: 80, height: 80, imgPath: '/img/tokarka-nakamura-tome-wt-100.png' },
+    { id: 4, title: 'Tokarka Nomura NN-16SB7', color: '#46ccac', x: 200, imgPath: '/img/tokarka-nomura-NN-16SB7.png' }
 ]
 
-const WorkplaceControls = ({ workplaces, handleAdd, handleRemove }) => {
+const WorkplaceControls = ({ workplaces, handleAddAll, handleRemoveAll }) => {
     return (
         <Button.Group>
-            <Button onClick={() => handleAdd(randomWorkplaces)}>add all</Button>
-            <Button disabled={workplaces.length === 0} onClick={() => handleRemove(workplaces)}>remove all</Button>
+            <Button onClick={() => handleAddAll(randomWorkplaces)}>add all</Button>
+            <Button disabled={workplaces.length === 0} onClick={() => handleRemoveAll(workplaces)}>remove all</Button>
         </Button.Group>
     )
 }
@@ -24,10 +24,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    handleAdd(workplaces) {
+    handleAddAll(workplaces) {
         workplaces.forEach(workplace => dispatch(addWorkplace(workplace)));
     },
-    handleRemove(workplaces) {
+    handleRemoveAll(workplaces) {
         workplaces.forEach(workplace => dispatch(removeWorkplace(workplace.id)));
     }
 })

@@ -28,8 +28,8 @@ export const selectWorkplace = (id) => ({
     type: 'SELECT_WORKPLACE', id
 })
 
-export const toggleDrawingMode = (isDrawing) => ({
-    type: 'TOGGLE_DRAWING_MODE', isDrawing
+export const toggleDrawingMode = (isDrawingMode) => ({
+    type: 'TOGGLE_DRAWING_MODE', isDrawingMode
 })
 
 export const updateProductionHall = ({ ...data }) => ({

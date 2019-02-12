@@ -34,7 +34,7 @@ export class WorkplaceRepository {
 
     findCollisionsWith(obj) {
         let colliding = this.findOtherThan(obj)
-            .filter(o => isRectColliding(o.svg, obj.svg));
+            .filter(o => isRectColliding(obj.getSvgForCollisionCalculation(), o.getSvgForCollisionCalculation()));
 
         return colliding;
     }

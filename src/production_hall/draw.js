@@ -27,7 +27,7 @@ export function handleProductionHallDrawing(isDrawingMode) {
 
         store.dispatch(updateProductionHall({
             title: 'New production hall',
-            points: drawing.array().toString(),
+            polygonPoints: drawing.array().toString(),
             width, height
         }));
 

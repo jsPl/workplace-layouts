@@ -53,11 +53,11 @@ body {
   background: url(./assets/grid.png) #fff;
 }
 
-.colliding {
+.colliding .workplaceBBox, .colliding {
   fill: red;
 }
 
-.selected {
+.selectable.selected .workplaceBBox {
   stroke: #3F51B5;
   stroke-width: 2px;
   stroke-dasharray: 5;

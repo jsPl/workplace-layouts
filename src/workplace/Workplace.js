@@ -46,8 +46,10 @@ export default class Workplace {
 
     handleDetectCollision() {
         let collisions = workplaceRepository.findCollisionsWith(this);
+        //let isCollidingWithHall = !!(productionHall && productionHall.isCollidingWith(this));
+        //console.log('isCollidingWithHall', isCollidingWithHall);
 
-        let isColliding = collisions.length > 0;
+        let isColliding = collisions.length > 0; // || isCollidingWithHall;
         this.isColliding = isColliding;
         if (isColliding) {
             this.svg.addClass('colliding');
@@ -64,19 +66,36 @@ export default class Workplace {
         return this.startX !== this.svg.x() || this.startY !== this.svg.y();
     }
 
-    render = () => {
-        this.svg = drawSvg.rect(this.width, this.height)
-            .move(this.x, this.y)
+    getSvgForCollisionCalculation() {
+        return this.rectBbox;
+    }
+
+    drawSvg = () => {
+        let group = drawSvg.group();
+
+        this.rectBbox = group.rect(this.width, this.height)
             .toPath(true)
             .fill(this.color)
             .stroke({ color: this.color, width: 2 })
+            .addClass('workplaceBBox')
+
+        group.on('dragstart', evt => this.handleDragStart(evt));
+        group.on('dragmove', evt => this.handleDragMove(evt));
+        group.on('dragend', evt => this.handleDragEnd(evt));
+
+        selection.addSelectable(group, this);
+
+        if (this.imgPath) {
+            let image = group.image(process.env.PUBLIC_URL + this.imgPath)
+                .loaded(loader => image.size(loader.width * 0.35))
+                .dmove(5, 5);
+        }
+
+        group.move(this.x, this.y)
+            .data('workplace-id', this.id)
             .draggy();
 
-        this.svg.on('dragstart', evt => this.handleDragStart(evt));
-        this.svg.on('dragmove', evt => this.handleDragMove(evt));
-        this.svg.on('dragend', evt => this.handleDragEnd(evt));
-
-        selection.addSelectable(this);
+        this.svg = group;
         return this;
     }
 
@@ -89,17 +108,15 @@ export default class Workplace {
 export const handleWorkplacesStateChange = (current, prev = []) => {
     const prevIds = prev.map(o => o.id);
     const currentIds = current.map(o => o.id);
-    console.log('handleWorkplacesStateChange from ', prevIds, ' to ', currentIds);
     const deleted = difference(prevIds, currentIds);
     const added = difference(currentIds, prevIds);
 
-    console.log('deleted', deleted);
-    console.log('added', added);
+    // console.log('deleted', deleted);
+    // console.log('added', added);
 
     added.forEach(id => {
         let workplaceData = current.find(o => o.id === id);
-        //console.log('new Workplace', new Workplace(workplaceData));
-        workplaceRepository.add(new Workplace(workplaceData).render());
+        workplaceRepository.add(new Workplace(workplaceData).drawSvg());
     });
 
     deleted.forEach(id => {
@@ -107,13 +124,13 @@ export const handleWorkplacesStateChange = (current, prev = []) => {
         workplaceRepository.remove({ id });
     });
 
-    console.log('workplaceRepository list', workplaceRepository.list());
+    //console.log('workplaceRepository list', workplaceRepository.list());
 }
 
-export const handleWorkplaceSelectionStateChange = (toId) => {
-    //console.log('handleWorkplaceSelectionStateChange', fromId, toId)
+export const handleWorkplaceSelectionStateChange = (toId, fromId) => {
+    //console.log('handleWorkplaceSelectionStateChange from ', fromId, 'to', toId)
     let selectedWorkplaceObj = workplaceRepository.findById(toId);
     if (selectedWorkplaceObj) {
-        selection.current = selectedWorkplaceObj.svg.node;
+       selection.current = selectedWorkplaceObj.svg.node;
     }
 }

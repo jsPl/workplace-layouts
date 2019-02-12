@@ -1,4 +1,5 @@
 import { selection } from './selection'
+import { workplaceRepository } from '../workplace/workplaceRepository'
 
 export default function () {
     document.addEventListener('keydown', evt => {
@@ -6,7 +7,7 @@ export default function () {
         let selectedObjInstance;
 
         if (selection.current) {
-            selectedObjInstance = selection.svgElementToJavascriptClassInstance(selection.current);
+            selectedObjInstance = workplaceRepository.findById(selection.currentId());
         }
 
         switch (evt.keyCode) {
@@ -40,7 +41,7 @@ export default function () {
                 }
 
                 selectedObjInstance.handleDragMove();
-                selectedObjInstance.handleDragEnd();                
+                selectedObjInstance.handleDragEnd();
             }
 
             switch (evt.keyCode) {
@@ -49,7 +50,7 @@ export default function () {
                         selectedObjInstance.handleDelete();
                     }
                     break;
-    
+
                 default:
                     break;
             }
