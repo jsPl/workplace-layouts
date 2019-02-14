@@ -31,13 +31,21 @@ const productionHall = (state = null, action) => {
 
 const appUi = (state = {
     isDrawingMode: false,
-    selectedWorkplace: null
+    selectedWorkplace: null,
+    isLoadingWorkplaces: false,
+    error: null
 }, action) => {
     switch (action.type) {
         case 'TOGGLE_DRAWING_MODE':
             return { ...state, isDrawingMode: !state.isDrawingMode }
         case 'SELECT_WORKPLACE':
-            return { ...state, selectedWorkplace: action.id };
+            return { ...state, selectedWorkplace: action.id }
+        case 'FETCH_WORKPLACE':
+            return { ...state, isLoadingWorkplaces: true }
+        case 'FETCH_WORKPLACE_SUCCESS':
+            return { ...state, isLoadingWorkplaces: false, error: null }
+        case 'FETCH_WORKPLACE_FAILURE':
+            return { ...state, isLoadingWorkplaces: false, error: action.error }
         default:
             return state
     }

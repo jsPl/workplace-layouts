@@ -10,7 +10,7 @@ class ProductionHall {
 
     isCollidingWith(obj) {
         let coll = isPathColliding(this.svg, obj.getSvgForCollisionCalculation());
-        console.log('hall isCollidingWith', obj.getSvgForCollisionCalculation().node, coll)
+        //console.log('hall isCollidingWith', obj.getSvgForCollisionCalculation().node, coll)
         return coll;
     }
 
@@ -25,7 +25,7 @@ export const handleProductionHallStateChange = (current, prev) => {
 
     if (!productionHall && current) {
         productionHall = new ProductionHall(current);
-       //console.log('new productionHall', productionHall);
+        //console.log('new productionHall', productionHall);
 
         if (current.polygonPoints) {
             //console.log('render with points', current);

@@ -68,3 +68,7 @@ body {
   stroke-width: 1px;
   fill: #faebd7;
 }
+
+.wpControls {
+  margin-top: 0.7em;
+}
