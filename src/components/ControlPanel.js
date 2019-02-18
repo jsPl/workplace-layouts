@@ -13,7 +13,7 @@ class ControlPanel extends React.Component {
     componentDidUpdate(prevProps) {
         const { error } = this.props;
         //console.log('componentDidUpdate prevProps error', prevProps.error, error);
-        if (error) {
+        if (error && error !== prevProps.error) {
             message.error(error.message);
         }
     }

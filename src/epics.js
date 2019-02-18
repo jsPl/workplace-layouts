@@ -12,4 +12,17 @@ const fetchWorkplaceEpic = action$ => action$.pipe(
     ))
 );
 
-export default combineEpics(fetchWorkplaceEpic)
+const fetchWorkplacesEpic = action$ => action$.pipe(
+    ofType('FETCH_WORKPLACES'),
+    flatMap(() => api.fetchWorkplaces().pipe(
+        flatMap(workplaces =>
+            of(actions.fetchWorkplaceSuccess(workplaces), ...workplaces.map(o => actions.addWorkplace(o)))
+        ),
+        catchError(error => of(actions.fetchWorkplaceFailure(error)))
+    ))
+);
+
+export default combineEpics(
+    fetchWorkplaceEpic,
+    fetchWorkplacesEpic
+)

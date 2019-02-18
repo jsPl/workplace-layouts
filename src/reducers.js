@@ -41,6 +41,7 @@ const appUi = (state = {
         case 'SELECT_WORKPLACE':
             return { ...state, selectedWorkplace: action.id }
         case 'FETCH_WORKPLACE':
+        case 'FETCH_WORKPLACES':
             return { ...state, isLoadingWorkplaces: true }
         case 'FETCH_WORKPLACE_SUCCESS':
             return { ...state, isLoadingWorkplaces: false, error: null }

@@ -1,15 +1,16 @@
 import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
-import { addWorkplace, removeWorkplace, fetchWorkplace } from '../../actions';
+import { fetchWorkplaces, removeWorkplace, fetchWorkplace } from '../../../actions';
+import InputFetchOne from './InputFetchOne';
 
-const WorkplaceControls = ({ workplaces, handleAddAll, handleRemoveAll, handleFetchWorkplace }) => {
+const WorkplaceControls = ({ workplaces, handleFetchAll, handleRemoveAll, handleFetchOne }) => {
     return (
-        <Button.Group className='wpControls'>
-            <Button onClick={() => handleAddAll([])}>add all</Button>
-            <Button onClick={() => handleFetchWorkplace(1)}>fetch one</Button>
+        <div className='wpControls'>
+            <Button onClick={() => handleFetchAll()}>fetch all</Button>
+            <InputFetchOne onClick={handleFetchOne} />
             <Button disabled={workplaces.length === 0} onClick={() => handleRemoveAll(workplaces)}>remove all</Button>
-        </Button.Group>
+        </div>
     )
 }
 
@@ -18,13 +19,13 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    handleAddAll(workplaces) {
-        workplaces.forEach(workplace => dispatch(addWorkplace(workplace)));
+    handleFetchAll() {
+        dispatch(fetchWorkplaces());
     },
     handleRemoveAll(workplaces) {
         workplaces.forEach(workplace => dispatch(removeWorkplace(workplace.id)));
     },
-    handleFetchWorkplace(id) {
+    handleFetchOne(id) {
         dispatch(fetchWorkplace(id));
     }
 })

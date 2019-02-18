@@ -20,6 +20,7 @@ export const updateWorkplace = ({ id, ...data }) => ({
 export const removeWorkplace = id => ({ type: 'REMOVE_WORKPLACE', id })
 
 export const fetchWorkplace = id => ({ type: 'FETCH_WORKPLACE', id })
+export const fetchWorkplaces = () => ({ type: 'FETCH_WORKPLACES' })
 export const fetchWorkplaceSuccess = data => ({ type: 'FETCH_WORKPLACE_SUCCESS', data })
 export const fetchWorkplaceFailure = error => ({ type: 'FETCH_WORKPLACE_FAILURE', error })
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Empty, Spin } from 'antd';
 import WorkplaceListItem from './WorkplaceListItem';
-import WorkplaceControls from './WorkplaceControls';
+import WorkplaceControls from './controls/WorkplaceControls';
 
 export default function WorkplaceList({ workplaces, selectedWorkplace, isLoading }) {
     return (
