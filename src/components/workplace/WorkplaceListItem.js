@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, Tag } from 'antd';
+import { List } from 'antd';
 import { selectWorkplace } from '../../actions';
 import { connect } from 'react-redux';
 
 const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceListClick }) => (
     <List.Item className={isSelected ? 'selected' : null} onClick={() => handleWorkplaceListClick(workplace.id)}>
-        <Tag color={workplace.color} className='colorBox' />
+        {/* <Tag color={workplace.color} className='colorBox' /> */}
         {workplace.title}
     </List.Item>
 );

@@ -91,9 +91,13 @@ export default class Workplace {
                 .dmove(5, 5);
         }
 
+        if (this.title) {
+            group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(0, this.height + 15);
+        }
+
         group.move(this.x, this.y)
             .data('workplace-id', this.id)
-            .draggy();
+            .draggy()
 
         this.svg = group;
         return this;

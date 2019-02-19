@@ -1,5 +1,5 @@
 import { ofType, combineEpics } from "redux-observable";
-import { flatMap, catchError } from "rxjs/operators";
+import { flatMap, catchError, map } from "rxjs/operators";
 import { of } from 'rxjs';
 import * as api from './api';
 import * as actions from './actions';
@@ -22,7 +22,16 @@ const fetchWorkplacesEpic = action$ => action$.pipe(
     ))
 );
 
+const updateWorkplaceEpic = action$ => action$.pipe(
+    ofType('PATCH_WORKPLACE'),
+    flatMap(action => api.updateWorkplace(action.id, action.payload).pipe(
+        map(response => actions.fetchWorkplaceSuccess(response)),
+        catchError(error => of(actions.fetchWorkplaceFailure(error)))
+    ))    
+);
+
 export default combineEpics(
     fetchWorkplaceEpic,
-    fetchWorkplacesEpic
+    fetchWorkplacesEpic,
+    updateWorkplaceEpic
 )
