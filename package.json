@@ -1,5 +1,6 @@
 {
-  "name": "svgtestcra",
+  "name": "layout_hala_produkcyjna",
+  "homepage": "http://proedims:8080/eoffice/react/layout_hala_produkcyjna",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
