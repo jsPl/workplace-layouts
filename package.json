@@ -1,6 +1,7 @@
 {
   "name": "layout_hala_produkcyjna",
-  "homepage": "http://proedims:8080/eoffice/react/layout_hala_produkcyjna",
+  "homepage": "http://mywebsite.com/eoffice/react/layout_hala_produkcyjna",
+  "proxy": "http://proedims:8080",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
