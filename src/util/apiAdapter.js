@@ -13,4 +13,7 @@ export const mapWorkplace = workplace => ({
     title: workplace.title,
     width: parseInt(workplace.version_fields.strefa_robocza_szerokosc, 10) || 0,
     height: parseInt(workplace.version_fields.strefa_robocza_dlugosc, 10) || 0,
+    imgPath: workplace.imgPath
 })
+
+export const mapWorkplaces = workplaces => workplaces.map(o => mapWorkplace(o));
