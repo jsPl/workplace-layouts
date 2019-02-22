@@ -6,6 +6,10 @@ export default function () {
         //console.log('keydown', evt.keyCode);
         let selectedObjInstance;
 
+        if (!selection) {
+            return;
+        }
+
         if (selection.current) {
             selectedObjInstance = workplaceRepository.findById(selection.currentId());
         }

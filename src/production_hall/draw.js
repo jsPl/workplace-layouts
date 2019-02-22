@@ -4,7 +4,7 @@ import { store } from '../configureStore';
 import { updateProductionHall, toggleDrawingMode } from '../actions'
 
 export function handleProductionHallDrawing(isDrawingMode) {
-    console.log('handleDrawing isDrawingMode', isDrawingMode);
+    //console.log('handleDrawing isDrawingMode', isDrawingMode);
 
     if (!isDrawingMode) {
         return null;
@@ -22,7 +22,7 @@ export function handleProductionHallDrawing(isDrawingMode) {
     // });
 
     drawing.on('drawdone', () => {
-        console.log('drawdone');
+        //console.log('drawdone');
         let { width, height } = drawing.rbox();
 
         store.dispatch(updateProductionHall({
@@ -40,7 +40,7 @@ export function handleProductionHallDrawing(isDrawingMode) {
 
     // done or cancel
     drawing.on('drawstop', (evt) => {
-        console.log('drawstop');
+        //console.log('drawstop');
         document.removeEventListener(...keydownEventListener);
         store.dispatch(toggleDrawingMode(false));
     });
@@ -49,7 +49,7 @@ export function handleProductionHallDrawing(isDrawingMode) {
 }
 
 const handleKeydown = (evt, svg) => {
-    console.log('handleKeydown', evt.keyCode, 'svg', svg);
+    //console.log('handleKeydown', evt.keyCode, 'svg', svg);
 
     const handleEscOrEnter = (evt, svg, onKeydown) => {
         const isPolygon = svg.array().value.length > 1;
