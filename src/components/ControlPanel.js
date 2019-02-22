@@ -5,6 +5,7 @@ import ProductionHallDetails from './production_hall/ProductionHallDetails';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Collapse, message } from 'antd';
+import { getWorkplaces, getSelectedWorkplace, getProductionHall, isLoadingWorkplaces, getError } from '../selectors';
 
 const Panel = Collapse.Panel;
 
@@ -43,11 +44,11 @@ class ControlPanel extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    workplaces: state.workplaces,
-    selectedWorkplace: state.workplaces.find(o => o.id === state.appUi.selectedWorkplace),
-    productionHall: state.productionHall,
-    isLoadingWorkplaces: state.appUi.isLoadingWorkplaces,
-    error: state.appUi.error
+    workplaces: getWorkplaces(state),
+    selectedWorkplace: getSelectedWorkplace(state),
+    productionHall: getProductionHall(state),
+    isLoadingWorkplaces: isLoadingWorkplaces(state),
+    error: getError(state)
 });
 
 ControlPanel.propTypes = {

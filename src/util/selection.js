@@ -1,6 +1,7 @@
 import SVG from 'svg.js';
 import { store } from '../configureStore';
 import { selectWorkplace } from '../actions';
+import { getSelectedWorkplaceId } from '../selectors';
 
 class Selection {
     // constructor() {
@@ -27,7 +28,7 @@ class Selection {
         this._currentEl = selectedEl;
         const id = this.parseId(selectedEl);
 
-        if (store.getState().appUi.selectedWorkplace !== id) {
+        if (getSelectedWorkplaceId(store.getState()) !== id) {
             store.dispatch(selectWorkplace(isNaN(id) ? null : id));
         }
     }

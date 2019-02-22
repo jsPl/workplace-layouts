@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import { toggleDrawingMode } from '../../actions';
+import { isDrawingMode } from '../../selectors';
 
 const DrawingControls = ({ isDrawing, handleToggleDrawingMode }) => {
     return (isDrawing ?
@@ -11,7 +12,7 @@ const DrawingControls = ({ isDrawing, handleToggleDrawingMode }) => {
 };
 
 const mapStateToProps = state => ({
-    isDrawing: state.appUi.isDrawingMode
+    isDrawing: isDrawingMode(state)
 })
 
 const mapDispatchToProps = dispatch => ({

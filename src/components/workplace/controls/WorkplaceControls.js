@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import { fetchWorkplaces, removeWorkplace, fetchWorkplace, patchWorkplace } from '../../../actions';
+import { getWorkplaces, getSelectedWorkplace } from '../../../selectors';
 import InputFetchOne from './InputFetchOne';
 
 const WorkplaceControls = ({ workplaces, selectedWorkplace, 
@@ -17,8 +18,8 @@ const WorkplaceControls = ({ workplaces, selectedWorkplace,
 }
 
 const mapStateToProps = state => ({
-    workplaces: state.workplaces,
-    selectedWorkplace: state.workplaces.find(o => o.id === state.appUi.selectedWorkplace)
+    workplaces: getWorkplaces(state),
+    selectedWorkplace: getSelectedWorkplace(state)
 })
 
 const mapDispatchToProps = dispatch => ({

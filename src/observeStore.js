@@ -1,18 +1,19 @@
 import { store } from './configureStore';
-import { handleProductionHallStateChange } from './production_hall/ProductionHall'
-import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange } from './workplace/Workplace'
-import { handleProductionHallDrawing } from './production_hall/draw'
+import { handleProductionHallStateChange } from './production_hall/ProductionHall';
+import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange } from './workplace/Workplace';
+import { handleProductionHallDrawing } from './production_hall/draw';
+import { getProductionHall, getSelectedWorkplaceId, getWorkplaces, isDrawingMode } from './selectors';
 
 /**
  * https://github.com/reduxjs/redux/issues/303#issuecomment-125184409
  * @param {Object} store
- * @param {Function} select
+ * @param {Function} selector
  * @param {Function} onChange
  */
-export function observeStore(select, onChange) {
+export function observeStore(selector, onChange) {
     let currentState;
     function handleChange() {
-        let nextState = select(store.getState());
+        let nextState = selector(store.getState());
         if (nextState !== currentState) {
             onChange(nextState, currentState);
             currentState = nextState;
@@ -25,8 +26,8 @@ export function observeStore(select, onChange) {
 
 // Obserwowanie zmian stanu dla części SVG aplikacji
 document.addEventListener('DOMContentLoaded', () => {
-    observeStore(state => state.productionHall, (current, prev) => handleProductionHallStateChange(current, prev));
-    observeStore(state => state.appUi.selectedWorkplace, (current, prev) => handleWorkplaceSelectionStateChange(current, prev));
-    observeStore(state => state.workplaces, (current, prev) => handleWorkplacesStateChange(current, prev));
-    observeStore(state => state.appUi.isDrawingMode, isDrawingMode => handleProductionHallDrawing(isDrawingMode));
+    observeStore(getProductionHall, handleProductionHallStateChange);
+    observeStore(getSelectedWorkplaceId, handleWorkplaceSelectionStateChange);
+    observeStore(getWorkplaces, handleWorkplacesStateChange);
+    observeStore(isDrawingMode, handleProductionHallDrawing);
 });
