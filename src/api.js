@@ -9,7 +9,9 @@ const httpHeaders = { 'Content-Type': 'application/json' };
 //const API_URL = 'http://localhost:3001';
 
 const hala_id = getProductionHallIdFromUrl();
-const API_URL = `/eoffice/resources/hala_produkcyjna/hala_produkcyjna_json_endpoint.xml?action=hala_produkcyjna&hala_id=${hala_id}`;
+const API_URL = `/eoffice/resources/hala_produkcyjna/hala_produkcyjna_json_endpoint.xml?hala_id=${hala_id}`;
+const API_URL_LOAD = `${API_URL}&action=hala_produkcyjna`;
+const API_URL_SAVE = `${API_URL}&action=zapisz`;
 
 const throwErrorIfExistsInResponse = response => {
     return response.is_request_successful === false ?
@@ -17,7 +19,7 @@ const throwErrorIfExistsInResponse = response => {
 }
 
 export const fetchWorkplace = id => {
-    return ajax.getJSON(API_URL).pipe(
+    return ajax.getJSON(API_URL_LOAD).pipe(
         flatMap(response => throwErrorIfExistsInResponse(response)),
         map(response => {
             const workplaces = response.stanowiska || [];
@@ -27,11 +29,17 @@ export const fetchWorkplace = id => {
 }
 
 export const updateWorkplace = (id, payload) => {
-    return ajax.patch(`${API_URL}/workplaces/${id}`, payload, httpHeaders);
+    return ajax.post(API_URL_SAVE, { id, ...payload }, httpHeaders);
+}
+
+export const saveAllData = payload => {
+    return ajax.post(API_URL_SAVE, payload, httpHeaders).pipe(
+        flatMap(({ response }) => throwErrorIfExistsInResponse(response))
+    );
 }
 
 export const fetchWorkplaces = () => {
-    return ajax.getJSON(API_URL).pipe(
+    return ajax.getJSON(API_URL_LOAD).pipe(
         flatMap(response => throwErrorIfExistsInResponse(response)),
         map(response => response.stanowiska || [])
     );

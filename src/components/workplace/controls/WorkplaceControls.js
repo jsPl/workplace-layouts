@@ -1,40 +1,35 @@
 import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
-import { fetchWorkplaces, removeWorkplace, fetchWorkplace, patchWorkplace } from '../../../actions';
-import { getWorkplaces, getSelectedWorkplace } from '../../../selectors';
-import InputFetchOne from './InputFetchOne';
+import { removeWorkplace, saveAllData } from '../../../actions';
+import { isSaving } from '../../../selectors';
+//import InputFetchOne from './InputFetchOne';
 
-const WorkplaceControls = ({ workplaces, selectedWorkplace, 
-    handleFetchAll, handleRemoveAll, handleFetchOne, handlePatch }) => {
+const WorkplaceControls = ({ isSaving, handleSaveAll }) => {
     return (
         <div className='wpControls'>
-            <Button onClick={() => handleFetchAll()}>fetch all</Button>
-            <InputFetchOne onClick={handleFetchOne} />
-            <Button disabled={workplaces.length === 0} onClick={() => handleRemoveAll(workplaces)}>remove all</Button>
-            <Button disabled={!selectedWorkplace} onClick={() => handlePatch(selectedWorkplace)}>patch</Button>
+            {/* <Button onClick={() => handleFetchAll()}>fetch all</Button> */}
+            {/* <InputFetchOne onClick={handleFetchOne} /> */}
+            {/* <Button disabled={workplaces.length === 0} onClick={() => handleRemoveAll(workplaces)}>remove all</Button> */}
+            <Button loading={isSaving} type='primary' onClick={handleSaveAll}>Save</Button>
         </div>
     )
 }
 
 const mapStateToProps = state => ({
-    workplaces: getWorkplaces(state),
-    selectedWorkplace: getSelectedWorkplace(state)
+    //workplaces: getWorkplaces(state),
+    isSaving: isSaving(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-    handleFetchAll() {
-        dispatch(fetchWorkplaces());
-    },
+    // handleFetchAll() {
+    //     dispatch(fetchWorkplaces());
+    // },
     handleRemoveAll(workplaces) {
         workplaces.forEach(workplace => dispatch(removeWorkplace(workplace.id)));
     },
-    handleFetchOne(id) {
-        dispatch(fetchWorkplace(id));
-    },
-    handlePatch(workplace) {
-        const { id, ...data } = workplace;
-        dispatch(patchWorkplace(id, data));
+    handleSaveAll() {
+        dispatch(saveAllData());
     }
 })
 

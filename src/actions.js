@@ -19,3 +19,7 @@ export const selectWorkplace = id => ({ type: 'SELECT_WORKPLACE', id })
 export const toggleDrawingMode = isDrawingMode => ({ type: 'TOGGLE_DRAWING_MODE', isDrawingMode })
 
 export const updateProductionHall = ({ ...data }) => ({ type: 'UPDATE_PRODUCTION_HALL', data })
+
+export const saveAllData = () => ({ type: 'SAVE_ALL_DATA' });
+export const saveAllDataSuccess = data => ({ type: 'SAVE_ALL_DATA_SUCCESS', data });
+export const saveAllDataFailure = error => ({ type: 'SAVE_ALL_DATA_FAILURE', error });

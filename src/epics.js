@@ -1,8 +1,9 @@
 import { ofType, combineEpics } from "redux-observable";
-import { flatMap, switchMap, catchError, map } from "rxjs/operators";
+import { flatMap, switchMap, catchError, map, withLatestFrom } from "rxjs/operators";
 import { of } from 'rxjs';
 import * as api from './api';
 import * as actions from './actions';
+import { getWorkplaces, getProductionHall } from './selectors';
 
 const fetchWorkplaceEpic = action$ => action$.pipe(
     ofType('FETCH_WORKPLACE'),
@@ -28,8 +29,18 @@ const updateWorkplaceEpic = action$ => action$.pipe(
     ))
 );
 
+const saveAllDataEpic = (action$, state$) => action$.pipe(
+    ofType('SAVE_ALL_DATA'),
+    withLatestFrom(state$),
+    switchMap(([, state]) => api.saveAllData({ workplaces: getWorkplaces(state), production_hall: getProductionHall(state) }).pipe(
+        map(response => actions.saveAllDataSuccess(response)),
+        catchError(error => of(actions.saveAllDataFailure(error)))
+    ))
+);
+
 export default combineEpics(
     fetchWorkplaceEpic,
     fetchWorkplacesEpic,
-    updateWorkplaceEpic
+    updateWorkplaceEpic,
+    saveAllDataEpic
 )

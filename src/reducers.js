@@ -33,6 +33,7 @@ const appUi = (state = {
     isDrawingMode: false,
     selectedWorkplace: null,
     isLoadingWorkplaces: false,
+    isSaving: false,
     error: null
 }, action) => {
     switch (action.type) {
@@ -44,6 +45,12 @@ const appUi = (state = {
         case 'FETCH_WORKPLACES':
         case 'PATCH_WORKPLACE':
             return { ...state, isLoadingWorkplaces: true }
+        case 'SAVE_ALL_DATA':
+            return { ...state, isSaving: true }
+        case 'SAVE_ALL_DATA_SUCCESS':
+            return { ...state, isSaving: false, error: null }
+        case 'SAVE_ALL_DATA_FAILURE':
+            return { ...state, isSaving: false, error: action.error }
         case 'FETCH_WORKPLACE_SUCCESS':
             return { ...state, isLoadingWorkplaces: false, error: null }
         case 'FETCH_WORKPLACE_FAILURE':
