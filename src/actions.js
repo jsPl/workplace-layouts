@@ -1,10 +1,4 @@
-import * as apiAdapter from './util/apiAdapter';
-
-export const addWorkplace = data => ({
-    type: 'ADD_WORKPLACE',
-    data: apiAdapter.mapWorkplace(data)
-})
-
+export const addWorkplace = data => ({ type: 'ADD_WORKPLACE', data })
 export const updateWorkplace = ({ id, ...data }) => ({ type: 'UPDATE_WORKPLACE', id, data })
 export const removeWorkplace = id => ({ type: 'REMOVE_WORKPLACE', id })
 
@@ -18,7 +12,7 @@ export const selectWorkplace = id => ({ type: 'SELECT_WORKPLACE', id })
 
 export const toggleDrawingMode = isDrawingMode => ({ type: 'TOGGLE_DRAWING_MODE', isDrawingMode })
 
-export const updateProductionHall = ({ ...data }) => ({ type: 'UPDATE_PRODUCTION_HALL', data })
+export const updateProductionHall = data => ({ type: 'UPDATE_PRODUCTION_HALL', data })
 
 export const saveAllData = () => ({ type: 'SAVE_ALL_DATA' });
 export const saveAllDataSuccess = data => ({ type: 'SAVE_ALL_DATA_SUCCESS', data });

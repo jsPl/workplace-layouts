@@ -20,7 +20,7 @@ const workplaces = (state = [], action) => {
     }
 }
 
-const productionHall = (state = null, action) => {
+const productionHall = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_PRODUCTION_HALL':
             return { ...state, ...action.data }

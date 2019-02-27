@@ -2,6 +2,7 @@ import { ajax } from 'rxjs/ajax';
 import { of, throwError } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
 import { getProductionHallIdFromUrl } from './util/utils';
+import * as apiAdapter from './util/apiAdapter';
 
 const httpHeaders = { 'Content-Type': 'application/json' };
 
@@ -32,15 +33,22 @@ export const updateWorkplace = (id, payload) => {
     return ajax.post(API_URL_SAVE, { id, ...payload }, httpHeaders);
 }
 
-export const saveAllData = payload => {
-    return ajax.post(API_URL_SAVE, payload, httpHeaders).pipe(
-        flatMap(({ response }) => throwErrorIfExistsInResponse(response))
-    );
-}
-
 export const fetchWorkplaces = () => {
     return ajax.getJSON(API_URL_LOAD).pipe(
         flatMap(response => throwErrorIfExistsInResponse(response)),
         map(response => response.stanowiska || [])
+    );
+}
+
+export const fetchFromApi = () => {
+    return ajax.getJSON(API_URL_LOAD).pipe(
+        flatMap(response => throwErrorIfExistsInResponse(response)),
+        map(response => apiAdapter.mapResponseFromApi(response))
+    );
+}
+
+export const postToApi = state => {
+    return ajax.post(API_URL_SAVE, apiAdapter.mapStateToApiRequest(state), httpHeaders).pipe(
+        flatMap(({ response }) => throwErrorIfExistsInResponse(response))
     );
 }

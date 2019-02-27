@@ -5,10 +5,14 @@ import { toggleDrawingMode } from '../../actions';
 import { isDrawingMode } from '../../selectors';
 
 const DrawingControls = ({ isDrawing, handleToggleDrawingMode }) => {
-    return (isDrawing ?
-        <Button type="default">Press Enter to stop or Esc to cancel</Button>
-        :
-        <Button type="primary" onClick={handleToggleDrawingMode}>Start drawing</Button>);
+    return (
+        <div className='wpControls'>
+            {isDrawing ?
+                <Button type="default">Press Enter to stop or Esc to cancel</Button>
+                :
+                <Button type="primary" onClick={handleToggleDrawingMode}>Start drawing</Button>}
+        </div>
+    );
 };
 
 const mapStateToProps = state => ({
