@@ -7,26 +7,20 @@ export function handleProductionHallDrawing(isDrawingMode) {
     //console.log('handleDrawing isDrawingMode', isDrawingMode);
 
     if (!isDrawingMode) {
-        return null;
+        return;
     }
-
-    const keydownEventListener = ['keydown', e => handleKeydown(e, drawing)];
 
     const drawing = drawSvg.polygon().addClass('productionHall')
         .draw({ snapToGrid: GRID_SIZE });
 
+    const keydownEventListener = ['keydown', e => handleKeydown(e, drawing)];
     document.addEventListener(...keydownEventListener);
-
-    // drawing.on('drawstart', function (e) {
-    //     console.log('drawstart');
-    // });
 
     drawing.on('drawdone', () => {
         //console.log('drawdone');
         let { width, height } = drawing.rbox();
 
         store.dispatch(updateProductionHall({
-            title: 'New production hall',
             polygonPoints: drawing.array().toString(),
             width, height
         }));
@@ -34,30 +28,21 @@ export function handleProductionHallDrawing(isDrawingMode) {
         drawing.remove();
     });
 
-    // drawing.on('drawcancel', evt => {
-    //     console.log('drawcancel', evt.detail);
-    // });
-
     // done or cancel
-    drawing.on('drawstop', (evt) => {
-        //console.log('drawstop');
+    drawing.on('drawstop', evt => {
+        //console.log('drawstop/cancel');
         document.removeEventListener(...keydownEventListener);
         store.dispatch(toggleDrawingMode(false));
     });
-
-    return drawing;
 }
 
 const handleKeydown = (evt, svg) => {
-    //console.log('handleKeydown', evt.keyCode, 'svg', svg);
+    //console.log('drawing handleKeydown', evt.keyCode, 'svg', svg);
 
-    const handleEscOrEnter = (evt, svg, onKeydown) => {
+    const handleEscOrEnter = (evt, svg, handleKeydown) => {
         const isPolygon = svg.array().value.length > 1;
         if (isPolygon) {
-            onKeydown();
-        }
-        else {
-            // handleDrawstop(evt);
+            handleKeydown();
         }
     }
 

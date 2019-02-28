@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 import { connect } from 'react-redux';
 import { toggleDrawingMode } from '../../actions';
 import { isDrawingMode } from '../../selectors';
@@ -8,9 +8,9 @@ const DrawingControls = ({ isDrawing, handleToggleDrawingMode }) => {
     return (
         <div className='wpControls'>
             {isDrawing ?
-                <Button type="default">Press Enter to stop or Esc to cancel</Button>
+                <Card size='small'>Press Enter to stop or Esc to cancel</Card>
                 :
-                <Button type="primary" onClick={handleToggleDrawingMode}>Start drawing</Button>}
+                <Button type="primary" onClick={handleToggleDrawingMode}>Draw layout</Button>}
         </div>
     );
 };

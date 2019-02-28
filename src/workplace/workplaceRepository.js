@@ -1,6 +1,6 @@
 import { isRectColliding } from '../util/collisions'
 
-export class WorkplaceRepository {
+class WorkplaceRepository {
     constructor() {
         this.workplaces = [];
     }

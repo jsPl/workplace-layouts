@@ -4,9 +4,17 @@ import { selectWorkplace } from '../actions';
 import { getSelectedWorkplaceId } from '../selectors';
 
 class Selection {
-    // constructor() {
-    //     //this.selectables = [];
-    // }
+    constructor() {
+        this._lastClickedEl = null;
+    }
+
+    get lastClicked() {
+        return this._lastClickedEl;
+    }
+
+    set lastClicked(el) {
+        this._lastClickedEl = el;
+    }
 
     get current() {
         return this._currentEl;
@@ -64,7 +72,9 @@ SVG.on(document, 'DOMContentLoaded', () => {
 
         if (isLeftClick && isSvgClick) {
             let selectableEl = evt.target.closest('.selectable');
-            //console.log('click on', evt.target, selectableEl)
+            selection.lastClicked = evt.target;
+
+            //console.log('click on', evt.target, selectableEl);
             if (selectableEl) {
                 selection.current = selectableEl;
             }

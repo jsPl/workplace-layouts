@@ -1,15 +1,16 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import * as types from './actionTypes';
 
 const workplaces = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_WORKPLACE':
+        case types.WORKPLACE_ADD:
             if (state.find(o => o.id === action.data.id)) {
                 return state;
             }
             return [...state, { ...action.data }];
-        case 'REMOVE_WORKPLACE':
+        case types.WORKPLACE_REMOVE:
             return state.filter(workplace => workplace.id !== action.id)
-        case 'UPDATE_WORKPLACE':
+        case types.WORKPLACE_UPDATE:
             return state.map(workplace =>
                 (workplace.id === action.id)
                     ? { ...workplace, ...action.data }
@@ -22,7 +23,7 @@ const workplaces = (state = [], action) => {
 
 const productionHall = (state = {}, action) => {
     switch (action.type) {
-        case 'UPDATE_PRODUCTION_HALL':
+        case types.PRODUCTION_HALL_UPDATE:
             return { ...state, ...action.data }
         default:
             return state
@@ -37,23 +38,22 @@ const appUi = (state = {
     error: null
 }, action) => {
     switch (action.type) {
-        case 'TOGGLE_DRAWING_MODE':
+        case types.PRODUCTION_HALL_TOGGLE_DRAWING_MODE:
             return { ...state, isDrawingMode: !state.isDrawingMode }
-        case 'SELECT_WORKPLACE':
+        case types.WORKPLACE_SELECT:
             return { ...state, selectedWorkplace: action.id }
-        case 'FETCH_WORKPLACE':
-        case 'FETCH_WORKPLACES':
-        case 'PATCH_WORKPLACE':
+        case types.WORKPLACE_FETCH:
+        case types.PRODUCTION_HALL_WITH_WORKPLACES_FETCH:
             return { ...state, isLoadingWorkplaces: true }
-        case 'SAVE_ALL_DATA':
+        case types.PRODUCTION_HALL_WITH_WORKPLACES_SEND:
             return { ...state, isSaving: true }
-        case 'SAVE_ALL_DATA_SUCCESS':
+        case types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_SUCCESS:
             return { ...state, isSaving: false, error: null }
-        case 'SAVE_ALL_DATA_FAILURE':
+        case types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_FAILURE:
             return { ...state, isSaving: false, error: action.error }
-        case 'FETCH_WORKPLACE_SUCCESS':
+        case types.WORKPLACE_FETCH_SUCCESS:
             return { ...state, isLoadingWorkplaces: false, error: null }
-        case 'FETCH_WORKPLACE_FAILURE':
+        case types.WORKPLACE_FETCH_FAILURE:
             return { ...state, isLoadingWorkplaces: false, error: action.error }
         default:
             return state

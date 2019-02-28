@@ -6,3 +6,10 @@ export function generateRandomString() {
 export function getProductionHallIdFromUrl() {
     return new URL(window.location.href).searchParams.get('hala_id') || '';
 }
+
+export function toFloat(number) {
+    if (typeof number === 'string') {
+        number = number.replace(',', '.');
+    }
+    return parseFloat(number);
+}

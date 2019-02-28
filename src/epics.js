@@ -3,8 +3,8 @@ import { flatMap, switchMap, catchError, map, withLatestFrom } from "rxjs/operat
 import { of } from 'rxjs';
 import * as api from './api';
 import * as actions from './actions';
-//import { getWorkplaces, getProductionHall } from './selectors';
-
+import { PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND } from './actionTypes';
+ 
 // const fetchWorkplaceEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACE'),
 //     switchMap(action => api.fetchWorkplace(action.id).pipe(
@@ -29,9 +29,9 @@ import * as actions from './actions';
 //     ))
 // );
 
-const fetchFromApiEpic = action$ => action$.pipe(
-    ofType('FETCH_WORKPLACES'),
-    switchMap(() => api.fetchFromApi().pipe(
+const fetchProductionHallWithWorkplacesFromApiEpic = action$ => action$.pipe(
+    ofType(PRODUCTION_HALL_WITH_WORKPLACES_FETCH),
+    switchMap(() => api.fetchProductionHallWithWorkplaces().pipe(
         flatMap(({ productionHall, workplaces }) => of(
             actions.fetchWorkplaceSuccess(workplaces),
             ...workplaces.map(o => actions.addWorkplace(o)),
@@ -41,12 +41,12 @@ const fetchFromApiEpic = action$ => action$.pipe(
     ))
 );
 
-const postToApiEpic = (action$, state$) => action$.pipe(
-    ofType('SAVE_ALL_DATA'),
+const sendProductionHallWithWorkplacesToApiEpic = (action$, state$) => action$.pipe(
+    ofType(PRODUCTION_HALL_WITH_WORKPLACES_SEND),
     withLatestFrom(state$),
-    switchMap(([, state]) => api.postToApi(state).pipe(
-        map(response => actions.saveAllDataSuccess(response)),
-        catchError(error => of(actions.saveAllDataFailure(error)))
+    switchMap(([, state]) => api.postProductionHallWithWorkplaces(state).pipe(
+        map(response => actions.sendHallWithWorkplacesSuccess(response)),
+        catchError(error => of(actions.sendHallWithWorkplacesFailure(error)))
     ))
 );
 
@@ -54,6 +54,6 @@ export default combineEpics(
     //fetchWorkplaceEpic,
     //fetchWorkplacesEpic,
     //updateWorkplaceEpic,
-    fetchFromApiEpic,
-    postToApiEpic
+    fetchProductionHallWithWorkplacesFromApiEpic,
+    sendProductionHallWithWorkplacesToApiEpic
 )

@@ -48,7 +48,10 @@ body {
   border: 1px solid #e7e7e7;
   margin: 0.5em;
   flex: 3;
-  background: url(./assets/grid.png) #fff;
+  background-color: white;
+  /* background: url(./assets/grid.png) #fff; */
+  border-radius: 4px;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
@@ -91,4 +94,11 @@ body {
 .workplaceTitle {
   cursor: default;
   font-size: 90%;
+}
+
+.grid {
+  fill: none;
+  stroke: gray;
+  stroke-width: 0.5;
+  stroke-dasharray: 1;
 }

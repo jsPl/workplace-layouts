@@ -1,6 +1,7 @@
-import { drawSvg, snapToGrid } from '../util/draw'
-import { generateRandomString } from '../util/utils'
-import { isPathColliding } from '../util/collisions'
+import { drawSvg, snapToGrid } from '../util/draw';
+import { generateRandomString } from '../util/utils';
+import { isPathColliding } from '../util/collisions';
+import { getPanZoomSvgEl } from '../util/panZoom';
 
 class ProductionHall {
     constructor(options = {}) {
@@ -15,17 +16,23 @@ class ProductionHall {
     }
 
     drawSvg = (polygonPoints) => {
-        this.svg = drawSvg.polygon(polygonPoints).toPath(true).draggy(snapToGrid).addClass('productionHall').back();
-        return this;
+        let group = drawSvg.group();
+        group.polygon(polygonPoints).toPath(true).addClass('productionHall').back();
+        group.draggy(snapToGrid)
+
+        group.addTo(getPanZoomSvgEl());
+        this.svg = group;
     }
 }
 
 export const handleProductionHallStateChange = (current, prev) => {
     //console.log('handleProductionHallStateChange from ', prev, ' to ', current);
 
-    if (!productionHall && current) {
-        productionHall = new ProductionHall(current);
-        //console.log('new productionHall', productionHall);
+    if (current) {
+        if (!productionHall) {
+            productionHall = new ProductionHall(current);
+            //console.log('new productionHall', productionHall);
+        }
 
         if (current.polygonPoints) {
             //console.log('render with points', current);

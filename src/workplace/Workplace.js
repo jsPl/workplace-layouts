@@ -1,11 +1,12 @@
-import { drawSvg } from '../util/draw'
-import 'svg.draggy.js'
-import { generateRandomString } from '../util/utils'
-import { selection } from '../util/selection'
-import throttle from 'lodash/throttle'
-import { updateWorkplace, removeWorkplace } from '../actions'
-import { store } from '../configureStore'
-import { workplaceRepository } from './workplaceRepository'
+import { drawSvg } from '../util/draw';
+import { getPanZoomSvgEl } from '../util/panZoom';
+import 'svg.draggy.js';
+import { generateRandomString } from '../util/utils';
+import { selection } from '../util/selection';
+import throttle from 'lodash/throttle';
+import { updateWorkplace, removeWorkplace } from '../actions';
+import { store } from '../configureStore';
+import { workplaceRepository } from './workplaceRepository';
 import difference from 'lodash/difference';
 
 export default class Workplace {
@@ -97,9 +98,11 @@ export default class Workplace {
 
         group.move(this.x, this.y)
             .data('workplace-id', this.id)
-            .draggy()
+            .draggy();
 
+        group.addTo(getPanZoomSvgEl());
         this.svg = group;
+
         return this;
     }
 
@@ -135,6 +138,6 @@ export const handleWorkplaceSelectionStateChange = (toId, fromId) => {
     //console.log('handleWorkplaceSelectionStateChange from ', fromId, 'to', toId)
     let selectedWorkplaceObj = workplaceRepository.findById(toId);
     if (selectedWorkplaceObj) {
-       selection.current = selectedWorkplaceObj.svg.node;
+        selection.current = selectedWorkplaceObj.svg.node;
     }
 }
