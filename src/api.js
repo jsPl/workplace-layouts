@@ -16,7 +16,7 @@ const API_URL_SAVE = `${API_URL}&action=zapisz`;
 
 const throwErrorIfExistsInResponse = response => {
     return response.is_request_successful === false ?
-        throwError({ message: response.error_message || 'Unspecified server error...' }) : of(response)
+        throwError({ type: 'error', message: response.error_message || 'Unspecified server error...' }) : of(response)
 }
 
 // export const fetchWorkplace = id => {

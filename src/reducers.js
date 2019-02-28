@@ -35,7 +35,7 @@ const appUi = (state = {
     selectedWorkplace: null,
     isLoadingWorkplaces: false,
     isSaving: false,
-    error: null
+    message: null
 }, action) => {
     switch (action.type) {
         case types.PRODUCTION_HALL_TOGGLE_DRAWING_MODE:
@@ -48,13 +48,13 @@ const appUi = (state = {
         case types.PRODUCTION_HALL_WITH_WORKPLACES_SEND:
             return { ...state, isSaving: true }
         case types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_SUCCESS:
-            return { ...state, isSaving: false, error: null }
+            return { ...state, isSaving: false, message: action.success }
         case types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_FAILURE:
-            return { ...state, isSaving: false, error: action.error }
+            return { ...state, isSaving: false, message: action.error }
         case types.WORKPLACE_FETCH_SUCCESS:
-            return { ...state, isLoadingWorkplaces: false, error: null }
+            return { ...state, isLoadingWorkplaces: false, message: null }
         case types.WORKPLACE_FETCH_FAILURE:
-            return { ...state, isLoadingWorkplaces: false, error: action.error }
+            return { ...state, isLoadingWorkplaces: false, message: action.error }
         default:
             return state
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
-import { removeWorkplace, sendHallWithWorkplaces } from '../../../actions';
+import { sendHallWithWorkplaces } from '../../../actions';
 import { isSaving } from '../../../selectors';
 //import InputFetchOne from './InputFetchOne';
 
@@ -17,17 +17,13 @@ const WorkplaceControls = ({ isSaving, handleSaveAll }) => {
 }
 
 const mapStateToProps = state => ({
-    //workplaces: getWorkplaces(state),
     isSaving: isSaving(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-    // handleFetchAll() {
-    //     dispatch(fetchWorkplaces());
+    // handleRemoveAll(workplaces) {
+    //     workplaces.forEach(workplace => dispatch(removeWorkplace(workplace.id)));
     // },
-    handleRemoveAll(workplaces) {
-        workplaces.forEach(workplace => dispatch(removeWorkplace(workplace.id)));
-    },
     handleSaveAll() {
         dispatch(sendHallWithWorkplaces());
     }

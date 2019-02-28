@@ -5,18 +5,21 @@ import ProductionHallDetails from './production_hall/ProductionHallDetails';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Collapse, message } from 'antd';
-import { getWorkplaces, getSelectedWorkplace, getProductionHall, isLoadingWorkplaces, getError } from '../selectors';
+import { getWorkplaces, getSelectedWorkplace, getProductionHall, isLoadingWorkplaces, getMessage } from '../selectors';
 
 const Panel = Collapse.Panel;
 
 class ControlPanel extends React.Component {
 
-    componentDidUpdate(prevProps) {
-        const { error } = this.props;
-        //console.log('componentDidUpdate prevProps error', prevProps.error, error);
-        if (error && error !== prevProps.error) {
-            message.error(error.message);
+    showUiMessage(prevProps) {
+        const { uiMessage } = this.props;
+        if (uiMessage && uiMessage !== prevProps.uiMessage) {
+            message[uiMessage.type || 'info'](uiMessage.message, 5);
         }
+    }
+
+    componentDidUpdate(prevProps) {
+        this.showUiMessage(prevProps);
     }
 
     render() {
@@ -48,7 +51,7 @@ const mapStateToProps = state => ({
     selectedWorkplace: getSelectedWorkplace(state),
     productionHall: getProductionHall(state),
     isLoadingWorkplaces: isLoadingWorkplaces(state),
-    error: getError(state)
+    uiMessage: getMessage(state)
 });
 
 ControlPanel.propTypes = {

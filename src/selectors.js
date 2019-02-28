@@ -11,4 +11,4 @@ export const getSelectedWorkplace = state => getWorkplaces(state).find(o => o.id
 export const isLoadingWorkplaces = state => state.appUi.isLoadingWorkplaces;
 
 export const isSaving = state => state.appUi.isSaving;
-export const getError = state => state.appUi.error;
+export const getMessage = state => state.appUi.message;
