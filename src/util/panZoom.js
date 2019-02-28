@@ -15,7 +15,8 @@ const configurePanZoom = gridPattern => ({
         gridPattern.transform(newCTM);
     },
     beforePan: () => {
-        let blockPan = selection.current != null || selection.lastClicked.classList.contains('productionHall');
+        let blockPan = selection.current != null ||
+            (selection.lastClicked && selection.lastClicked.classList.contains('productionHall'));
         return !blockPan;
     }
 })
