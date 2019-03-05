@@ -25,7 +25,7 @@ export default function () {
 
         if (selectedObjInstance) {
             if (evt.keyCode >= 37 && evt.keyCode <= 40) {
-                const shiftBy = (evt.altKey ? 1 : 2) + (evt.shiftKey ? 10 : 0);
+                const shiftBy = (evt.ctrlKey ? 1 : 2) + (evt.shiftKey ? 10 : 0);
                 selectedObjInstance.handleDragStart();
 
                 switch (evt.keyCode) {

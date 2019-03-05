@@ -1,11 +1,12 @@
-import { drawSvg, snapToGrid } from '../util/draw';
-import { generateRandomString } from '../util/utils';
+import { drawSvg, panZoom } from '../util/draw';
+import { toFixed } from '../util/utils';
 import { isPathColliding } from '../util/collisions';
 import { getPanZoomSvgEl } from '../util/panZoom';
+import { store } from '../configureStore';
+import { updateProductionHall } from '../actions';
 
 class ProductionHall {
     constructor(options = {}) {
-        this.id = generateRandomString();
         Object.assign(this, options);
     }
 
@@ -16,12 +17,22 @@ class ProductionHall {
     }
 
     drawSvg = (polygonPoints) => {
-        let group = drawSvg.group();
-        group.polygon(polygonPoints).toPath(true).addClass('productionHall').back();
-        group.draggy(snapToGrid)
+        if (!polygonPoints || this.svg) {
+            return;
+        }
 
-        group.addTo(getPanZoomSvgEl());
+        let group = drawSvg.group();
+        group.polygon(polygonPoints).toPath(true).addClass('productionHall');
+
+        //group.draggy(snapToGrid)
+        group.addTo(getPanZoomSvgEl()).back();
+
         this.svg = group;
+
+        const { w, h } = group.rbox();
+        store.dispatch(updateProductionHall({ width: toFixed(w), height: toFixed(h) }));
+
+        panZoom.updateBBox().fit().center().zoomBy(0.9);
     }
 }
 
@@ -34,10 +45,13 @@ export const handleProductionHallStateChange = (current, prev) => {
             //console.log('new productionHall', productionHall);
         }
 
-        if (current.polygonPoints) {
+        if (current.polygonPoints && !productionHall.svg) {
             //console.log('render with points', current);
             productionHall.drawSvg(current.polygonPoints);
         }
+        // else if (productionHall.svg && !current.polygonPoints) {
+        //     productionHall.svg.remove();
+        // }
     }
 }
 

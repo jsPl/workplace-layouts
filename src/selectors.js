@@ -4,6 +4,7 @@
 
 export const isDrawingMode = state => state.appUi.isDrawingMode;
 export const getProductionHall = state => state.productionHall;
+export const getProductionHallLayoutExists = state => getProductionHall(state).polygonPoints != null;
 
 export const getWorkplaces = state => state.workplaces;
 export const getSelectedWorkplaceId = state => state.appUi.selectedWorkplace;

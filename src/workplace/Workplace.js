@@ -1,7 +1,7 @@
 import { drawSvg } from '../util/draw';
 import { getPanZoomSvgEl } from '../util/panZoom';
 import 'svg.draggy.js';
-import { generateRandomString } from '../util/utils';
+import { generateRandomString, toFixed } from '../util/utils';
 import { selection } from '../util/selection';
 import throttle from 'lodash/throttle';
 import { updateWorkplace, removeWorkplace } from '../actions';
@@ -37,7 +37,9 @@ export default class Workplace {
         }
 
         if (this.hasMoved()) {
-            store.dispatch(updateWorkplace({ id: this.id, x: this.svg.x(), y: this.svg.y() }));
+            let x = toFixed(this.svg.x());
+            let y = toFixed(this.svg.y());
+            store.dispatch(updateWorkplace({ id: this.id, x, y }));
         }
     }
 

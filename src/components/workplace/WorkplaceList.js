@@ -4,13 +4,8 @@ import PropTypes from 'prop-types';
 import { List, Empty, Spin } from 'antd';
 import WorkplaceListItem from './WorkplaceListItem';
 import WorkplaceControls from './controls/WorkplaceControls';
-import { fetchHallWithWorkplaces } from '../../actions';
 
 class WorkplaceList extends React.Component {
-    componentDidMount() {
-        this.props.dispatch(fetchHallWithWorkplaces());
-    }
-
     render() {
         const { workplaces, selectedWorkplace, isLoading } = this.props;
         return (

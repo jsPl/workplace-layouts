@@ -25,6 +25,10 @@ const productionHall = (state = {}, action) => {
     switch (action.type) {
         case types.PRODUCTION_HALL_UPDATE:
             return { ...state, ...action.data }
+        case types.PRODUCTION_HALL_LAYOUT_CLEAR: {
+            const { polygonPoints, ...hall } = state;
+            return hall;
+        }
         default:
             return state
     }

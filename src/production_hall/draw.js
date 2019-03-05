@@ -1,7 +1,9 @@
-import { drawSvg, GRID_SIZE } from '../util/draw'
-import 'svg.draw.js'
+import { drawSvg, GRID_SIZE } from '../util/draw';
+import 'svg.draw.js';
 import { store } from '../configureStore';
-import { updateProductionHall, toggleDrawingMode } from '../actions'
+import { updateProductionHall, toggleDrawingMode } from '../actions';
+import { getPanZoomSvgEl } from '../util/panZoom';
+import { toFixed } from '../util/utils';
 
 export function handleProductionHallDrawing(isDrawingMode) {
     //console.log('handleDrawing isDrawingMode', isDrawingMode);
@@ -11,7 +13,9 @@ export function handleProductionHallDrawing(isDrawingMode) {
     }
 
     const drawing = drawSvg.polygon().addClass('productionHall')
-        .draw({ snapToGrid: GRID_SIZE });
+        .draw({ snapToGrid: GRID_SIZE })
+        .addTo(getPanZoomSvgEl())
+        .back();
 
     const keydownEventListener = ['keydown', e => handleKeydown(e, drawing)];
     document.addEventListener(...keydownEventListener);
@@ -22,7 +26,7 @@ export function handleProductionHallDrawing(isDrawingMode) {
 
         store.dispatch(updateProductionHall({
             polygonPoints: drawing.array().toString(),
-            width, height
+            width: toFixed(width), height: toFixed(height)
         }));
 
         drawing.remove();

@@ -12,11 +12,12 @@ export const fetchWorkplaceFailure = error => ({ type: types.WORKPLACE_FETCH_FAI
 
 export const toggleDrawingMode = isDrawingMode => ({ type: types.PRODUCTION_HALL_TOGGLE_DRAWING_MODE, isDrawingMode })
 export const updateProductionHall = data => ({ type: types.PRODUCTION_HALL_UPDATE, data })
+export const clearProductionHallLayout = () => ({ type: types.PRODUCTION_HALL_LAYOUT_CLEAR })
 
 export const fetchHallWithWorkplaces = () => ({ type: types.PRODUCTION_HALL_WITH_WORKPLACES_FETCH })
 export const sendHallWithWorkplaces = () => ({ type: types.PRODUCTION_HALL_WITH_WORKPLACES_SEND });
-export const sendHallWithWorkplacesSuccess = data => ({ 
+export const sendHallWithWorkplacesSuccess = data => ({
     type: types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_SUCCESS, data,
-    success: { type: 'success', message: 'Success'}
+    success: { type: 'success', message: 'Success' }
 });
 export const sendHallWithWorkplacesFailure = error => ({ type: types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_FAILURE, error });
