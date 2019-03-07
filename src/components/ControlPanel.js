@@ -27,7 +27,7 @@ class ControlPanel extends React.Component {
         return (
             <Collapse defaultActiveKey={['1', '2', '3']}>
                 <Panel header='Production hall' key='1'>
-                    <ProductionHallDetails productionHall={productionHall} />
+                    <ProductionHallDetails productionHall={productionHall} isLoading={isLoadingWorkplaces} />
                 </Panel>
                 <Panel header='Workplaces' key='2'>
                     <WorkplaceList

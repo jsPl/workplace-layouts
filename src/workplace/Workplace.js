@@ -1,7 +1,7 @@
 import { drawSvg } from '../util/draw';
 import { getPanZoomSvgEl } from '../util/panZoom';
 import 'svg.draggy.js';
-import { generateRandomString, toFixed } from '../util/utils';
+import { toFixed } from '../util/conversion';
 import { selection } from '../util/selection';
 import throttle from 'lodash/throttle';
 import { updateWorkplace, removeWorkplace } from '../actions';
@@ -11,7 +11,6 @@ import difference from 'lodash/difference';
 
 export default class Workplace {
     constructor(options) {
-        this.id = generateRandomString();
         Object.assign(this, options);
 
         this.handleDetectCollisionThrottled = throttle(this.handleDetectCollision, 100);
@@ -95,7 +94,7 @@ export default class Workplace {
         }
 
         if (this.title) {
-            group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(0, this.height + 15);
+            group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(5, this.height - 10);
         }
 
         group.move(this.x, this.y)

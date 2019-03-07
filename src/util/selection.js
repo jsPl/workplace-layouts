@@ -2,6 +2,7 @@ import SVG from 'svg.js';
 import { store } from '../configureStore';
 import { selectWorkplace } from '../actions';
 import { getSelectedWorkplaceId } from '../selectors';
+import { ensureElementIsInView } from '../util/utils';
 
 class Selection {
     constructor() {
@@ -38,6 +39,8 @@ class Selection {
 
         if (getSelectedWorkplaceId(store.getState()) !== id) {
             store.dispatch(selectWorkplace(isNaN(id) ? null : id));
+
+            ensureElementIsInView(document.querySelector('.wpList'), document.querySelector('.wpList .selected'));
         }
     }
 
