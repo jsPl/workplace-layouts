@@ -48,16 +48,16 @@ export default function () {
                 selectedObjInstance.handleDragEnd();
             }
 
-            switch (evt.keyCode) {
-                case 46: // del
-                    if (selectedObjInstance.handleDelete) {
-                        selectedObjInstance.handleDelete();
-                    }
-                    break;
+            // switch (evt.keyCode) {
+            //     case 46: // del
+            //         if (selectedObjInstance.handleDelete) {
+            //             selectedObjInstance.handleDelete();
+            //         }
+            //         break;
 
-                default:
-                    break;
-            }
+            //     default:
+            //         break;
+            // }
         }
     });
 }

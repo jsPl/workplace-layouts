@@ -94,3 +94,9 @@ body {
   stroke-width: 0.5;
   stroke-dasharray: 1;
 }
+
+.fa-icon {
+  margin-left: 0.6em;
+  cursor: pointer;
+  /* color: #009688; */
+}

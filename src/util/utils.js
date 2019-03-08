@@ -29,3 +29,25 @@ export function ensureElementIsInView(container, element) {
         container.scrollTop += (eBottom - cBottom);
     }
 }
+
+export function openPopup(url, w = 1000, h = 600) {
+    const aw = window.screen.availWidth - 30;
+    const ah = window.screen.availHeight - 30;
+
+    const windowFeatures =
+        "left=" + (aw - w) / 2 + ","
+        + "top=" + (ah - h) / 2 + ","
+        + "screenX=" + (aw - w) / 2 + ","
+        + "screenY=" + (ah - h) / 2 + ","
+        + "width=" + w + ","
+        + "height=" + h + ","
+        + "toolbar=no,"
+        + "location=no,"
+        + "directories=no,"
+        + "status=no,"
+        + "menubar=no,"
+        + "scrollbars=yes,"
+        + "resizable=yes";
+
+    return window.open(url, '', windowFeatures);
+}
