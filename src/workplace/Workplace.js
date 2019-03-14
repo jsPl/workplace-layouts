@@ -14,6 +14,7 @@ export default class Workplace {
         Object.assign(this, options);
 
         this.handleDetectCollisionThrottled = throttle(this.handleDetectCollision, 100);
+        this._isDragEnabled = false;
     }
 
     handleDragStart() {
@@ -108,17 +109,18 @@ export default class Workplace {
 
     enableDrag() {
         this.svg.draggy();
+        this._isDragEnabled = true;
         return this;
     }
 
     disableDrag() {
         this.svg.fixed();
+        this._isDragEnabled = false;
         return this;
     }
 
-    setter = (changes) => {
-        Object.assign(this, changes);
-        return this
+    isDragEnabled() {
+        return this._isDragEnabled;
     }
 }
 

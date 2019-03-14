@@ -5,14 +5,14 @@ import { workplaceRepository } from '../workplace/workplaceRepository';
 export default function () {
     document.addEventListener('keydown', evt => {
         console.log('keyboard keydown', evt.key);
-        let selectedWorkplaceObjInstance;
+        let selectedWorkplace;
 
         if (!selection) {
             return;
         }
 
         if (selection.current) {
-            selectedWorkplaceObjInstance = workplaceRepository.findById(selection.currentId());
+            selectedWorkplace = workplaceRepository.findById(selection.currentId());
         }
 
         switch (evt.key) {
@@ -24,29 +24,29 @@ export default function () {
                 break;
         }
 
-        if (selectedWorkplaceObjInstance) {
-            if (evt.keyCode >= 37 && evt.keyCode <= 40) {
+        if (selectedWorkplace) {
+            if (selectedWorkplace.isDragEnabled() && evt.keyCode >= 37 && evt.keyCode <= 40) {
                 const shiftBy = (evt.ctrlKey ? 1 : 2) + (evt.shiftKey ? 10 : 0);
-                selectedWorkplaceObjInstance.handleDragStart();
+                selectedWorkplace.handleDragStart();
 
                 switch (evt.key) {
                     case 'ArrowDown':
-                        selectedWorkplaceObjInstance.svg.dy(shiftBy);
+                        selectedWorkplace.svg.dy(shiftBy);
                         break;
                     case 'ArrowUp':
-                        selectedWorkplaceObjInstance.svg.dy(-shiftBy);
+                        selectedWorkplace.svg.dy(-shiftBy);
                         break;
                     case 'ArrowLeft':
-                        selectedWorkplaceObjInstance.svg.dx(-shiftBy);
+                        selectedWorkplace.svg.dx(-shiftBy);
                         break;
                     case 'ArrowRight':
-                        selectedWorkplaceObjInstance.svg.dx(shiftBy);
+                        selectedWorkplace.svg.dx(shiftBy);
                         break;
                     default: break;
                 }
 
-                selectedWorkplaceObjInstance.handleDragMove();
-                selectedWorkplaceObjInstance.handleDragEnd();
+                selectedWorkplace.handleDragMove();
+                selectedWorkplace.handleDragEnd();
             }
         }
 

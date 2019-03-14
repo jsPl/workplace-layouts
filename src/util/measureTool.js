@@ -62,6 +62,7 @@ class MeasureTool {
                     break;
                 default: break;
             }
+            console.log('panby', panBy)
             panZoom.panBy(panBy)
         }
 
@@ -101,7 +102,7 @@ class MeasureTool {
             this.done();
             this.svg.draggy();
 
-            this.svg.parent().element('title').words('Drag to move or click and press Delete to remove')
+            this.svg.element('title').words('Drag to move or click and press Delete to remove')
         });
 
         this.drawing.on('drawupdate', ({ detail }) => {
