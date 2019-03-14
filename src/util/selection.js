@@ -77,7 +77,7 @@ SVG.on(document, 'DOMContentLoaded', () => {
             let selectableEl = evt.target.closest('.selectable');
             selection.lastClicked = evt.target;
 
-            //console.log('click on', evt.target, selectableEl);
+            console.log('click on', evt.target, selectableEl);
             if (selectableEl) {
                 selection.current = selectableEl;
             }

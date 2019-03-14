@@ -4,22 +4,19 @@ import { initPanZoom } from './panZoom.js';
 import { store } from '../configureStore';
 import { fetchHallWithWorkplaces } from '../actions';
 
-SVG.on(document, 'DOMContentLoaded', () => {
+window.addEventListener('load', () => {
     const svgContainer = SVG('svg-container');
+    drawSvg = svgContainer.size('100%', '100%').addClass('drawSvg');
 
-    svgContainer.on('load', () => {
-        drawSvg = svgContainer.size('100%', '100%').addClass('drawSvg');
+    const gridPattern = drawSvg.pattern(GRID_SIZE, GRID_SIZE, drawGridPattern);
+    panZoom = initPanZoom(svgContainer, gridPattern);
 
-        const gridPattern = drawSvg.pattern(GRID_SIZE, GRID_SIZE, drawGridPattern);
-        panZoom = initPanZoom(svgContainer, gridPattern);
+    drawGradientsAndMarkers(drawSvg);
 
-        drawGradientWorkplace(drawSvg);
+    svgContainer.rect('100%', '100%').back().fill(gridPattern);
+    panZoom.resize();
 
-        svgContainer.rect('100%', '100%').back().fill(gridPattern);
-        panZoom.resize();
-
-        store.dispatch(fetchHallWithWorkplaces());
-    });
+    store.dispatch(fetchHallWithWorkplaces());
 });
 
 export const GRID_SIZE = 15;
@@ -30,7 +27,7 @@ export const snapToGrid = (x, y, elem) => ({
     y: y - (y % GRID_SIZE)
 })
 
-const drawGradientWorkplace = draw => {
+const drawGradientsAndMarkers = draw => {
     draw.defs().svg(`
         <linearGradient id="grad-workplace" gradientTransform="rotate(90 0.5 0.5)">
             <stop offset="0" stop-color="#f5fafc" stop-opacity="1"/>
@@ -45,7 +42,10 @@ const drawGradientWorkplace = draw => {
         <linearGradient id="grad-workplace-colliding" gradientTransform="rotate(90 0.5 0.5)">
             <stop offset="0" stop-color="#ffdada" />
             <stop offset="1" stop-color="#ffacac" />
-        </linearGradient>       
+        </linearGradient>
+        <marker id="marker-ruler" markerWidth="1" markerHeight="6" refY="3" orient="auto">
+            <rect width="1" height="6" />
+        </marker>         
     `);
 }
 

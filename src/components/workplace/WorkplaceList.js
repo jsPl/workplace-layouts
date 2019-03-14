@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+//import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { List, Empty, Spin } from 'antd';
 import WorkplaceListItem from './WorkplaceListItem';
@@ -36,4 +36,4 @@ WorkplaceList.propTypes = {
     isLoadingWorkplaces: PropTypes.bool
 }
 
-export default connect()(WorkplaceList)
+export default WorkplaceList

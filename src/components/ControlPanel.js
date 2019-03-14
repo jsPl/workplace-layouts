@@ -2,6 +2,7 @@ import React from 'react';
 import WorkplaceDetails from './workplace/WorkplaceDetails';
 import WorkplaceList from './workplace/WorkplaceList';
 import ProductionHallDetails from './production_hall/ProductionHallDetails';
+import Tools from './tools/Tools';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Collapse, message } from 'antd';
@@ -25,11 +26,14 @@ class ControlPanel extends React.Component {
     render() {
         const { workplaces, selectedWorkplace, productionHall, isLoadingWorkplaces } = this.props;
         return (
-            <Collapse defaultActiveKey={['1', '2', '3']}>
+            <Collapse defaultActiveKey={['1', '2', '3', '4']}>
                 <Panel header='Production hall' key='1'>
                     <ProductionHallDetails productionHall={productionHall} isLoading={isLoadingWorkplaces} />
                 </Panel>
-                <Panel header='Workplaces' key='2'>
+                <Panel header='Tools' key='2'>
+                    <Tools />
+                </Panel>
+                <Panel header='Workplaces' key='3' className='panelWorkplaces'>
                     <WorkplaceList
                         workplaces={workplaces}
                         selectedWorkplace={selectedWorkplace}
@@ -37,7 +41,7 @@ class ControlPanel extends React.Component {
                     />
                 </Panel>
                 {selectedWorkplace &&
-                    <Panel header='Selected' key='3'>
+                    <Panel header='Selected' key='4'>
                         <WorkplaceDetails workplace={selectedWorkplace} />
                     </Panel>
                 }

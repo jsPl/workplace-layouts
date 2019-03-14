@@ -17,10 +17,10 @@ export default function WorkplaceDetails({ workplace }) {
                     <FaExternalLinkAlt className='vmiddle fa-icon' onClick={() => openWorkplacePopup(workplace.id)} />
                 </span>
             </div>
-            {/* <div>x: {workplace.x} y: {workplace.y}</div> */}
-            {/* <div>width: {workplace.width} height: {workplace.height}</div> */}
-            <div>długość: {workplace.strefa_robocza_dlugosc + ' m '}
-                szerokość: {workplace.strefa_robocza_szerokosc + ' m'}</div>
+            <div>
+                długość: {workplace.strefa_robocza_dlugosc + ' m '}
+                szerokość: {workplace.strefa_robocza_szerokosc + ' m'}
+            </div>
         </div>
     )
 }

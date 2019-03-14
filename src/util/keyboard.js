@@ -1,21 +1,22 @@
-import { selection } from './selection'
-import { workplaceRepository } from '../workplace/workplaceRepository'
+import SVG from 'svg.js';
+import { selection } from './selection';
+import { workplaceRepository } from '../workplace/workplaceRepository';
 
 export default function () {
     document.addEventListener('keydown', evt => {
-        //console.log('keydown', evt.keyCode);
-        let selectedObjInstance;
+        console.log('keyboard keydown', evt.key);
+        let selectedWorkplaceObjInstance;
 
         if (!selection) {
             return;
         }
 
         if (selection.current) {
-            selectedObjInstance = workplaceRepository.findById(selection.currentId());
+            selectedWorkplaceObjInstance = workplaceRepository.findById(selection.currentId());
         }
 
-        switch (evt.keyCode) {
-            case 27: // esc
+        switch (evt.key) {
+            case 'Escape':
                 selection.current = null;
                 break;
 
@@ -23,41 +24,43 @@ export default function () {
                 break;
         }
 
-        if (selectedObjInstance) {
+        if (selectedWorkplaceObjInstance) {
             if (evt.keyCode >= 37 && evt.keyCode <= 40) {
                 const shiftBy = (evt.ctrlKey ? 1 : 2) + (evt.shiftKey ? 10 : 0);
-                selectedObjInstance.handleDragStart();
+                selectedWorkplaceObjInstance.handleDragStart();
 
-                switch (evt.keyCode) {
-                    case 40: // down
-                        selectedObjInstance.svg.dy(shiftBy);
+                switch (evt.key) {
+                    case 'ArrowDown':
+                        selectedWorkplaceObjInstance.svg.dy(shiftBy);
                         break;
-                    case 38: // up
-                        selectedObjInstance.svg.dy(-shiftBy);
+                    case 'ArrowUp':
+                        selectedWorkplaceObjInstance.svg.dy(-shiftBy);
                         break;
-                    case 37: // left
-                        selectedObjInstance.svg.dx(-shiftBy);
+                    case 'ArrowLeft':
+                        selectedWorkplaceObjInstance.svg.dx(-shiftBy);
                         break;
-                    case 39: // right
-                        selectedObjInstance.svg.dx(shiftBy);
+                    case 'ArrowRight':
+                        selectedWorkplaceObjInstance.svg.dx(shiftBy);
                         break;
                     default: break;
                 }
 
-                selectedObjInstance.handleDragMove();
-                selectedObjInstance.handleDragEnd();
+                selectedWorkplaceObjInstance.handleDragMove();
+                selectedWorkplaceObjInstance.handleDragEnd();
             }
+        }
 
-            // switch (evt.keyCode) {
-            //     case 46: // del
-            //         if (selectedObjInstance.handleDelete) {
-            //             selectedObjInstance.handleDelete();
-            //         }
-            //         break;
-
-            //     default:
-            //         break;
-            // }
+        if (selection.current) {
+            switch (evt.key) {
+                case 'Delete':
+                    const svgObj = SVG.get(selection.current.id);
+                    if (svgObj) {
+                        svgObj.remove();
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     });
 }

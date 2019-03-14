@@ -97,13 +97,22 @@ export default class Workplace {
             group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(5, this.height - 10);
         }
 
-        group.move(this.x, this.y)
-            .data('workplace-id', this.id)
-            .draggy();
+        group.move(this.x, this.y).data('workplace-id', this.id);
 
         group.addTo(getPanZoomSvgEl());
         this.svg = group;
+        this.enableDrag();
+        
+        return this;
+    }
 
+    enableDrag() {
+        this.svg.draggy();
+        return this;
+    }
+
+    disableDrag() {
+        this.svg.fixed();
         return this;
     }
 

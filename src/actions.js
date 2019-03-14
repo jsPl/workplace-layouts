@@ -10,7 +10,6 @@ export const fetchWorkplace = id => ({ type: types.WORKPLACE_FETCH, id })
 export const fetchWorkplaceSuccess = data => ({ type: types.WORKPLACE_FETCH_SUCCESS, data })
 export const fetchWorkplaceFailure = error => ({ type: types.WORKPLACE_FETCH_FAILURE, error })
 
-export const toggleDrawingMode = isDrawingMode => ({ type: types.PRODUCTION_HALL_TOGGLE_DRAWING_MODE, isDrawingMode })
 export const updateProductionHall = data => ({ type: types.PRODUCTION_HALL_UPDATE, data })
 export const clearProductionHallLayout = () => ({ type: types.PRODUCTION_HALL_LAYOUT_CLEAR })
 
@@ -21,3 +20,7 @@ export const sendHallWithWorkplacesSuccess = data => ({
     success: { type: 'success', message: 'Success' }
 });
 export const sendHallWithWorkplacesFailure = error => ({ type: types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_FAILURE, error });
+
+export const toggleMeasureTool = isMeasureMode => ({ type: types.TOOLS_MEASURE_TOGGLE, isMeasureMode })
+
+export const updateUiSvgCtm = newCTM => ({ type: types.UI_SVG_CTM_UPDATE, newCTM });

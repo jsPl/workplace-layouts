@@ -35,15 +35,16 @@ const productionHall = (state = {}, action) => {
 }
 
 const appUi = (state = {
-    isDrawingMode: false,
+    isMeasureToolMode: false,
     selectedWorkplace: null,
     isLoadingWorkplaces: false,
     isSaving: false,
-    message: null
+    message: null,
+    svgCtm: null,
 }, action) => {
     switch (action.type) {
-        case types.PRODUCTION_HALL_TOGGLE_DRAWING_MODE:
-            return { ...state, isDrawingMode: !state.isDrawingMode }
+        case types.TOOLS_MEASURE_TOGGLE:
+            return { ...state, isMeasureToolMode: !state.isMeasureToolMode }
         case types.WORKPLACE_SELECT:
             return { ...state, selectedWorkplace: action.id }
         case types.WORKPLACE_FETCH:
@@ -59,6 +60,8 @@ const appUi = (state = {
             return { ...state, isLoadingWorkplaces: false, message: null }
         case types.WORKPLACE_FETCH_FAILURE:
             return { ...state, isLoadingWorkplaces: false, message: action.error }
+        case types.UI_SVG_CTM_UPDATE:
+            return { ...state, svgCtm: action.newCTM }
         default:
             return state
     }

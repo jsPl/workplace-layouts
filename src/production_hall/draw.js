@@ -1,64 +1,64 @@
-import { drawSvg } from '../util/draw';
-import 'svg.draw.js';
-import { store } from '../configureStore';
-import { updateProductionHall, toggleDrawingMode } from '../actions';
-import { getPanZoomSvgEl } from '../util/panZoom';
-import { toFixed } from '../util/conversion';
+// import { drawSvg } from '../util/draw';
+// import 'svg.draw.js';
+// import { store } from '../configureStore';
+// import { updateProductionHall, toggleMeasureTool } from '../actions';
+// import { getPanZoomSvgEl } from '../util/panZoom';
+// import { toFixed } from '../util/conversion';
 
-export function handleProductionHallDrawing(isDrawingMode) {
-    //console.log('handleDrawing isDrawingMode', isDrawingMode);
+// export function handleProductionHallDrawing(isDrawingMode) {
+//     //console.log('handleDrawing isDrawingMode', isDrawingMode);
 
-    if (!isDrawingMode) {
-        return;
-    }
+//     if (!isDrawingMode) {
+//         return;
+//     }
 
-    const drawing = drawSvg.polygon().addClass('productionHall')
-        .draw() // { snapToGrid: GRID_SIZE }
-        .addTo(getPanZoomSvgEl())
-        .back();
+//     const drawing = drawSvg.polygon().addClass('productionHall')
+//         .draw() // { snapToGrid: GRID_SIZE }
+//         .addTo(getPanZoomSvgEl())
+//         .back();
 
-    const keydownEventListener = ['keydown', e => handleKeydown(e, drawing)];
-    document.addEventListener(...keydownEventListener);
+//     const keydownEventListener = ['keydown', e => handleKeydown(e, drawing)];
+//     document.addEventListener(...keydownEventListener);
 
-    drawing.on('drawdone', () => {
-        //console.log('drawdone');
-        let { width, height } = drawing.rbox();
+//     drawing.on('drawdone', () => {
+//         //console.log('drawdone');
+//         let { width, height } = drawing.rbox();
 
-        store.dispatch(updateProductionHall({
-            polygonPoints: drawing.array().toString(),
-            width: toFixed(width), height: toFixed(height)
-        }));
+//         store.dispatch(updateProductionHall({
+//             polygonPoints: drawing.array().toString(),
+//             width: toFixed(width), height: toFixed(height)
+//         }));
 
-        drawing.remove();
-    });
+//         drawing.remove();
+//     });
 
-    // done or cancel
-    drawing.on('drawstop', evt => {
-        //console.log('drawstop/cancel');
-        document.removeEventListener(...keydownEventListener);
-        store.dispatch(toggleDrawingMode(false));
-    });
-}
+//     // done or cancel
+//     drawing.on('drawstop', evt => {
+//         //console.log('drawstop/cancel');
+//         document.removeEventListener(...keydownEventListener);
+//         store.dispatch(toggleMeasureTool(false));
+//     });
+// }
 
-const handleKeydown = (evt, svg) => {
-    //console.log('drawing handleKeydown', evt.keyCode, 'svg', svg);
+// const handleKeydown = (evt, svg) => {
+//     //console.log('drawing handleKeydown', evt.keyCode, 'svg', svg);
 
-    const handleEscOrEnter = (evt, svg, handleKeydown) => {
-        const isPolygon = svg.array().value.length > 1;
-        if (isPolygon) {
-            handleKeydown();
-        }
-    }
+//     const handleEscOrEnter = (evt, svg, handleKeydown) => {
+//         const isPolygon = svg.array().value.length > 1;
+//         if (isPolygon) {
+//             handleKeydown();
+//         }
+//     }
 
-    if (evt.keyCode === 13) {
-        handleEscOrEnter(evt, svg, () => {
-            svg.draw('done');
-            svg.off('drawstart');
-        })
-    }
-    if (evt.keyCode === 27) {
-        handleEscOrEnter(evt, svg, () => {
-            svg.draw('cancel');
-        })
-    }
-}
+//     if (evt.keyCode === 13) {
+//         handleEscOrEnter(evt, svg, () => {
+//             svg.draw('done');
+//             svg.off('drawstart');
+//         })
+//     }
+//     if (evt.keyCode === 27) {
+//         handleEscOrEnter(evt, svg, () => {
+//             svg.draw('cancel');
+//         })
+//     }
+// }
