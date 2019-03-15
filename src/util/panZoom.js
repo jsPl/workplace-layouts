@@ -7,12 +7,12 @@ import { store } from '../configureStore';
 
 const configurePanZoom = gridPattern => ({
     minZoom: 0.1,
-    maxZoom: 3,
+    maxZoom: 6,
     fit: false,
     center: false,
     panEnabled: true,
     controlIconsEnabled: true,
-    zoomScaleSensitivity: 0.3,
+    zoomScaleSensitivity: 0.35,
     onUpdatedCTM: newCTM => {
         gridPattern.transform(newCTM);
     },

@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 
+// https://medium.com/@kylpo/redux-best-practices-eef55a20cc72
 // Action creator naming convention: <verb><Noun>
 export const addWorkplace = data => ({ type: types.WORKPLACE_ADD, data })
 export const updateWorkplace = ({ id, ...data }) => ({ type: types.WORKPLACE_UPDATE, id, data })

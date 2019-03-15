@@ -34,7 +34,7 @@ class MeasureTool {
     }
 
     handleKeydown = evt => {
-        console.log('measure handleKeydown', evt.key);
+        //console.log('measure handleKeydown', evt.key);
 
         if (evt.key === 'Escape') {
             this.drawing.draw('cancel');
@@ -46,26 +46,13 @@ class MeasureTool {
         }
 
         if (evt.keyCode >= 37 && evt.keyCode <= 40) {
-            const panBy = { x: 0, y: 0 };
-            switch (evt.key) {
-                case 'ArrowDown':
-                    panBy.y = -50;
-                    break;
-                case 'ArrowUp':
-                    panBy.y = 50;
-                    break;
-                case 'ArrowLeft':
-                    panBy.x = 50;
-                    break;
-                case 'ArrowRight':
-                    panBy.x = -50;
-                    break;
-                default: break;
-            }
-            console.log('panby', panBy)
-            panZoom.panBy(panBy)
-        }
+            const panByKey = {
+                'ArrowDown': { y: -50 }, 'ArrowUp': { y: 50 },
+                'ArrowLeft': { x: 50 }, ArrowRight: { x: -50 }
+            };
 
+            panZoom.panBy({ x: 0, y: 0, ...panByKey[evt.key] })
+        }
     }
 
     handleKeyup = evt => {
