@@ -1,39 +1,30 @@
 import React from 'react';
-//import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { List, Empty, Spin } from 'antd';
+import { connect } from 'react-redux';
+import { List, Empty } from 'antd';
 import WorkplaceListItem from './WorkplaceListItem';
-import WorkplaceControls from './controls/WorkplaceControls';
+import { getWorkplacesByFilter } from '../../selectors';
 
-class WorkplaceList extends React.Component {
-    render() {
-        const { workplaces, selectedWorkplace, isLoading } = this.props;
-        return (
-            <>
-                <Spin spinning={isLoading}>
-                    <ListItems workplaces={workplaces} selectedWorkplace={selectedWorkplace} />
-                </Spin>
-                <WorkplaceControls />
-            </>
-        )
-    }
+const WorkplaceList = ({ workplaces, selectedWorkplace }) => {
+    return (
+        workplaces.length === 0 ?
+            <Empty className='workplaceListEmpty' />
+            :
+            <List size='small' className='wpList'>
+                {workplaces.map(wp =>
+                    <WorkplaceListItem key={wp.id} workplace={wp} isSelected={selectedWorkplace === wp} />
+                )}
+            </List>
+    )
 }
 
-const ListItems = ({ workplaces, selectedWorkplace }) => (
-    workplaces.length === 0 ?
-        <Empty />
-        :
-        <List size='small' className='wpList'>
-            {workplaces.map(wp =>
-                <WorkplaceListItem key={wp.id} workplace={wp} isSelected={selectedWorkplace === wp} />
-            )}
-        </List>
-)
+const mapStateToProps = (state, props) => ({
+    workplaces: getWorkplacesByFilter(state, props)
+})
 
 WorkplaceList.propTypes = {
     workplaces: PropTypes.array.isRequired,
     selectedWorkplace: PropTypes.object,
-    isLoadingWorkplaces: PropTypes.bool
 }
 
-export default WorkplaceList
+export default connect(mapStateToProps)(WorkplaceList)

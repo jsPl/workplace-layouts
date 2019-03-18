@@ -1,12 +1,12 @@
 import React from 'react';
 import WorkplaceDetails from './workplace/WorkplaceDetails';
-import WorkplaceList from './workplace/WorkplaceList';
+import Workplaces from './workplace/Workplaces';
 import ProductionHallDetails from './production_hall/ProductionHallDetails';
 import Tools from './tools/Tools';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Collapse, message } from 'antd';
-import { getWorkplaces, getSelectedWorkplace, getProductionHall, isLoadingWorkplaces, getMessage } from '../selectors';
+import { getSelectedWorkplace, getProductionHall, isLoadingWorkplaces, getMessage } from '../selectors';
 
 const Panel = Collapse.Panel;
 
@@ -24,7 +24,7 @@ class ControlPanel extends React.Component {
     }
 
     render() {
-        const { workplaces, selectedWorkplace, productionHall, isLoadingWorkplaces } = this.props;
+        const { selectedWorkplace, productionHall, isLoadingWorkplaces } = this.props;
         return (
             <Collapse defaultActiveKey={['1', '2', '3', '4']}>
                 <Panel header='Production hall' key='1'>
@@ -34,8 +34,7 @@ class ControlPanel extends React.Component {
                     <Tools />
                 </Panel>
                 <Panel header='Workplaces' key='3' className='panelWorkplaces'>
-                    <WorkplaceList
-                        workplaces={workplaces}
+                    <Workplaces
                         selectedWorkplace={selectedWorkplace}
                         isLoading={isLoadingWorkplaces}
                     />
@@ -51,7 +50,6 @@ class ControlPanel extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    workplaces: getWorkplaces(state),
     selectedWorkplace: getSelectedWorkplace(state),
     productionHall: getProductionHall(state),
     isLoadingWorkplaces: isLoadingWorkplaces(state),
@@ -59,7 +57,6 @@ const mapStateToProps = state => ({
 });
 
 ControlPanel.propTypes = {
-    workplaces: PropTypes.array.isRequired,
     selectedWorkplace: PropTypes.object,
     productionHall: PropTypes.object
 }

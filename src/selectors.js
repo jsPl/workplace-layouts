@@ -7,9 +7,29 @@ import { createSelector } from 'reselect';
 export const getProductionHall = state => state.productionHall;
 
 export const getWorkplaces = state => state.workplaces;
+
+export const getWorkplacesByFilter = createSelector(
+    getWorkplaces, (state, props) => props.filter,
+    (workplaces, filter) => {
+        if (filter === null || filter.trim() === '') {
+            return workplaces;
+        }
+        return workplaces.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()))
+    }
+)
+
+// export const getWorkplacesByFilter = (state, { filter }) => {
+//     const workplaces = getWorkplaces(state);
+//     console.log('selector getWorkplacesByTitle', workplaces, filter)
+//     if (filter === null || filter.trim() === '') {
+//         return workplaces;
+//     }
+//     return workplaces.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()))
+// }
+
 export const getSelectedWorkplaceId = state => state.appUi.selectedWorkplace;
 export const getSelectedWorkplace = createSelector(
-    [getWorkplaces, getSelectedWorkplaceId],
+    getWorkplaces, getSelectedWorkplaceId,
     (workplaces, selectedId) => workplaces.find(o => o.id === selectedId)
 )
 

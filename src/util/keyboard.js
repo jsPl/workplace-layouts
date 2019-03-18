@@ -4,7 +4,7 @@ import { workplaceRepository } from '../workplace/workplaceRepository';
 
 export default function () {
     document.addEventListener('keydown', evt => {
-        console.log('keyboard keydown', evt.key);
+        //console.log('keyboard keydown', evt.key);
         let selectedWorkplace;
 
         if (!selection) {
