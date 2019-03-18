@@ -1,4 +1,5 @@
 import * as types from './actionTypes';
+import { settings } from './util/settings';
 
 // https://medium.com/@kylpo/redux-best-practices-eef55a20cc72
 // Action creator naming convention: <verb><Noun>
@@ -24,4 +25,7 @@ export const sendHallWithWorkplacesFailure = error => ({ type: types.PRODUCTION_
 
 export const toggleMeasureTool = isMeasureMode => ({ type: types.TOOLS_MEASURE_TOGGLE, isMeasureMode })
 
-export const updateUiSvgCtm = newCTM => ({ type: types.UI_SVG_CTM_UPDATE, newCTM });
+export const changeSvgWorkplacePictureVisibility = visible => {
+    settings.setSvgWorkplaceImageVisible(visible);
+    return { type: types.SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE, visible }
+};

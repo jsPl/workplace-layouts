@@ -168,3 +168,19 @@ kbd {
 .workplaceListEmpty {
   margin-top: 0.5em;
 }
+
+.panelWorkplaceDetails .workplaceImage {
+  max-width: 120px;
+  margin-bottom: 0.5em;
+}
+
+button.appSettings {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  z-index: 1000;
+}
+
+.ant-drawer .workplaceImagesToggle span {
+  margin-left: 0.5em;
+}

@@ -5,6 +5,7 @@ import { toFixed } from '../util/conversion';
 import { selection } from '../util/selection';
 import throttle from 'lodash/throttle';
 import { updateWorkplace, removeWorkplace } from '../actions';
+import { isSvgWorkplacePictureVisible } from '../selectors';
 import { store } from '../configureStore';
 import { workplaceRepository } from './workplaceRepository';
 import difference from 'lodash/difference';
@@ -89,9 +90,16 @@ export default class Workplace {
         selection.addSelectable(group, this);
 
         if (this.imgPath) {
-            let image = group.image(process.env.PUBLIC_URL + this.imgPath)
-                .loaded(loader => image.size(loader.width * 0.35))
+            const image = group.image(process.env.PUBLIC_URL + this.imgPath)
+                .addClass('workplaceImage')
+                .loaded(loader => {
+                    image.size(loader.width * 0.35);
+                    if (!isSvgWorkplacePictureVisible(store.getState())) {
+                        this.hidePicture()
+                    }
+                })
                 .dmove(5, 5);
+            this.picture = image;
         }
 
         if (this.title) {
@@ -103,7 +111,7 @@ export default class Workplace {
         group.addTo(getPanZoomSvgEl());
         this.svg = group;
         this.enableDrag();
-        
+
         return this;
     }
 
@@ -121,6 +129,16 @@ export default class Workplace {
 
     isDragEnabled() {
         return this._isDragEnabled;
+    }
+
+    showPicture() {
+        this.picture && this.picture.show();
+        return this;
+    }
+
+    hidePicture() {
+        this.picture && this.picture.hide();
+        return this;
     }
 }
 
@@ -152,4 +170,8 @@ export const handleWorkplaceSelectionStateChange = (toId, fromId) => {
     if (selectedWorkplaceObj) {
         selection.current = selectedWorkplaceObj.svg.node;
     }
+}
+
+export const handleWorkplacePictureVisibilityChange = visible => {
+    workplaceRepository.list().forEach(o => visible ? o.showPicture() : o.hidePicture())
 }

@@ -8,9 +8,17 @@ export default function WorkplaceDetails({ workplace }) {
         openPopup(`/eoffice/edm_system_object_frames.xml?action=edit&page=resources/edm_resource_workplaces_view.xml&oid=${id}`);
     }
 
+    const Image = ({ workplace }) => {
+        if (workplace.imgPath) {
+            return <img src={workplace.imgPath} alt={workplace.title} className='workplaceImage' />
+        }
+        return null;
+    }
+
     return (
         <div>
             {/* <div>id: {workplace.id}</div> */}
+            <Image workplace={workplace} />
             <div>
                 <span className='vmiddle'>{workplace.title}</span>
                 <span title='Open details'>

@@ -1,8 +1,11 @@
 import { store } from './configureStore';
 import { handleProductionHallStateChange } from './production_hall/ProductionHall';
-import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange } from './workplace/Workplace';
+import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange, handleWorkplacePictureVisibilityChange } from './workplace/Workplace';
 import { handleMeasure } from './util/measureTool';
-import { getProductionHall, getSelectedWorkplaceId, getWorkplaces, isMeasureToolMode } from './selectors';
+import {
+    getProductionHall, getSelectedWorkplaceId, getWorkplaces,
+    isMeasureToolMode, isSvgWorkplacePictureVisible
+} from './selectors';
 
 /**
  * https://github.com/reduxjs/redux/issues/303#issuecomment-125184409
@@ -29,5 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     observeStore(getProductionHall, handleProductionHallStateChange);
     observeStore(getSelectedWorkplaceId, handleWorkplaceSelectionStateChange);
     observeStore(getWorkplaces, handleWorkplacesStateChange);
+    observeStore(isSvgWorkplacePictureVisible, handleWorkplacePictureVisibilityChange);
     observeStore(isMeasureToolMode, handleMeasure);
 });

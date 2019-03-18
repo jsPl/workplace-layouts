@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import * as types from './actionTypes';
+import { settings } from './util/settings';
 
 const workplaces = (state = [], action) => {
     switch (action.type) {
@@ -40,7 +41,7 @@ const appUi = (state = {
     isLoadingWorkplaces: false,
     isSaving: false,
     message: null,
-    svgCtm: null,
+    isSvgWorkplacePictureVisible: settings.getSvgWorkplaceImageVisible(),
 }, action) => {
     switch (action.type) {
         case types.TOOLS_MEASURE_TOGGLE:
@@ -60,8 +61,8 @@ const appUi = (state = {
             return { ...state, isLoadingWorkplaces: false, message: null }
         case types.WORKPLACE_FETCH_FAILURE:
             return { ...state, isLoadingWorkplaces: false, message: action.error }
-        case types.UI_SVG_CTM_UPDATE:
-            return { ...state, svgCtm: action.newCTM }
+        case types.SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE:
+            return { ...state, isSvgWorkplacePictureVisible: action.visible }
         default:
             return state
     }

@@ -38,3 +38,4 @@ export const isLoadingWorkplaces = state => state.appUi.isLoadingWorkplaces;
 export const isSaving = state => state.appUi.isSaving;
 export const getMessage = state => state.appUi.message;
 export const isMeasureToolMode = state => state.appUi.isMeasureToolMode;
+export const isSvgWorkplacePictureVisible = state => state.appUi.isSvgWorkplacePictureVisible;

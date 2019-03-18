@@ -4,12 +4,14 @@ import './index.css';
 import InitKeyboardEventHandlers from './util/keyboard';
 import { store } from './configureStore';
 import './observeStore';
-import ControlPanel from './components/ControlPanel';
 import { Provider } from 'react-redux';
+import ControlPanelContainer from './components/ControlPanelContainer';
+import AppSettingsContainer  from './components/AppSettingsContainer';
 
 ReactDOM.render(
     <Provider store={store}>
-        <ControlPanel />
+        <AppSettingsContainer />
+        <ControlPanelContainer />
     </Provider>,
     document.getElementById('ui')
 );
