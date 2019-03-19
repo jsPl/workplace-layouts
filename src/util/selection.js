@@ -1,7 +1,7 @@
 import SVG from 'svg.js';
 import { store } from '../configureStore';
 import { selectWorkplace } from '../actions';
-import { getSelectedWorkplaceId } from '../selectors';
+import { getSelectedWorkplaceId, isMeasureToolMode } from '../selectors';
 import { ensureElementIsInView } from '../util/utils';
 
 class Selection {
@@ -32,6 +32,11 @@ class Selection {
 
         if (selectedEl) {
             selectedEl.classList.add('selected');
+            const svgObj = SVG.get(selectedEl.id);
+            //console.log(selectedEl, svgObj);
+            if (svgObj) {
+                svgObj.fire('selection');
+            }
         }
 
         this._currentEl = selectedEl;
@@ -53,9 +58,9 @@ class Selection {
         return isNaN(id) ? null : id;
     }
 
-    addSelectable = (svgEl, obj) => {
-        //this.selectables.push(obj);
+    addSelectable = (svgEl, handleSelection) => {
         svgEl.addClass('selectable');
+        svgEl.on('selection.layouts', handleSelection);
         return this;
     }
 
@@ -78,11 +83,15 @@ SVG.on(document, 'DOMContentLoaded', () => {
             selection.lastClicked = evt.target;
 
             //console.log('click on', evt.target, selectableEl);
-            if (selectableEl) {
-                selection.current = selectableEl;
-            }
-            else {
-                selection.current = null;
+
+            if (!isMeasureToolMode(store.getState())) {
+                selection.current = selectableEl ? selectableEl : null
+                // if (selectableEl) {
+                //     selection.current = selectableEl;
+                // }
+                // else {
+                //     selection.current = null;
+                // }
             }
         }
     });

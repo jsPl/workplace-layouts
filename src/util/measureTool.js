@@ -25,12 +25,17 @@ class MeasureTool {
         this.text = group.text('').font('family', '').addClass('distance');
 
         group.addTo(getPanZoomSvgEl()).front();
-        selection.addSelectable(group, this);
+        selection.addSelectable(group, this.handleSelection);
 
         //console.log('MeasureTool', this.drawing, this.drawing.draw.foo, this.drawing.foo)
 
         this.svg = group;
         return this;
+    }
+
+    handleSelection = evt => {
+        //console.log('handle selection', this, evt);
+        this.svg.front();
     }
 
     handleKeydown = evt => {

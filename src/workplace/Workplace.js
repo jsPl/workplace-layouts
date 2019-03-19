@@ -66,6 +66,11 @@ export default class Workplace {
         //console.log('isColliding', isColliding, 'collisions', collisions);
     }
 
+    handleSelection = evt => {
+        //console.log('handle selection', this, evt);
+        this.svg.front();
+    }
+
     hasMoved() {
         return this.startX !== this.svg.x() || this.startY !== this.svg.y();
     }
@@ -87,7 +92,7 @@ export default class Workplace {
         group.on('dragmove', evt => this.handleDragMove(evt));
         group.on('dragend', evt => this.handleDragEnd(evt));
 
-        selection.addSelectable(group, this);
+        selection.addSelectable(group, this.handleSelection);
 
         if (this.imgPath) {
             const image = group.image(process.env.PUBLIC_URL + this.imgPath)
