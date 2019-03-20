@@ -34,7 +34,7 @@ export function initPanZoom(svgContainer, gridPattern) {
 export const getPanZoomSvgEl = () => SVG.select('g.svg-pan-zoom_viewport').first();
 
 const isPanBlocked = () => {
-    let isBlocked = selection.current != null && !isMeasureToolMode(store.getState())
+    let isBlocked = !selection.isEmpty() && !isMeasureToolMode(store.getState())
     //||
     //(selection.lastClicked && selection.lastClicked.classList.contains('productionHall')) ||
     //;

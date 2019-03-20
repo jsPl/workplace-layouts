@@ -1,4 +1,4 @@
-import { drawSvg } from '../util/draw';
+import { drawSvg, SvgClassname } from '../util/draw';
 import { getPanZoomSvgEl } from '../util/panZoom';
 import 'svg.draggy.js';
 import { toFixed } from '../util/conversion';
@@ -67,7 +67,7 @@ export default class Workplace {
     }
 
     handleSelection = evt => {
-        //console.log('handle selection', this, evt);
+        //console.log('handle selection', this);
         this.svg.front();
     }
 
@@ -116,6 +116,8 @@ export default class Workplace {
         group.addTo(getPanZoomSvgEl());
         this.svg = group;
         this.enableDrag();
+
+        SvgClassname.set(this.svg, this.constructor.name);
 
         return this;
     }
@@ -169,11 +171,11 @@ export const handleWorkplacesStateChange = (current, prev = []) => {
     //console.log('workplaceRepository list', workplaceRepository.list());
 }
 
-export const handleWorkplaceSelectionStateChange = (toId, fromId) => {
-    //console.log('handleWorkplaceSelectionStateChange from ', fromId, 'to', toId)
-    let selectedWorkplaceObj = workplaceRepository.findById(toId);
-    if (selectedWorkplaceObj) {
-        selection.current = selectedWorkplaceObj.svg.node;
+export const handleWorkplaceSelectionStateChange = (toIds, fromIds) => {
+    //console.log('handleWorkplaceSelectionStateChange from ', fromIds, 'to', toIds)
+    let selectedWorkplaces = workplaceRepository.findByIds(toIds);
+    if (selectedWorkplaces.length > 0) {
+        selection.current = selectedWorkplaces.map(o => o.svg.node);
     }
 }
 

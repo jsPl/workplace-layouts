@@ -1,4 +1,4 @@
-import { drawSvg, GRID_SIZE, panZoom } from '../util/draw';
+import { drawSvg, GRID_SIZE, panZoom, SvgClassname } from '../util/draw';
 import 'svg.draw.js';
 import { store } from '../configureStore';
 import { toggleMeasureTool } from '../actions';
@@ -12,7 +12,7 @@ import '../assets/lineable';
 import { selection } from '../util/selection';
 import { workplaceRepository } from '../workplace/workplaceRepository';
 
-class MeasureTool {
+export class MeasureTool {
     constructor(options = { scale: 0.02 }) {
         this.options = options;
         this.drawSvg();
@@ -30,11 +30,11 @@ class MeasureTool {
         //console.log('MeasureTool', this.drawing, this.drawing.draw.foo, this.drawing.foo)
 
         this.svg = group;
+        SvgClassname.set(this.svg, this.constructor.name);
         return this;
     }
 
     handleSelection = evt => {
-        //console.log('handle selection', this, evt);
         this.svg.front();
     }
 

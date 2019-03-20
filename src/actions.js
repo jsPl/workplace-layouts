@@ -6,7 +6,7 @@ import { settings } from './util/settings';
 export const addWorkplace = data => ({ type: types.WORKPLACE_ADD, data })
 export const updateWorkplace = ({ id, ...data }) => ({ type: types.WORKPLACE_UPDATE, id, data })
 export const removeWorkplace = id => ({ type: types.WORKPLACE_REMOVE, id })
-export const selectWorkplace = id => ({ type: types.WORKPLACE_SELECT, id })
+export const selectWorkplace = ids => ({ type: types.WORKPLACE_SELECT, ids })
 
 export const fetchWorkplace = id => ({ type: types.WORKPLACE_FETCH, id })
 export const fetchWorkplaceSuccess = data => ({ type: types.WORKPLACE_FETCH_SUCCESS, data })

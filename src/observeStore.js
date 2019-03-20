@@ -3,7 +3,7 @@ import { handleProductionHallStateChange } from './production_hall/ProductionHal
 import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange, handleWorkplacePictureVisibilityChange } from './workplace/Workplace';
 import { handleMeasure } from './util/measureTool';
 import {
-    getProductionHall, getSelectedWorkplaceId, getWorkplaces,
+    getProductionHall, getSelectedWorkplacesId, getWorkplaces,
     isMeasureToolMode, isSvgWorkplacePictureVisible
 } from './selectors';
 
@@ -30,7 +30,7 @@ export function observeStore(selector, onChange) {
 // Obserwowanie zmian stanu dla części SVG aplikacji
 document.addEventListener('DOMContentLoaded', () => {
     observeStore(getProductionHall, handleProductionHallStateChange);
-    observeStore(getSelectedWorkplaceId, handleWorkplaceSelectionStateChange);
+    observeStore(getSelectedWorkplacesId, handleWorkplaceSelectionStateChange);
     observeStore(getWorkplaces, handleWorkplacesStateChange);
     observeStore(isSvgWorkplacePictureVisible, handleWorkplacePictureVisibilityChange);
     observeStore(isMeasureToolMode, handleMeasure);

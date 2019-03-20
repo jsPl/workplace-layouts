@@ -1,12 +1,18 @@
 import SVG from 'svg.js';
 import { store } from '../configureStore';
 import { selectWorkplace } from '../actions';
-import { getSelectedWorkplaceId, isMeasureToolMode } from '../selectors';
+import { getSelectedWorkplacesId, isMeasureToolMode } from '../selectors';
 import { ensureElementIsInView } from '../util/utils';
+import { workplaceRepository } from '../workplace/workplaceRepository';
+import isEqual from 'lodash/isEqual';
+import difference from 'lodash/difference';
+import { parseIdsFromDataset } from './utils';
 
 class Selection {
     constructor() {
         this._lastClickedEl = null;
+        this._currentEl = [];
+        this.multiple = false;
     }
 
     get lastClicked() {
@@ -21,62 +27,50 @@ class Selection {
         return this._currentEl;
     }
 
-    set current(selectedEl) {
-        if (selectedEl === this._currentEl) {
+    set current(selected) {
+        //console.log('sel current', selectedEl, this._currentEl)
+        if (isEqual(selected, this._currentEl)) {
             return;
         }
 
-        if (this._currentEl) {
-            this._currentEl.classList.remove('selected');
-        }
+        const toUnselect = difference(this._currentEl, selected);
+        const toSelect = difference(selected, this._currentEl);
 
-        if (selectedEl) {
-            selectedEl.classList.add('selected');
-            const svgObj = SVG.get(selectedEl.id);
-            //console.log(selectedEl, svgObj);
-            if (svgObj) {
-                svgObj.fire('selection');
-            }
-        }
+        // console.log('toUnselect', toUnselect)
+        // console.log('toSelect', toSelect)
 
-        this._currentEl = selectedEl;
-        const id = this.parseId(selectedEl);
+        processElementsToUnselect(toUnselect);
+        processElementsToSelect(toSelect);
+        const toDispatch = processWorkplacesSelection(this._currentEl, selected);
 
-        if (getSelectedWorkplaceId(store.getState()) !== id) {
-            store.dispatch(selectWorkplace(isNaN(id) ? null : id));
+        this._currentEl = selected;
 
-            ensureElementIsInView(document.querySelector('.wpList'), document.querySelector('.wpList .selected'));
+        if (toDispatch) {
+            //console.log('dispatch action ', JSON.stringify(toDispatch));
+            store.dispatch(toDispatch);
         }
     }
 
-    currentId() {
-        return this.parseId(this._currentEl);
-    }
+    currentWorkplaceIds = () => parseIdsFromDataset(this._currentEl, 'workplaceId');
 
-    parseId = (el) => {
-        let id = el && parseInt(el.dataset.workplaceId);
-        return isNaN(id) ? null : id;
-    }
-
-    addSelectable = (svgEl, handleSelection) => {
-        svgEl.addClass('selectable');
-        svgEl.on('selection.layouts', handleSelection);
+    addSelectable = (svgEl, handleSelection = () => { }, handleUnselection = () => { }) => {
+        svgEl.addClass('selectable')
+            .on('selection.layouts', handleSelection)
+            .on('unselection.layouts', handleUnselection);
         return this;
     }
 
-    // svgElementToJavascriptClassInstance = (svgEl) => {
-    //     console.log('svgEl', svgEl, this.selectables)
-    //     if (!svgEl) return null;
-    //     return this.selectables.find(o => o.svg.id() === svgEl.id);
-    // }
+    isEmpty = () => this._currentEl.length === 0;
+    clear = () => this.current = [];
 }
 
 SVG.on(document, 'DOMContentLoaded', () => {
     selection = new Selection();
 
-    SVG.on(window, 'mousedown', (evt) => {
+    SVG.on(window, 'mousedown', evt => {
         const isLeftClick = evt.button === 0;
         const isSvgClick = evt.target && evt.target.closest('svg.drawSvg') != null;
+        const isMultipleSelection = evt.ctrlKey;
 
         if (isLeftClick && isSvgClick) {
             let selectableEl = evt.target.closest('.selectable');
@@ -85,16 +79,54 @@ SVG.on(document, 'DOMContentLoaded', () => {
             //console.log('click on', evt.target, selectableEl);
 
             if (!isMeasureToolMode(store.getState())) {
-                selection.current = selectableEl ? selectableEl : null
-                // if (selectableEl) {
-                //     selection.current = selectableEl;
-                // }
-                // else {
-                //     selection.current = null;
-                // }
+                if (!selectableEl) {
+                    selection.current = []
+                }
+                else if (isMultipleSelection) {
+                    const inSelection = workplaceRepository
+                        .findByIds(getSelectedWorkplacesId(store.getState()))
+                        .map(o => o.svg.node);
+
+                    const toAdd = inSelection.includes(selectableEl) ?
+                        inSelection.filter(o => o !== selectableEl)
+                        :
+                        [...inSelection, selectableEl];
+
+                    selection.current = toAdd;
+                }
+                else {
+                    selection.current = [selectableEl];
+                }
             }
         }
     });
 });
+
+const processElementsToSelect = toSelect => {
+    toSelect.forEach(o => {
+        o.classList.add('selected');
+        const svgObj = SVG.get(o.id);
+        svgObj && svgObj.fire('selection');
+    })
+}
+
+const processElementsToUnselect = toUnselect => {
+    toUnselect.forEach(o => {
+        o.classList.remove('selected')
+        const svgObj = SVG.get(o.id);
+        svgObj && svgObj.fire('unselection');
+    })
+}
+
+const processWorkplacesSelection = (currentSelectionElements, newSelectionElements) => {
+    const prevIds = parseIdsFromDataset(currentSelectionElements, 'workplaceId');
+    const nextIds = parseIdsFromDataset(newSelectionElements, 'workplaceId');
+
+    if (nextIds.length === 1) {
+        ensureElementIsInView(document.querySelector('.wpList'), document.querySelector(`.wpList [data-id="${nextIds[0]}"]`));
+    }
+
+    return isEqual(prevIds.sort(), nextIds.sort()) ? null : selectWorkplace(nextIds);
+}
 
 export let selection;

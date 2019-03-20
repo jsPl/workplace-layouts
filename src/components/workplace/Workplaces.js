@@ -16,14 +16,14 @@ class Workplaces extends React.Component {
     }
 
     render() {
-        const { selectedWorkplace, isLoading } = this.props;
+        const { selectedWorkplaces, isLoading } = this.props;
         return (
             <>
                 <Input className='workplaceFilter'
                     placeholder='Type name...' allowClear onChange={this.handleFilter} value={this.state.filterText}
                 />
                 <Spin spinning={isLoading}>
-                    <WorkplaceList selectedWorkplace={selectedWorkplace} filter={this.state.filterText} />
+                    <WorkplaceList selectedWorkplaces={selectedWorkplaces} filter={this.state.filterText} />
                 </Spin>
                 <WorkplaceControls />
             </>
@@ -32,7 +32,7 @@ class Workplaces extends React.Component {
 }
 
 Workplaces.propTypes = {
-    selectedWorkplace: PropTypes.object,
+    selectedWorkplaces: PropTypes.array,
     isLoading: PropTypes.bool,
 }
 

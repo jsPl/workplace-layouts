@@ -37,7 +37,7 @@ const productionHall = (state = {}, action) => {
 
 const appUi = (state = {
     isMeasureToolMode: false,
-    selectedWorkplace: null,
+    selectedWorkplaces: [],
     isLoadingWorkplaces: false,
     isSaving: false,
     message: null,
@@ -47,7 +47,7 @@ const appUi = (state = {
         case types.TOOLS_MEASURE_TOGGLE:
             return { ...state, isMeasureToolMode: !state.isMeasureToolMode }
         case types.WORKPLACE_SELECT:
-            return { ...state, selectedWorkplace: action.id }
+            return { ...state, selectedWorkplaces: action.ids }
         case types.WORKPLACE_FETCH:
         case types.PRODUCTION_HALL_WITH_WORKPLACES_FETCH:
             return { ...state, isLoadingWorkplaces: true }

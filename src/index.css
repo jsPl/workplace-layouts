@@ -17,9 +17,17 @@ body {
   flex: 1;
 }
 
-.controlPanel .wpDetails, .wpList {
+.controlPanel .wpDetails, .wpList, .selectedList {
   margin: 0.5em;
   padding: 0.5em;
+}
+
+.panelWorkplaceDetails .selectedList {
+  padding: 0;
+}
+
+.panelWorkplaceDetails .ant-collapse-content-box {
+  padding-bottom: 0;
 }
 
 .ant-list-item.selected {
@@ -99,8 +107,8 @@ body {
   text-align: center;
 }
 
-.wpList {
-  max-height: 30vh;
+.wpList, .selectedList {
+  max-height: 25vh;
   overflow-y: auto;
 }
 
@@ -130,7 +138,7 @@ body {
   color: #1890ff;
 }
 
-.panelWorkplaces .ant-collapse-content-box {
+.panelWorkplaces .ant-collapse-content-box, .panelWorkplaceDetails .ant-collapse-content-box {
   padding-top: 0.2em;
   padding-left: 0.2em;
   padding-right: 0.2em;
@@ -170,8 +178,9 @@ kbd {
 }
 
 .panelWorkplaceDetails .workplaceImage {
-  max-width: 120px;
+  max-width: 80px;
   margin-bottom: 0.5em;
+  max-height: 80px;
 }
 
 button.appSettings {

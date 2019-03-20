@@ -27,10 +27,10 @@ export const getWorkplacesByFilter = createSelector(
 //     return workplaces.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()))
 // }
 
-export const getSelectedWorkplaceId = state => state.appUi.selectedWorkplace;
-export const getSelectedWorkplace = createSelector(
-    getWorkplaces, getSelectedWorkplaceId,
-    (workplaces, selectedId) => workplaces.find(o => o.id === selectedId)
+export const getSelectedWorkplacesId = state => state.appUi.selectedWorkplaces;
+export const getSelectedWorkplaces = createSelector(
+    getWorkplaces, getSelectedWorkplacesId,
+    (workplaces, selectedIds) => workplaces.filter(o => selectedIds.includes(o.id))
 )
 
 export const isLoadingWorkplaces = state => state.appUi.isLoadingWorkplaces;

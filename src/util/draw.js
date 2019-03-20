@@ -51,3 +51,12 @@ const drawGradientsAndMarkers = draw => {
 
 export let drawSvg;
 export let panZoom;
+
+export const SvgClassname = {
+    get(obj) {
+        return obj.data('className')
+    },
+    set(obj, className) {
+        obj.data('className', className)
+    }
+}

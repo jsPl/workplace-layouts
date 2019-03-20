@@ -1,66 +1,73 @@
 import SVG from 'svg.js';
+import { SvgClassname } from './draw';
 import { selection } from './selection';
 import { workplaceRepository } from '../workplace/workplaceRepository';
+import Workplace from '../workplace/Workplace';
+import { MeasureTool } from './measureTool';
 
 export default function () {
     document.addEventListener('keydown', evt => {
         //console.log('keyboard keydown', evt.key);
-        let selectedWorkplace;
 
         if (!selection) {
             return;
         }
 
-        if (selection.current) {
-            selectedWorkplace = workplaceRepository.findById(selection.currentId());
+        if (evt.key === 'Escape') {
+            selection.clear();
         }
 
-        switch (evt.key) {
-            case 'Escape':
-                selection.current = null;
-                break;
+        if (!selection.isEmpty()) {
+            handleWorkplaceSelectionEvents(evt);
 
-            default:
-                break;
-        }
-
-        if (selectedWorkplace) {
-            if (selectedWorkplace.isDragEnabled() && evt.keyCode >= 37 && evt.keyCode <= 40) {
-                const shiftBy = (evt.ctrlKey ? 1 : 2) + (evt.shiftKey ? 10 : 0);
-                selectedWorkplace.handleDragStart();
-
-                switch (evt.key) {
-                    case 'ArrowDown':
-                        selectedWorkplace.svg.dy(shiftBy);
-                        break;
-                    case 'ArrowUp':
-                        selectedWorkplace.svg.dy(-shiftBy);
-                        break;
-                    case 'ArrowLeft':
-                        selectedWorkplace.svg.dx(-shiftBy);
-                        break;
-                    case 'ArrowRight':
-                        selectedWorkplace.svg.dx(shiftBy);
-                        break;
-                    default: break;
-                }
-
-                selectedWorkplace.handleDragMove();
-                selectedWorkplace.handleDragEnd();
-            }
-        }
-
-        if (selection.current) {
             switch (evt.key) {
                 case 'Delete':
-                    const svgObj = SVG.get(selection.current.id);
-                    if (svgObj) {
-                        svgObj.remove();
-                    }
+                    handleSelectionDeleteEvents(evt);
                     break;
                 default:
                     break;
             }
         }
+    })
+}
+
+const handleWorkplaceSelectionEvents = evt => {
+    const selectedWorkplaces = workplaceRepository.findByIds(selection.currentWorkplaceIds());
+
+    selectedWorkplaces.forEach(workplace => {
+        if (workplace.isDragEnabled() && evt.keyCode >= 37 && evt.keyCode <= 40) {
+            const shiftBy = (evt.ctrlKey ? 1 : 2) + (evt.shiftKey ? 10 : 0);
+            workplace.handleDragStart();
+
+            const moveByKey = {
+                'ArrowDown': { dy: shiftBy }, 'ArrowUp': { dy: -shiftBy },
+                'ArrowLeft': { dx: -shiftBy }, ArrowRight: { dx: shiftBy }
+            };
+
+            workplace.svg.dmove(...Object.values({ dx: 0, dy: 0, ...moveByKey[evt.key] }))
+
+            workplace.handleDragMove();
+            workplace.handleDragEnd();
+        }
     });
+}
+
+const handleSelectionDeleteEvents = evt => {
+    selection.current.forEach(o => {
+        const svgObj = SVG.get(o.id);
+
+        if (svgObj) {
+            switch (SvgClassname.get(svgObj)) {
+                case Workplace.name:
+                    break;
+
+                case MeasureTool.name:
+                    svgObj.remove();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    })
 }

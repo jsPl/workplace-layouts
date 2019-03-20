@@ -28,6 +28,10 @@ class WorkplaceRepository {
         return id ? (this.workplaces.find(o => o.id === id) || null) : null;
     }
 
+    findByIds(ids) {
+        return this.workplaces.filter(o => ids.includes(o.id));
+    }
+
     findOtherThan(obj) {
         return obj ? this.workplaces.filter(o => o.id !== obj.id) : this.workplaces;
     }

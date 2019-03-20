@@ -9,6 +9,7 @@ export function getProductionHallIdFromUrl() {
 }
 
 export function ensureElementIsInView(container, element) {
+    //console.log('ensureElementIsInView', element, container)
     if (!container || !element) {
         return;
     }
@@ -50,4 +51,13 @@ export function openPopup(url, w = 1000, h = 600) {
         + "resizable=yes";
 
     return window.open(url, '', windowFeatures);
+}
+
+/**
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset
+ * @param {[]} elements 
+ * @param {String} propName 
+ */
+export const parseIdsFromDataset = (elements, propName) => {
+    return elements.map(o => parseInt(o.dataset[propName])).filter(value => !isNaN(value));
 }
