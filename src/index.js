@@ -6,7 +6,7 @@ import { store } from './configureStore';
 import './observeStore';
 import { Provider } from 'react-redux';
 import ControlPanelContainer from './components/ControlPanelContainer';
-import AppSettingsContainer  from './components/AppSettingsContainer';
+import AppSettingsContainer  from './components/settings/AppSettingsContainer';
 
 ReactDOM.render(
     <Provider store={store}>

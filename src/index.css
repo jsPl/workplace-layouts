@@ -193,3 +193,17 @@ button.appSettings {
 .ant-drawer .workplaceImagesToggle span {
   margin-left: 0.5em;
 }
+
+.hintDismiss {
+  text-align: right;
+  margin: 0.2em 0 0 0;
+  color: #1890ff;
+}
+
+.hintDismiss:hover {
+  color: #40a9ff;
+}
+
+.hintDismiss span {
+  cursor: pointer;
+}

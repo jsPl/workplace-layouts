@@ -30,7 +30,7 @@ export class MeasureTool {
         //console.log('MeasureTool', this.drawing, this.drawing.draw.foo, this.drawing.foo)
 
         this.svg = group;
-        SvgClassname.set(this.svg, this.constructor.name);
+        SvgClassname.set(this.svg, 'MeasureTool');
         return this;
     }
 

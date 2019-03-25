@@ -55,13 +55,12 @@ const handleWorkplaceSelectionEvents = evt => {
 const handleSelectionDeleteEvents = evt => {
     selection.current.forEach(o => {
         const svgObj = SVG.get(o.id);
-
         if (svgObj) {
             switch (SvgClassname.get(svgObj)) {
-                case Workplace.name:
+                case 'Workplace':
                     break;
 
-                case MeasureTool.name:
+                case 'MeasureTool':
                     svgObj.remove();
                     break;
 

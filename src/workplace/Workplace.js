@@ -117,7 +117,7 @@ export default class Workplace {
         this.svg = group;
         this.enableDrag();
 
-        SvgClassname.set(this.svg, this.constructor.name);
+        SvgClassname.set(this.svg, 'Workplace');
 
         return this;
     }
