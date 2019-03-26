@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { toggleMeasureTool } from '../../actions';
 import { isMeasureToolMode, isLoadingWorkplaces } from '../../selectors';
 import { settings } from '../../util/settings';
-import PopoverHintDismiss from '../PopoverHintDismiss';
+import PopoverHintDismiss from '../panel/PopoverHintDismiss';
 
 class MeasureTool extends React.Component {
     render() {
         const { isMeasureMode, isLoading, toggleMeasureTool } = this.props;
 
         const infoContent =
-            <div className='toolInfoContent'>
+            <div className='infoContent'>
                 Click on stage to measure distance between two points.<br />
                 Use <kbd>Esc</kbd> to cancel, <kbd>&#8592;</kbd><kbd>&#8593;</kbd>
                 <kbd>&#8594;</kbd><kbd>&#8595;</kbd> to pan view.<br />

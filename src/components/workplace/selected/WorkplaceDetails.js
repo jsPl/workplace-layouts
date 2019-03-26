@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { openPopup } from '../../util/utils';
+import { openPopup } from '../../../util/utils';
 import { List } from 'antd';
 
 export default function WorkplaceDetails({ workplace }) {

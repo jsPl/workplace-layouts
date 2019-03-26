@@ -8,10 +8,10 @@ import { getWorkplacesByFilter } from '../../selectors';
 const WorkplaceList = ({ workplaces, selectedWorkplaces }) => {
     return (
         workplaces.length === 0 ?
-            <Empty className='workplaceListEmpty' />
+            <Empty className='listEmpty' />
             :
             <List
-                size='small' className='wpList'
+                size='small' className='list'
                 dataSource={workplaces}
                 renderItem={wp => <WorkplaceListItem key={wp.id} workplace={wp} isSelected={selectedWorkplaces.includes(wp)} />}
             />

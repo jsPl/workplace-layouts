@@ -2,8 +2,6 @@ import SVG from 'svg.js';
 import { SvgClassname } from './draw';
 import { selection } from './selection';
 import { workplaceRepository } from '../workplace/workplaceRepository';
-import Workplace from '../workplace/Workplace';
-import { MeasureTool } from './measureTool';
 
 export default function () {
     document.addEventListener('keydown', evt => {
@@ -36,7 +34,7 @@ const handleWorkplaceSelectionEvents = evt => {
 
     selectedWorkplaces.forEach(workplace => {
         if (workplace.isDragEnabled() && evt.keyCode >= 37 && evt.keyCode <= 40) {
-            const shiftBy = (evt.ctrlKey ? 1 : 2) + (evt.shiftKey ? 10 : 0);
+            const shiftBy = 1 + (evt.shiftKey ? 10 : 0);
             workplace.handleDragStart();
 
             const moveByKey = {

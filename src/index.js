@@ -5,7 +5,7 @@ import InitKeyboardEventHandlers from './util/keyboard';
 import { store } from './configureStore';
 import './observeStore';
 import { Provider } from 'react-redux';
-import ControlPanelContainer from './components/ControlPanelContainer';
+import ControlPanelContainer from './components/panel/ControlPanelContainer';
 import AppSettingsContainer  from './components/settings/AppSettingsContainer';
 
 ReactDOM.render(

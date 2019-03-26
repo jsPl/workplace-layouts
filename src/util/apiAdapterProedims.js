@@ -15,6 +15,11 @@ const mapWorkplace = workplace => ({
 
 const mapWorkplaces = workplaces => workplaces.map(o => mapWorkplace(o));
 
+const mapProcess = process => ({
+    id: parseInt(process.id_system_object, 10) || 0,
+    title: process.title || '',
+})
+
 const mapProductionHall = hall => ({
     id: parseInt(hall.id_system_object, 10) || 0,
     title: hall.title || '',
@@ -27,13 +32,14 @@ const mapProductionHall = hall => ({
 export const mapProductionHallWithWorkplacesResponseFromApi = responsefromApi => {
     const productionHall = mapProductionHall(responsefromApi.hala);
     const workplaces = mapWorkplaces(responsefromApi.hala.stanowiska);
+    const processes = responsefromApi.hala.procesy.map(o => mapProcess(o));
 
     workplaces.forEach(o => {
         o.width = metersToPixels(o.strefa_robocza_szerokosc, productionHall.svgScale);
         o.height = metersToPixels(o.strefa_robocza_dlugosc, productionHall.svgScale);
     })
 
-    return { productionHall, workplaces }
+    return { productionHall, workplaces, processes }
 }
 
 export const mapStateToProductionHallWithWorkplacesApiRequest = state => {

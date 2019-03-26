@@ -22,6 +22,18 @@ const workplaces = (state = [], action) => {
     }
 }
 
+const processes = (state = [], action) => {
+    switch (action.type) {
+        case types.PROCESS_ADD:
+            if (state.find(o => o.id === action.data.id)) {
+                return state;
+            }
+            return [...state, { ...action.data }];
+        default:
+            return state
+    }
+}
+
 const productionHall = (state = {}, action) => {
     switch (action.type) {
         case types.PRODUCTION_HALL_UPDATE:
@@ -71,6 +83,7 @@ const appUi = (state = {
 const rootReducer = combineReducers({
     productionHall,
     workplaces,
+    processes,
     appUi
 })
 

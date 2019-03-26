@@ -18,6 +18,17 @@ export const getWorkplacesByFilter = createSelector(
     }
 )
 
+export const getProcesses = state => state.processes;
+export const getProcessesByFilter = createSelector(
+    getProcesses, (state, props) => props.filter,
+    (processes, filter) => {
+        if (filter === null || filter.trim() === '') {
+            return processes;
+        }
+        return processes.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()))
+    }
+)
+
 // export const getWorkplacesByFilter = (state, { filter }) => {
 //     const workplaces = getWorkplaces(state);
 //     console.log('selector getWorkplacesByTitle', workplaces, filter)

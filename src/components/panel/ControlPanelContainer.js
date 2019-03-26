@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import { getSelectedWorkplaces, getProductionHall, isLoadingWorkplaces, getMessage } from '../selectors';
+import { getSelectedWorkplaces, getProductionHall, isLoadingWorkplaces, getMessage } from '../../selectors';
 import ControlPanel from './ControlPanel';
-import { settings } from '../util/settings';
+import { settings } from '../../util/settings';
 
 class ControlPanelContainer extends React.Component {
 

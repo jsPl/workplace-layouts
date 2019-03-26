@@ -32,9 +32,10 @@ import { PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_
 const fetchProductionHallWithWorkplacesFromApiEpic = action$ => action$.pipe(
     ofType(PRODUCTION_HALL_WITH_WORKPLACES_FETCH),
     switchMap(() => api.fetchProductionHallWithWorkplaces().pipe(
-        flatMap(({ productionHall, workplaces }) => of(
+        flatMap(({ productionHall, workplaces, processes }) => of(
             actions.fetchWorkplaceSuccess(workplaces),
             ...workplaces.map(o => actions.addWorkplace(o)),
+            ...processes.map(o => actions.addProcess(o)),
             actions.updateProductionHall(productionHall)
         )),
         catchError(error => of(actions.fetchWorkplaceFailure(error)))

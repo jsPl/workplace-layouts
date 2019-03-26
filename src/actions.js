@@ -29,3 +29,5 @@ export const changeSvgWorkplacePictureVisibility = visible => {
     settings.setSvgWorkplaceImageVisible(visible);
     return { type: types.SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE, visible }
 };
+
+export const addProcess = data => ({ type: types.PROCESS_ADD, data })
