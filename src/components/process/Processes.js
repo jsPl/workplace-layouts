@@ -4,10 +4,10 @@ import ProcessList from './ProcessList';
 import withListFiltering from '../panel/withListFiltering';
 
 const Processes = props => (
-    <FilteredProcessList {...props} />
+    <ProcessListWithFiltering {...props} />
 )
 
-const FilteredProcessList = withListFiltering(ProcessList)
+const ProcessListWithFiltering = withListFiltering(ProcessList)
 
 Processes.propTypes = {
     isLoading: PropTypes.bool,

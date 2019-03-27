@@ -34,6 +34,22 @@ const processes = (state = [], action) => {
     }
 }
 
+const operations = (state = [], action) => {
+    switch (action.type) {
+        case types.OPERATION_ADD:
+            if (state.find(o => o.id === action.data.id)) {
+                return state;
+            }
+            return [...state, { ...action.data }];
+        case types.OPERATION_REMOVE:
+            return state.filter(o => o.id !== action.id)
+        case types.OPERATION_REMOVE_ALL:
+            return []
+        default:
+            return state
+    }
+}
+
 const productionHall = (state = {}, action) => {
     switch (action.type) {
         case types.PRODUCTION_HALL_UPDATE:
@@ -50,10 +66,13 @@ const productionHall = (state = {}, action) => {
 const appUi = (state = {
     isMeasureToolMode: false,
     selectedWorkplaces: [],
+    selectedProcesses: [],
     isLoadingWorkplaces: false,
+    isLoadingOperations: false,
     isSaving: false,
     message: null,
     isSvgWorkplacePictureVisible: settings.getSvgWorkplaceImageVisible(),
+    selectedItemsActiveTab: 'workplaces'
 }, action) => {
     switch (action.type) {
         case types.TOOLS_MEASURE_TOGGLE:
@@ -75,6 +94,20 @@ const appUi = (state = {
             return { ...state, isLoadingWorkplaces: false, message: action.error }
         case types.SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE:
             return { ...state, isSvgWorkplacePictureVisible: action.visible }
+
+        case types.OPERATIONS_FETCH:
+            return { ...state, isLoadingOperations: true }
+        case types.OPERATIONS_FETCH_SUCCESS:
+            return { ...state, isLoadingOperations: false, message: null }
+        case types.OPERATIONS_FETCH_FAILURE:
+            return { ...state, isLoadingOperations: false, message: action.error }
+
+        case types.PROCESS_SELECT:
+            return { ...state, selectedProcesses: action.ids }
+
+        case types.UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE:
+            return { ...state, selectedItemsActiveTab: action.selectedItemsActiveTab }
+
         default:
             return state
     }
@@ -84,6 +117,7 @@ const rootReducer = combineReducers({
     productionHall,
     workplaces,
     processes,
+    operations,
     appUi
 })
 

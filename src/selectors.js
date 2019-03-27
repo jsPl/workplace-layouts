@@ -29,6 +29,8 @@ export const getProcessesByFilter = createSelector(
     }
 )
 
+export const getSelectedProcessesId = state => state.appUi.selectedProcesses;
+
 // export const getWorkplacesByFilter = (state, { filter }) => {
 //     const workplaces = getWorkplaces(state);
 //     console.log('selector getWorkplacesByTitle', workplaces, filter)
@@ -44,9 +46,13 @@ export const getSelectedWorkplaces = createSelector(
     (workplaces, selectedIds) => workplaces.filter(o => selectedIds.includes(o.id))
 )
 
+export const getOperations = state => state.operations;
+
 export const isLoadingWorkplaces = state => state.appUi.isLoadingWorkplaces;
+export const isLoadingOperations = state => state.appUi.isLoadingOperations;
 
 export const isSaving = state => state.appUi.isSaving;
 export const getMessage = state => state.appUi.message;
 export const isMeasureToolMode = state => state.appUi.isMeasureToolMode;
 export const isSvgWorkplacePictureVisible = state => state.appUi.isSvgWorkplacePictureVisible;
+export const getSelectedItemsActiveTab = state => state.appUi.selectedItemsActiveTab;

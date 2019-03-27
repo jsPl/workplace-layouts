@@ -3,9 +3,7 @@ import MeasureTool from './MeasureTool';
 
 const Tools = () => {
     return (
-        <>
-            <MeasureTool />
-        </>
+        <MeasureTool />
     )
 }
 

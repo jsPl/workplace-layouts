@@ -3,8 +3,11 @@ import { flatMap, switchMap, catchError, map, withLatestFrom } from "rxjs/operat
 import { of } from 'rxjs';
 import * as api from './api';
 import * as actions from './actions';
-import { PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND } from './actionTypes';
- 
+import {
+    PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND,
+    OPERATIONS_FETCH, WORKPLACE_SELECT
+} from './actionTypes';
+
 // const fetchWorkplaceEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACE'),
 //     switchMap(action => api.fetchWorkplace(action.id).pipe(
@@ -51,10 +54,33 @@ const sendProductionHallWithWorkplacesToApiEpic = (action$, state$) => action$.p
     ))
 );
 
+const fetchProcessOperationsFromApiEpic = action$ => action$.pipe(
+    ofType(OPERATIONS_FETCH),
+    switchMap(({ process_id }) => api.fetchProcessOperations(process_id).pipe(
+        flatMap(operations => of(
+            actions.fetchOperationsSuccess(operations),
+            actions.removeAllOperations(),
+            ...operations.map(o => actions.addOperation(o)),
+            actions.setSelectedItemsActiveTab('operations')
+        )),
+        catchError(error => of(actions.fetchOperationsFailure(error)))
+    ))
+)
+
+const selectWorkplaceEpic = action$ => action$.pipe(
+    ofType(WORKPLACE_SELECT),
+    map(({ ids }) => {
+        const activeTab = ids.length === 0 ? 'operations' : 'workplaces';
+        return actions.setSelectedItemsActiveTab(activeTab)
+    })
+)
+
 export default combineEpics(
     //fetchWorkplaceEpic,
     //fetchWorkplacesEpic,
     //updateWorkplaceEpic,
     fetchProductionHallWithWorkplacesFromApiEpic,
-    sendProductionHallWithWorkplacesToApiEpic
+    sendProductionHallWithWorkplacesToApiEpic,
+    fetchProcessOperationsFromApiEpic,
+    selectWorkplaceEpic
 )

@@ -7,11 +7,13 @@ import './observeStore';
 import { Provider } from 'react-redux';
 import ControlPanelContainer from './components/panel/ControlPanelContainer';
 import AppSettingsContainer  from './components/settings/AppSettingsContainer';
+import SelectedItemsContainer from './components/panel/SelectedItemsContainer';
 
 ReactDOM.render(
     <Provider store={store}>
         <AppSettingsContainer />
         <ControlPanelContainer />
+        <SelectedItemsContainer />
     </Provider>,
     document.getElementById('ui')
 );

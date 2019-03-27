@@ -6,12 +6,12 @@ import withListFiltering from '../panel/withListFiltering';
 
 const Workplaces = props => (
     <>
-        <FilteredWorkplaceList {...props} />
+        <WorkplaceListWithFiltering {...props} />
         <WorkplaceControls />
     </>
 )
 
-const FilteredWorkplaceList = withListFiltering(WorkplaceList)
+const WorkplaceListWithFiltering = withListFiltering(WorkplaceList)
 
 Workplaces.propTypes = {
     selectedWorkplaces: PropTypes.array,

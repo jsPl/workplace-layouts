@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import { getSelectedWorkplaces, getProductionHall, isLoadingWorkplaces, getMessage } from '../../selectors';
+import { isLoadingWorkplaces, getMessage } from '../../selectors';
 import ControlPanel from './ControlPanel';
 import { settings } from '../../util/settings';
 
@@ -19,12 +19,10 @@ class ControlPanelContainer extends React.Component {
     }
 
     render() {
-        const { selectedWorkplaces, productionHall, isLoadingWorkplaces } = this.props;
+        const { isLoading } = this.props;
         return (
             <ControlPanel
-                selectedWorkplaces={selectedWorkplaces}
-                productionHall={productionHall}
-                isLoadingWorkplaces={isLoadingWorkplaces}
+                isLoading={isLoading}
                 handleCollapseChange={activeItems => settings.setControlPanelCollapseItems(activeItems)}
                 collapseDefaultActiveKey={settings.getControlPanelCollapseItems()}
             />
@@ -33,9 +31,7 @@ class ControlPanelContainer extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    selectedWorkplaces: getSelectedWorkplaces(state),
-    productionHall: getProductionHall(state),
-    isLoadingWorkplaces: isLoadingWorkplaces(state),
+    isLoading: isLoadingWorkplaces(state),
     uiMessage: getMessage(state)
 });
 

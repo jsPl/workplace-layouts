@@ -12,6 +12,7 @@ const httpHeaders = { 'Content-Type': 'application/json' };
 const hala_id = getProductionHallIdFromUrl();
 const API_URL = `/eoffice/resources/hala_produkcyjna/hala_produkcyjna_json_endpoint.xml?hala_id=${hala_id}`;
 const API_URL_LOAD = `${API_URL}&action=hala_produkcyjna`;
+const API_URL_LOAD_PROCESS_OPERATIONS = processId => `${API_URL}&action=pobierz_operacje_procesu&proces_id=${processId}`;
 const API_URL_SAVE = `${API_URL}&action=zapisz`;
 
 const throwErrorIfExistsInResponse = response => {
@@ -51,4 +52,14 @@ export const postProductionHallWithWorkplaces = state => {
     return ajax.post(API_URL_SAVE, apiAdapter.mapStateToProductionHallWithWorkplacesApiRequest(state), httpHeaders).pipe(
         flatMap(({ response }) => throwErrorIfExistsInResponse(response))
     );
+}
+
+export const fetchProcessOperations = processId => {
+    return ajax.getJSON(API_URL_LOAD_PROCESS_OPERATIONS(processId)).pipe(
+        flatMap(response => throwErrorIfExistsInResponse(response)),
+        map(response => {
+            const operations = response.operacje || [];
+            return operations.map(o => apiAdapter.mapOperation(o));
+        })
+    )
 }

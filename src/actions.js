@@ -24,6 +24,7 @@ export const sendHallWithWorkplacesSuccess = data => ({
 export const sendHallWithWorkplacesFailure = error => ({ type: types.PRODUCTION_HALL_WITH_WORKPLACES_SEND_FAILURE, error });
 
 export const toggleMeasureTool = isMeasureMode => ({ type: types.TOOLS_MEASURE_TOGGLE, isMeasureMode })
+export const setSelectedItemsActiveTab = selectedItemsActiveTab => ({ type: types.UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE, selectedItemsActiveTab })
 
 export const changeSvgWorkplacePictureVisibility = visible => {
     settings.setSvgWorkplaceImageVisible(visible);
@@ -31,3 +32,11 @@ export const changeSvgWorkplacePictureVisibility = visible => {
 };
 
 export const addProcess = data => ({ type: types.PROCESS_ADD, data })
+export const selectProcess = ids => ({ type: types.PROCESS_SELECT, ids })
+
+export const addOperation = data => ({ type: types.OPERATION_ADD, data })
+export const removeOperation = id => ({ type: types.OPERATION_REMOVE, id })
+export const removeAllOperations = () => ({ type: types.OPERATION_REMOVE_ALL })
+export const fetchOperations = process_id => ({ type: types.OPERATIONS_FETCH, process_id })
+export const fetchOperationsSuccess = data => ({ type: types.OPERATIONS_FETCH_SUCCESS, data })
+export const fetchOperationsFailure = error => ({ type: types.OPERATIONS_FETCH_FAILURE, error })

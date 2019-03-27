@@ -4,8 +4,8 @@ import { List } from 'antd';
 import { selectWorkplace } from '../../actions';
 import { connect } from 'react-redux';
 
-const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceListClick }) => (
-    <List.Item className={isSelected ? 'selected' : null} onClick={() => handleWorkplaceListClick(workplace.id)}
+const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => (
+    <List.Item className={isSelected ? 'selected' : null} onClick={() => handleWorkplaceClick(workplace.id)}
         data-id={workplace.id}>
         {/* <Tag color={workplace.color} className='colorBox' /> */}
         {workplace.title}
@@ -13,7 +13,7 @@ const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceListClick }) 
 );
 
 const mapDispatchToProps = dispatch => ({
-    handleWorkplaceListClick(id) {
+    handleWorkplaceClick(id) {
         dispatch(selectWorkplace([id]));
     }
 });

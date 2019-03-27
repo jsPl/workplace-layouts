@@ -19,7 +19,7 @@ const ProcessList = ({ processes }) => {
 }
 
 const mapStateToProps = (state, props) => ({
-    processes: getProcessesByFilter(state, props)
+    processes: getProcessesByFilter(state, props),
 })
 
 ProcessList.propTypes = {

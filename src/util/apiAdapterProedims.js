@@ -20,10 +20,19 @@ const mapProcess = process => ({
     title: process.title || '',
 })
 
+export const mapOperation = operation => ({
+    id: parseInt(operation.relation_id, 10) || 0,
+    id_system_object: parseInt(operation.relation_id, 10) || 0,
+    position: parseInt(operation.ord, 10) || 0,
+    title: operation.title || '',
+    description: operation.version_fields.desc || '',
+    default_workplace_id: parseInt(operation.version_fields.default_workplace, 10) || 0,
+    default_workplace_title: operation.default_workplace_title || '',
+})
+
 const mapProductionHall = hall => ({
     id: parseInt(hall.id_system_object, 10) || 0,
     title: hall.title || '',
-    //polygonPoints: polygonPointsMetersToPixels(hall.version_fields.description)
     svgPath: hall.svgPath,
     svgScale: toFloat(hall.skalaRysunku) || 1,
     svgScaleAsString: hall.skalaRysunkuAsString

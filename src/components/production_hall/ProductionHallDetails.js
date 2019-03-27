@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Empty, Spin } from 'antd';
+import { connect } from 'react-redux';
+import { getProductionHall, isLoadingWorkplaces } from '../../selectors';
 
-export default function ProductionHallDetails({ productionHall, isLoading }) {
+const ProductionHallDetails = ({ productionHall, isLoading }) => {
     return (
         <Spin spinning={isLoading}>
             {Object.keys(productionHall).length === 0 ? <Empty /> :
@@ -15,3 +18,15 @@ export default function ProductionHallDetails({ productionHall, isLoading }) {
         </Spin>
     )
 }
+
+const mapStateToProps = state => ({
+    productionHall: getProductionHall(state),
+    isLoading: isLoadingWorkplaces(state),
+})
+
+ProductionHallDetails.propTypes = {
+    productionHall: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+}
+
+export default connect(mapStateToProps)(ProductionHallDetails)
