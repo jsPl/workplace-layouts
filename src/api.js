@@ -54,7 +54,7 @@ export const postProductionHallWithWorkplaces = state => {
     );
 }
 
-export const fetchProcessOperations = processId => {
+export const fetchOperationsByProcess = processId => {
     return ajax.getJSON(API_URL_LOAD_PROCESS_OPERATIONS(processId)).pipe(
         flatMap(response => throwErrorIfExistsInResponse(response)),
         map(response => {

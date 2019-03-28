@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { SelectedItems } from './SelectedItems';
-import { getSelectedWorkplaces, getOperations, getSelectedItemsActiveTab } from '../../selectors';
+import { getSelectedWorkplaces, getOperationsOfSelectedProcesses, getSelectedItemsActiveTab } from '../../selectors';
 import { setSelectedItemsActiveTab } from '../../actions';
 import PropTypes from 'prop-types';
 import { Badge } from 'antd';
@@ -76,7 +76,7 @@ SelectedItemHeader.propTypes = {
 const mapStateToProps = state => {
     return {
         selectedWorkplaces: getSelectedWorkplaces(state),
-        operations: getOperations(state),
+        operations: getOperationsOfSelectedProcesses(state),
         activeTab: getSelectedItemsActiveTab(state),
     }
 };

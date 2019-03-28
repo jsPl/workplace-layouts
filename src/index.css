@@ -109,7 +109,7 @@ body {
 }
 
 .selectedList {
-  max-height: 40vh;
+  max-height: 60vh;
   overflow-y: auto;
 }
 

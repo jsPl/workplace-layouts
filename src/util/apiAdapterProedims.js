@@ -22,7 +22,7 @@ const mapProcess = process => ({
 
 export const mapOperation = operation => ({
     id: parseInt(operation.relation_id, 10) || 0,
-    id_system_object: parseInt(operation.relation_id, 10) || 0,
+    id_system_object: parseInt(operation.id_system_object, 10) || 0,
     position: parseInt(operation.ord, 10) || 0,
     title: operation.title || '',
     description: operation.version_fields.desc || '',

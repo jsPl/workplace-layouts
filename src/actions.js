@@ -34,9 +34,9 @@ export const changeSvgWorkplacePictureVisibility = visible => {
 export const addProcess = data => ({ type: types.PROCESS_ADD, data })
 export const selectProcess = ids => ({ type: types.PROCESS_SELECT, ids })
 
-export const addOperation = data => ({ type: types.OPERATION_ADD, data })
-export const removeOperation = id => ({ type: types.OPERATION_REMOVE, id })
-export const removeAllOperations = () => ({ type: types.OPERATION_REMOVE_ALL })
+export const addOperation = (process_id, data) => ({ type: types.OPERATION_ADD, process_id, data })
+export const removeOperation = (id, process_id) => ({ type: types.OPERATION_REMOVE, id, process_id })
+export const removeAllOperations = process_id => ({ type: types.OPERATION_REMOVE_ALL, process_id })
 export const fetchOperations = process_id => ({ type: types.OPERATIONS_FETCH, process_id })
 export const fetchOperationsSuccess = data => ({ type: types.OPERATIONS_FETCH_SUCCESS, data })
 export const fetchOperationsFailure = error => ({ type: types.OPERATIONS_FETCH_FAILURE, error })

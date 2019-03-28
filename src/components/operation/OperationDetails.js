@@ -26,7 +26,7 @@ const Title = ({ operation }) => (
 
 const Details = ({ operation }) => (
     <div>
-        {operation.default_workplace_title}
+        <span title='Workplace'>{operation.default_workplace_title}</span>
     </div>
 )
 

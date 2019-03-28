@@ -15,7 +15,7 @@
     "react-redux": "^6.0.1",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
-    "redux-observable": "^1.0.0",
+    "redux-observable": "^1.1.0",
     "reselect": "^4.0.0",
     "svg-pan-zoom": "^3.6.0",
     "svg.draggy.js": "^1.1.1",

@@ -50,6 +50,22 @@ const operations = (state = [], action) => {
     }
 }
 
+const operationsByProcess = (state = {}, action) => {
+    switch (action.type) {
+        case types.OPERATION_ADD:
+        case types.OPERATION_REMOVE:
+        case types.OPERATION_REMOVE_ALL:
+            const processId = action.process_id;
+            return { ...state, [processId]: operations(state[processId], action) }
+        default:
+            return state
+    }
+}
+
+const operationsReducer = combineReducers({
+    byProcess: operationsByProcess
+})
+
 const productionHall = (state = {}, action) => {
     switch (action.type) {
         case types.PRODUCTION_HALL_UPDATE:
@@ -63,7 +79,7 @@ const productionHall = (state = {}, action) => {
     }
 }
 
-const appUi = (state = {
+const ui = (state = {
     isMeasureToolMode: false,
     selectedWorkplaces: [],
     selectedProcesses: [],
@@ -117,8 +133,8 @@ const rootReducer = combineReducers({
     productionHall,
     workplaces,
     processes,
-    operations,
-    appUi
+    operations: operationsReducer,
+    ui
 })
 
 export default rootReducer;

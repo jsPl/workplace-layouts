@@ -56,11 +56,11 @@ const sendProductionHallWithWorkplacesToApiEpic = (action$, state$) => action$.p
 
 const fetchProcessOperationsFromApiEpic = action$ => action$.pipe(
     ofType(OPERATIONS_FETCH),
-    switchMap(({ process_id }) => api.fetchProcessOperations(process_id).pipe(
+    switchMap(({ process_id }) => api.fetchOperationsByProcess(process_id).pipe(
         flatMap(operations => of(
             actions.fetchOperationsSuccess(operations),
-            actions.removeAllOperations(),
-            ...operations.map(o => actions.addOperation(o)),
+            actions.removeAllOperations(process_id),
+            ...operations.map(o => actions.addOperation(process_id, o)),
             actions.setSelectedItemsActiveTab('operations')
         )),
         catchError(error => of(actions.fetchOperationsFailure(error)))
