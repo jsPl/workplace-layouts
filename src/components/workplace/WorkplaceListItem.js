@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'antd';
 import { selectWorkplace } from '../../redux/workplace';
+import { selectProcess } from '../../redux/process';
 import { connect } from 'react-redux';
 
 const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => (
@@ -14,7 +15,8 @@ const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => (
 
 const mapDispatchToProps = dispatch => ({
     handleWorkplaceClick(id) {
-        dispatch(selectWorkplace([id]));
+        dispatch(selectWorkplace({ ids: [id], activeTab: 'workplaces' }));
+        dispatch(selectProcess({ ids: [] }))
     }
 });
 

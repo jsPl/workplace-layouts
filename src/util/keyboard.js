@@ -2,6 +2,8 @@ import SVG from 'svg.js';
 import { SvgClassname } from './draw';
 import { selection } from './selection';
 import { workplaceRepository } from '../workplace/workplaceRepository';
+import { store } from '../redux/configureStore';
+import { selectProcess } from '../redux/process';
 
 export default function () {
     document.addEventListener('keydown', evt => {
@@ -13,6 +15,7 @@ export default function () {
 
         if (evt.key === 'Escape') {
             selection.clear();
+            store.dispatch(selectProcess({ ids: [] }));
         }
 
         if (!selection.isEmpty()) {
@@ -35,7 +38,7 @@ const handleWorkplaceSelectionEvents = evt => {
     selectedWorkplaces.forEach(workplace => {
         if (workplace.isDragEnabled() && evt.keyCode >= 37 && evt.keyCode <= 40) {
             const shiftBy = 1 + (evt.shiftKey ? 10 : 0);
-            workplace.handleDragStart();
+            workplace.handleDragStart(evt);
 
             const moveByKey = {
                 'ArrowDown': { dy: shiftBy }, 'ArrowUp': { dy: -shiftBy },
@@ -44,8 +47,8 @@ const handleWorkplaceSelectionEvents = evt => {
 
             workplace.svg.dmove(...Object.values({ dx: 0, dy: 0, ...moveByKey[evt.key] }))
 
-            workplace.handleDragMove();
-            workplace.handleDragEnd();
+            workplace.handleDragMove(evt);
+            workplace.handleDragEnd(evt);
         }
     });
 }

@@ -29,7 +29,7 @@ export default function reducer(state = initialState, action) {
         case WORKPLACE_UPDATE:
             return { ...state, workplaces: workplaces(state.workplaces, action) }
         case WORKPLACE_SELECT:
-            return { ...state, selected: action.ids }
+            return { ...state, selected: action.payload.ids }
         case PRODUCTION_HALL_WITH_WORKPLACES_FETCH:
             return { ...state, loading: true }
         case PRODUCTION_HALL_WITH_WORKPLACES_FETCH_SUCCESS:
@@ -69,7 +69,7 @@ const workplaces = (state = [], action) => {
 export const addWorkplace = data => ({ type: WORKPLACE_ADD, data })
 export const updateWorkplace = ({ id, ...data }) => ({ type: WORKPLACE_UPDATE, id, data })
 export const removeWorkplace = id => ({ type: WORKPLACE_REMOVE, id })
-export const selectWorkplace = ids => ({ type: WORKPLACE_SELECT, ids })
+export const selectWorkplace = payload => ({ type: WORKPLACE_SELECT, payload })
 
 export const fetchHallWithWorkplaces = () => ({ type: PRODUCTION_HALL_WITH_WORKPLACES_FETCH })
 export const fetchHallWithWorkplacesSuccess = data => ({ type: PRODUCTION_HALL_WITH_WORKPLACES_FETCH_SUCCESS, data })

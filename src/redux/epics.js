@@ -6,11 +6,12 @@ import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
     sendHallWithWorkplacesFailure
 } from './workplace';
-import { addProcess } from './process';
+import { addProcess, selectProcess } from './process';
 import { updateProductionHall } from './productionHall';
 import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation } from './operation';
 import { setSelectedItemsActiveTab } from './ui';
 import {
+    selectWorkplace,
     PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT
 } from './workplace';
 import { OPERATIONS_FETCH } from './operation';
@@ -63,21 +64,33 @@ const sendProductionHallWithWorkplacesToApiEpic = (action$, state$) => action$.p
 
 const fetchProcessOperationsFromApiEpic = action$ => action$.pipe(
     ofType(OPERATIONS_FETCH),
-    switchMap(({ process_id }) => api.fetchOperationsByProcess(process_id).pipe(
-        flatMap(operations => of(
-            fetchOperationsSuccess(operations),
-            removeAllOperations(process_id),
-            ...operations.map(o => addOperation(process_id, o)),
-            setSelectedItemsActiveTab('operations')
-        )),
-        catchError(error => of(fetchOperationsFailure(error)))
-    ))
+    switchMap(({ payload }) => fetchOperationsIfNeeded(payload))
 )
+
+const fetchOperationsIfNeeded = ({ processId, fetchedOperations }) => {
+    const selectActions = operations => [
+        selectWorkplace({ ids: operations.map(o => o.default_workplace_id), activeTab: 'operations' }),
+        selectProcess({ ids: [processId] })
+    ];
+
+    return fetchedOperations !== undefined ?
+        [fetchOperationsSuccess(fetchedOperations), ...selectActions(fetchedOperations)]
+        :
+        api.fetchOperationsByProcess(processId).pipe(
+            flatMap(operations => of(
+                fetchOperationsSuccess(operations),
+                removeAllOperations(processId),
+                ...operations.map(o => addOperation(processId, o)),
+                ...selectActions(operations)
+            )),
+            catchError(error => of(fetchOperationsFailure(error)))
+        )
+}
 
 const selectWorkplaceEpic = action$ => action$.pipe(
     ofType(WORKPLACE_SELECT),
-    map(({ ids }) => {
-        const activeTab = ids.length === 0 ? 'operations' : 'workplaces';
+    map(({ payload }) => {
+        const activeTab = payload.activeTab ? payload.activeTab : payload.ids.length === 0 ? 'operations' : 'workplaces';
         return setSelectedItemsActiveTab(activeTab)
     })
 )

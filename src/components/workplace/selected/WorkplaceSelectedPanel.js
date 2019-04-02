@@ -13,7 +13,8 @@ const hint =
     <span>
         Use <kbd>&#8592;</kbd><kbd>&#8593;</kbd>
         <kbd>&#8594;</kbd><kbd>&#8595;</kbd> to move selected workplaces around
-        (hold <kbd>Shift</kbd> for quicker movement).
+        (hold <kbd>Shift</kbd> for quicker movement).<br/>
+        <kbd>Esc</kbd> to unselect.<br/>
         You can hold <kbd>Ctrl</kbd> and mouse click to select multiple workplaces.
     </span>;
 

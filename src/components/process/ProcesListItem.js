@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Spin } from 'antd';
-import { getSelectedProcessesId, selectProcess } from '../../redux/process';
+import { getSelectedProcessesId } from '../../redux/process';
 import { getOperationsByProcess, isLoadingOperations, fetchOperations } from '../../redux/operation';
-import { setSelectedItemsActiveTab } from '../../redux/ui';
 import { connect } from 'react-redux';
 
-const ProcessListItem = ({ process, handleProcessClick, isLoading, isSelected, needFetchingOperations }) => (
+const ProcessListItem = ({ process, handleProcessClick, isLoading, isSelected, fetchedOperations }) => (
     <List.Item className={isSelected ? 'selected' : null}
-        onClick={() => handleProcessClick(process.id, needFetchingOperations)}>
+        onClick={() => handleProcessClick(process.id, fetchedOperations)}>
         <Spin spinning={isLoading}>{process.title}</Spin>
     </List.Item>
 );
@@ -19,19 +18,13 @@ const mapStateToProps = (state, props) => {
     return {
         isLoading: isLoadingOperations(state),
         isSelected: getSelectedProcessesId(state).includes(processId),
-        needFetchingOperations: operationsByProcess === undefined
+        fetchedOperations: operationsByProcess
     }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    handleProcessClick(processId, needFetchingOperations) {
-        if (needFetchingOperations) {
-            dispatch(fetchOperations(processId));
-        }
-        else {
-            dispatch(setSelectedItemsActiveTab('operations'));
-        }
-        dispatch(selectProcess([processId]));
+    handleProcessClick(processId, fetchedOperations) {
+        dispatch(fetchOperations({ processId, fetchedOperations }));
     }
 });
 

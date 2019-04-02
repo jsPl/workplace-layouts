@@ -2,6 +2,7 @@ import SVG from 'svg.js';
 import { store } from '../redux/configureStore';
 import { isMeasureToolMode } from '../redux/ui';
 import { getSelectedWorkplacesId, selectWorkplace } from '../redux/workplace';
+import { selectProcess } from '../redux/process';
 import { ensureElementIsInView } from '../util/utils';
 import { workplaceRepository } from '../workplace/workplaceRepository';
 import isEqual from 'lodash/isEqual';
@@ -47,7 +48,7 @@ class Selection {
 
         if (toDispatch) {
             //console.log('dispatch action ', JSON.stringify(toDispatch));
-            store.dispatch(toDispatch);
+            toDispatch.forEach(action => store.dispatch(action));
         }
     }
 
@@ -80,7 +81,7 @@ SVG.on(document, 'DOMContentLoaded', () => {
 
             if (!isMeasureToolMode(store.getState())) {
                 if (!selectableEl) {
-                    selection.current = []
+                    //selection.current = []
                 }
                 else if (isMultipleSelection) {
                     const inSelection = workplaceRepository
@@ -129,7 +130,10 @@ const processWorkplacesSelection = (currentSelectionElements, newSelectionElemen
         );
     }
 
-    return isEqual(prevIds.sort(), nextIds.sort()) ? null : selectWorkplace(nextIds);
+    return isEqual(prevIds.sort(), nextIds.sort()) ?
+        null
+        :
+        [selectWorkplace({ ids: nextIds, activeTab: 'workplaces' }), selectProcess({ ids: [] })];
 }
 
 export let selection;

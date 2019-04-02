@@ -5,7 +5,7 @@ import { toFixed } from '../util/conversion';
 import { selection } from '../util/selection';
 import throttle from 'lodash/throttle';
 import { updateWorkplace, removeWorkplace } from '../redux/workplace';
-import { isSvgWorkplacePictureVisible } from '../redux/ui';
+import { isSvgWorkplacePictureVisible, blockPanning } from '../redux/ui';
 import { store } from '../redux/configureStore';
 import { workplaceRepository } from './workplaceRepository';
 import difference from 'lodash/difference';
@@ -18,20 +18,23 @@ export default class Workplace {
         this._isDragEnabled = false;
     }
 
-    handleDragStart() {
-        //console.log('startdrag');
+    handleDragStart(evt) {
+        //console.log('workplace start drag', evt.type);
+        evt.type !== 'keydown' && store.dispatch(blockPanning(true));
         this.svg.front();
         this.startX = this.svg.x();
         this.startY = this.svg.y();
     }
 
     handleDragMove() {
-        //console.log('drag');
+        //console.log('workplace drag');
         this.handleDetectCollisionThrottled();
     }
 
-    handleDragEnd() {
-        //console.log('dragend');
+    handleDragEnd(evt) {
+        //console.log('dragend', evt.type);
+        evt.type !== 'keydown' && store.dispatch(blockPanning(false));
+
         if (this.isColliding) {
             this.svg.move(this.startX, this.startY);
             this.svg.removeClass('colliding');

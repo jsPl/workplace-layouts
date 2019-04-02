@@ -62,7 +62,7 @@ const operations = (state = [], action) => {
 export const addOperation = (process_id, data) => ({ type: OPERATION_ADD, process_id, data })
 export const removeOperation = (id, process_id) => ({ type: OPERATION_REMOVE, id, process_id })
 export const removeAllOperations = process_id => ({ type: OPERATION_REMOVE_ALL, process_id })
-export const fetchOperations = process_id => ({ type: OPERATIONS_FETCH, process_id })
+export const fetchOperations = payload => ({ type: OPERATIONS_FETCH, payload })
 export const fetchOperationsSuccess = data => ({ type: OPERATIONS_FETCH_SUCCESS, data })
 export const fetchOperationsFailure = error => ({ type: OPERATIONS_FETCH_FAILURE, error })
 

@@ -14,7 +14,7 @@ export default function reducer(state = initialState, action) {
         case PROCESS_ADD:
             return { ...state, processes: processes(state.processes, action) }
         case PROCESS_SELECT:
-            return { ...state, selected: action.ids }
+            return { ...state, selected: action.payload.ids }
         default:
             return state
     }
@@ -34,7 +34,7 @@ const processes = (state = [], action) => {
 
 // Action creators
 export const addProcess = data => ({ type: PROCESS_ADD, data })
-export const selectProcess = ids => ({ type: PROCESS_SELECT, ids })
+export const selectProcess = payload => ({ type: PROCESS_SELECT, payload })
 
 // Selectors
 export const getProcesses = state => state.process.processes;

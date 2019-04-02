@@ -8,12 +8,14 @@ import { OPERATIONS_FETCH_FAILURE, OPERATIONS_FETCH_SUCCESS } from './operation'
 const TOOLS_MEASURE_TOGGLE = 'TOOLS_MEASURE_TOGGLE';
 const SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE = 'SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE';
 const UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE = 'UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE';
+const PANNING_BLOCK = 'PANNING_BLOCK';
 
 const initialState = {
     isMeasureToolMode: false,
     message: null,
     isSvgWorkplacePictureVisible: settings.getSvgWorkplaceImageVisible(),
-    selectedItemsActiveTab: 'workplaces'
+    selectedItemsActiveTab: 'workplaces',
+    blockPanning: false,
 }
 
 export default function reducer(state = initialState, action) {
@@ -24,6 +26,8 @@ export default function reducer(state = initialState, action) {
             return { ...state, isSvgWorkplacePictureVisible: action.visible }
         case UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE:
             return { ...state, selectedItemsActiveTab: action.selectedItemsActiveTab }
+        case PANNING_BLOCK:
+            return { ...state, blockPanning: action.block }
 
         case PRODUCTION_HALL_WITH_WORKPLACES_FETCH_FAILURE:
         case PRODUCTION_HALL_WITH_WORKPLACES_SEND_FAILURE:
@@ -48,9 +52,11 @@ export const changeSvgWorkplacePictureVisibility = visible => {
     settings.setSvgWorkplaceImageVisible(visible);
     return { type: SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE, visible }
 }
+export const blockPanning = block => ({ type: PANNING_BLOCK, block })
 
 // Selectors
 export const getMessage = state => state.ui.message;
 export const isMeasureToolMode = state => state.ui.isMeasureToolMode;
 export const isSvgWorkplacePictureVisible = state => state.ui.isSvgWorkplacePictureVisible;
 export const getSelectedItemsActiveTab = state => state.ui.selectedItemsActiveTab;
+export const isPanningBlocked = ({ ui }) => ui.blockPanning;
