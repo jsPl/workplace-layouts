@@ -1,8 +1,7 @@
 import SVG from 'svg.js';
-import '../production_hall/draw.js';
 import { initPanZoom } from './panZoom.js';
-import { store } from '../configureStore';
-import { fetchHallWithWorkplaces } from '../actions';
+import { store } from '../redux/configureStore';
+import { fetchHallWithWorkplaces } from '../redux/workplace';
 
 window.addEventListener('load', () => {
     const svgContainer = SVG('svg-container');

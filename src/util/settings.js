@@ -1,5 +1,5 @@
-import { store } from '../configureStore';
-import { changeSvgWorkplacePictureVisibility } from '../actions';
+import { store } from '../redux/configureStore';
+import { changeSvgWorkplacePictureVisibility } from '../redux/ui';
 
 const storage_cp_active_items = 'control_panel_active_items';
 const storage_svg_workplace_image_visible = 'storage_svg_workplace_image_visible';

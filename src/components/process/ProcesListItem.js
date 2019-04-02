@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Spin } from 'antd';
-import { fetchOperations, selectProcess, setSelectedItemsActiveTab } from '../../actions';
-import { isLoadingOperations, getSelectedProcessesId, getOperationsByProcess } from '../../selectors';
+import { getSelectedProcessesId, selectProcess } from '../../redux/process';
+import { getOperationsByProcess, isLoadingOperations, fetchOperations } from '../../redux/operation';
+import { setSelectedItemsActiveTab } from '../../redux/ui';
 import { connect } from 'react-redux';
 
 const ProcessListItem = ({ process, handleProcessClick, isLoading, isSelected, needFetchingOperations }) => (

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
-import { toggleMeasureTool } from '../../actions';
-import { isMeasureToolMode, isLoadingWorkplaces } from '../../selectors';
+import { isMeasureToolMode, toggleMeasureTool } from '../../redux/ui';
+import { isLoadingWorkplaces } from '../../redux/workplace';
 import { settings } from '../../util/settings';
 import withPopoverHint from '../panel/withPopoverHint';
 

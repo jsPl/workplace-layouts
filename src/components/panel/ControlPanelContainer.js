@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import { isLoadingWorkplaces, getMessage } from '../../selectors';
+import { isLoadingWorkplaces } from '../../redux/workplace';
+import { getMessage } from '../../redux/ui';
 import ControlPanel from './ControlPanel';
 import { settings } from '../../util/settings';
 

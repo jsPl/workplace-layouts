@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { List, Empty } from 'antd';
 import ProcessListItem from './ProcesListItem';
-import { getProcessesByFilter } from '../../selectors';
+import { getProcessesByFilter } from '../../redux/process';
 
 const ProcessList = ({ processes }) => {
     return (

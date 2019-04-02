@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'antd';
-import { selectWorkplace } from '../../actions';
+import { selectWorkplace } from '../../redux/workplace';
 import { connect } from 'react-redux';
 
 const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => (

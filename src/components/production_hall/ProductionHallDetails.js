@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Empty, Spin } from 'antd';
 import { connect } from 'react-redux';
-import { getProductionHall, isLoadingWorkplaces } from '../../selectors';
+import { getProductionHall } from '../../redux/productionHall';
+import { isLoadingWorkplaces } from '../../redux/workplace';
 
 const ProductionHallDetails = ({ productionHall, isLoading }) => {
     return (

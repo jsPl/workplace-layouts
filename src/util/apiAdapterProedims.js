@@ -1,4 +1,5 @@
-import { getWorkplaces, getProductionHall } from '../selectors';
+import { getProductionHall } from '../redux/productionHall';
+import { getWorkplaces } from '../redux/workplace';
 import { toFloat, metersToPixels } from './conversion';
 
 const mapWorkplace = workplace => ({

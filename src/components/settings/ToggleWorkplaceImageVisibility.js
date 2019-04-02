@@ -1,8 +1,7 @@
 import React from 'react';
 import { Switch } from 'antd';
 import { connect } from 'react-redux';
-import { isSvgWorkplacePictureVisible } from '../../selectors';
-import { changeSvgWorkplacePictureVisibility } from '../../actions';
+import { isSvgWorkplacePictureVisible, changeSvgWorkplacePictureVisibility } from '../../redux/ui';
 
 const ToggleWorkplaceImageVisibility = ({ isWorkplacePictureVisible, handleWorkplacePictureVisibilityToggle,
     restoreDefaultsBtnRef }) => (

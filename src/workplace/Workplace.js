@@ -4,9 +4,9 @@ import 'svg.draggy.js';
 import { toFixed } from '../util/conversion';
 import { selection } from '../util/selection';
 import throttle from 'lodash/throttle';
-import { updateWorkplace, removeWorkplace } from '../actions';
-import { isSvgWorkplacePictureVisible } from '../selectors';
-import { store } from '../configureStore';
+import { updateWorkplace, removeWorkplace } from '../redux/workplace';
+import { isSvgWorkplacePictureVisible } from '../redux/ui';
+import { store } from '../redux/configureStore';
 import { workplaceRepository } from './workplaceRepository';
 import difference from 'lodash/difference';
 
@@ -50,10 +50,8 @@ export default class Workplace {
 
     handleDetectCollision() {
         let collisions = workplaceRepository.findCollisionsWith(this);
-        //let isCollidingWithHall = !!(productionHall && productionHall.isCollidingWith(this));
-        //console.log('isCollidingWithHall', isCollidingWithHall);
 
-        let isColliding = collisions.length > 0; // || isCollidingWithHall;
+        let isColliding = collisions.length > 0;
         this.isColliding = isColliding;
         if (isColliding) {
             this.svg.addClass('colliding');

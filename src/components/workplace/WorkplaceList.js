@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { List, Empty } from 'antd';
 import WorkplaceListItem from './WorkplaceListItem';
-import { getWorkplacesByFilter, getSelectedWorkplaces } from '../../selectors';
+import { getWorkplacesByFilter, getSelectedWorkplaces } from '../../redux/workplace';
 
 const WorkplaceList = ({ workplaces, selectedWorkplaces }) => {
     return (

@@ -1,7 +1,7 @@
 import SVG from 'svg.js';
-import { store } from '../configureStore';
-import { selectWorkplace } from '../actions';
-import { getSelectedWorkplacesId, isMeasureToolMode } from '../selectors';
+import { store } from '../redux/configureStore';
+import { isMeasureToolMode } from '../redux/ui';
+import { getSelectedWorkplacesId, selectWorkplace } from '../redux/workplace';
 import { ensureElementIsInView } from '../util/utils';
 import { workplaceRepository } from '../workplace/workplaceRepository';
 import isEqual from 'lodash/isEqual';
@@ -123,7 +123,10 @@ const processWorkplacesSelection = (currentSelectionElements, newSelectionElemen
     const nextIds = parseIdsFromDataset(newSelectionElements, 'workplaceId');
 
     if (nextIds.length === 1) {
-        ensureElementIsInView(document.querySelector('.wpList'), document.querySelector(`.wpList [data-id="${nextIds[0]}"]`));
+        ensureElementIsInView(
+            document.querySelector('.panelWorkplaces .list'),
+            document.querySelector(`.panelWorkplaces .list [data-id="${nextIds[0]}"]`)
+        );
     }
 
     return isEqual(prevIds.sort(), nextIds.sort()) ? null : selectWorkplace(nextIds);

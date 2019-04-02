@@ -1,8 +1,8 @@
 import { drawSvg, GRID_SIZE, panZoom, SvgClassname } from '../util/draw';
 import 'svg.draw.js';
-import { store } from '../configureStore';
-import { toggleMeasureTool } from '../actions';
-import { getProductionHall } from '../selectors';
+import { store } from '../redux/configureStore';
+import { toggleMeasureTool } from '../redux/ui';
+import { getProductionHall } from '../redux/productionHall';
 import { getPanZoomSvgEl } from '../util/panZoom';
 import { toFixed } from '../util/conversion';
 import { lengthBetweenTwoPoints } from 'svg.intersections.js';

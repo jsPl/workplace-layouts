@@ -1,12 +1,19 @@
-import { ofType, combineEpics } from "redux-observable";
-import { flatMap, switchMap, catchError, map, withLatestFrom } from "rxjs/operators";
+import { ofType, combineEpics } from 'redux-observable';
+import { flatMap, switchMap, catchError, map, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
-import * as api from './api';
-import * as actions from './actions';
+import * as api from '../api';
 import {
-    PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND,
-    OPERATIONS_FETCH, WORKPLACE_SELECT
-} from './actionTypes';
+    fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
+    sendHallWithWorkplacesFailure
+} from './workplace';
+import { addProcess } from './process';
+import { updateProductionHall } from './productionHall';
+import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation } from './operation';
+import { setSelectedItemsActiveTab } from './ui';
+import {
+    PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT
+} from './workplace';
+import { OPERATIONS_FETCH } from './operation';
 
 // const fetchWorkplaceEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACE'),
@@ -36,12 +43,12 @@ const fetchProductionHallWithWorkplacesFromApiEpic = action$ => action$.pipe(
     ofType(PRODUCTION_HALL_WITH_WORKPLACES_FETCH),
     switchMap(() => api.fetchProductionHallWithWorkplaces().pipe(
         flatMap(({ productionHall, workplaces, processes }) => of(
-            actions.fetchWorkplaceSuccess(workplaces),
-            ...workplaces.map(o => actions.addWorkplace(o)),
-            ...processes.map(o => actions.addProcess(o)),
-            actions.updateProductionHall(productionHall)
+            fetchHallWithWorkplacesSuccess(workplaces),
+            ...workplaces.map(o => addWorkplace(o)),
+            ...processes.map(o => addProcess(o)),
+            updateProductionHall(productionHall)
         )),
-        catchError(error => of(actions.fetchWorkplaceFailure(error)))
+        catchError(error => of(fetchHallWithWorkplacesFailure(error)))
     ))
 );
 
@@ -49,8 +56,8 @@ const sendProductionHallWithWorkplacesToApiEpic = (action$, state$) => action$.p
     ofType(PRODUCTION_HALL_WITH_WORKPLACES_SEND),
     withLatestFrom(state$),
     switchMap(([, state]) => api.postProductionHallWithWorkplaces(state).pipe(
-        map(response => actions.sendHallWithWorkplacesSuccess(response)),
-        catchError(error => of(actions.sendHallWithWorkplacesFailure(error)))
+        map(response => sendHallWithWorkplacesSuccess(response)),
+        catchError(error => of(sendHallWithWorkplacesFailure(error)))
     ))
 );
 
@@ -58,12 +65,12 @@ const fetchProcessOperationsFromApiEpic = action$ => action$.pipe(
     ofType(OPERATIONS_FETCH),
     switchMap(({ process_id }) => api.fetchOperationsByProcess(process_id).pipe(
         flatMap(operations => of(
-            actions.fetchOperationsSuccess(operations),
-            actions.removeAllOperations(process_id),
-            ...operations.map(o => actions.addOperation(process_id, o)),
-            actions.setSelectedItemsActiveTab('operations')
+            fetchOperationsSuccess(operations),
+            removeAllOperations(process_id),
+            ...operations.map(o => addOperation(process_id, o)),
+            setSelectedItemsActiveTab('operations')
         )),
-        catchError(error => of(actions.fetchOperationsFailure(error)))
+        catchError(error => of(fetchOperationsFailure(error)))
     ))
 )
 
@@ -71,7 +78,7 @@ const selectWorkplaceEpic = action$ => action$.pipe(
     ofType(WORKPLACE_SELECT),
     map(({ ids }) => {
         const activeTab = ids.length === 0 ? 'operations' : 'workplaces';
-        return actions.setSelectedItemsActiveTab(activeTab)
+        return setSelectedItemsActiveTab(activeTab)
     })
 )
 

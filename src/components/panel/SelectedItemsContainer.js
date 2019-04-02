@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { SelectedItems } from './SelectedItems';
-import { getSelectedWorkplaces, getOperationsOfSelectedProcesses, getSelectedItemsActiveTab } from '../../selectors';
-import { setSelectedItemsActiveTab } from '../../actions';
+import { getSelectedWorkplaces } from '../../redux/workplace';
+import { getOperationsOfSelectedProcesses } from '../../redux/operation';
+import { getSelectedItemsActiveTab, setSelectedItemsActiveTab } from '../../redux/ui';
 import PropTypes from 'prop-types';
 import { Badge } from 'antd';
 import WorkplaceSelectedPanel from '../workplace/selected/WorkplaceSelectedPanel';
