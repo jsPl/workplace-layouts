@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Empty, Spin } from 'antd';
+import { Spin } from 'antd';
 import { connect } from 'react-redux';
+import { EmptyList } from '../panel/ControlPanel';
 import { getProductionHall } from '../../redux/productionHall';
 import { isLoadingWorkplaces } from '../../redux/workplace';
 
 const ProductionHallDetails = ({ productionHall, isLoading }) => {
     return (
         <Spin spinning={isLoading}>
-            {Object.keys(productionHall).length === 0 ? <Empty /> :
+            {Object.keys(productionHall).length === 0 ? <EmptyList /> :
                 <div>
                     {productionHall.title}
                     <span title='Scale' style={{ marginLeft: '0.5em' }}>

@@ -4,7 +4,7 @@ import Processes from '../process/Processes';
 import ProductionHallDetails from '../production_hall/ProductionHallDetails';
 import Tools from '../tools/Tools';
 import PropTypes from 'prop-types';
-import { Collapse } from 'antd';
+import { Collapse, Empty } from 'antd';
 
 const Panel = Collapse.Panel;
 
@@ -26,6 +26,8 @@ const ControlPanel = ({ isLoading, handleCollapseChange, collapseDefaultActiveKe
         </Collapse>
     )
 }
+
+export const EmptyList = props => <Empty className='listEmpty' imageStyle={{ height: 70 }} {...props} />
 
 ControlPanel.propTypes = {
     handleCollapseChange: PropTypes.func,

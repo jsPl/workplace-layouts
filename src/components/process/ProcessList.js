@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { List, Empty } from 'antd';
+import { List } from 'antd';
 import ProcessListItem from './ProcesListItem';
+import { EmptyList } from '../panel/ControlPanel';
 import { getProcessesByFilter } from '../../redux/process';
 
 const ProcessList = ({ processes }) => {
     return (
         processes.length === 0 ?
-            <Empty className='listEmpty' />
+            <EmptyList />
             :
             <List
                 size='small' className='list'

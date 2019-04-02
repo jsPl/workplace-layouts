@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { List, Empty } from 'antd';
+import { List } from 'antd';
 import WorkplaceListItem from './WorkplaceListItem';
+import { EmptyList } from '../panel/ControlPanel';
 import { getWorkplacesByFilter, getSelectedWorkplaces } from '../../redux/workplace';
 
 const WorkplaceList = ({ workplaces, selectedWorkplaces }) => {
     return (
         workplaces.length === 0 ?
-            <Empty className='listEmpty' />
+            <EmptyList />
             :
             <List
                 size='small' className='list'
