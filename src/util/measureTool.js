@@ -1,7 +1,7 @@
 import { drawSvg, GRID_SIZE, panZoom, SvgClassname } from '../util/draw';
 import 'svg.draw.js';
 import { store } from '../redux/configureStore';
-import { toggleMeasureTool } from '../redux/ui';
+import { toggleMeasureTool, blockPanning } from '../redux/ui';
 import { getProductionHall } from '../redux/productionHall';
 import { getPanZoomSvgEl } from '../util/panZoom';
 import { toFixed } from '../util/conversion';
@@ -66,6 +66,18 @@ export class MeasureTool {
         }
     }
 
+    handleDragStart = evt => {
+        if (evt.type !== 'keydown') {
+            store.dispatch(blockPanning(true))
+        }
+    }
+    
+    handleDragEnd = evt => {
+        if (evt.type !== 'keydown') {
+            store.dispatch(blockPanning(false))
+        }
+    }
+
     shouldChangeSnap = () => {
         const points = this.drawing.array().valueOf();
         return !isEqual(points[0], points[1])
@@ -103,7 +115,10 @@ export class MeasureTool {
             const points = this.drawing.array().valueOf().flat();
             const distanceInMeters = this.calculateDistanceInMeters(points);
             this.updateDistanceText(distanceInMeters + ' m', points);
-        })
+        });
+
+        this.svg.on('dragstart', this.handleDragStart);
+        this.svg.on('dragend', this.handleDragEnd);
     }
 
     calculateDistanceInMeters = points => {
