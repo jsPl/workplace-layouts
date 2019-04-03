@@ -1,28 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Spin } from 'antd';
-import { getSelectedProcessesId } from '../../redux/process';
-import { getOperationsByProcess, isLoadingOperations, fetchOperations } from '../../redux/operation';
+import { getSelectedProcessesId, isLoadingOperations } from '../../redux/process';
+import { getOperationsByProcess, fetchOperations } from '../../redux/operation';
 import { connect } from 'react-redux';
 
-const ProcessListItem = ({ process, handleProcessClick, isLoading, isSelected, fetchedOperations }) => (
-    <List.Item className={isSelected ? 'selected' : null}
-        onClick={() => handleProcessClick(process.id, fetchedOperations)}>
-        <Spin spinning={isLoading}>{process.title}</Spin>
-    </List.Item>
+const ProcessListItem = ({ process, handleProcessClick, loading, selected, fetchedOperations }) => (
+    <Spin spinning={loading}>
+        <List.Item className={selected ? 'selected' : null}
+            onClick={() => handleProcessClick(process.id, fetchedOperations)}>
+            {process.title}
+        </List.Item>
+    </Spin>
 );
 
 const mapStateToProps = (state, props) => {
     const processId = props.process.id;
-    const operationsByProcess = getOperationsByProcess(state, processId);
     return {
-        isLoading: isLoadingOperations(state),
-        isSelected: getSelectedProcessesId(state).includes(processId),
-        fetchedOperations: operationsByProcess
+        loading: isLoadingOperations(state, processId),
+        selected: getSelectedProcessesId(state).includes(processId),
+        fetchedOperations: getOperationsByProcess(state, processId)
     }
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     handleProcessClick(processId, fetchedOperations) {
         dispatch(fetchOperations({ processId, fetchedOperations }));
     }
@@ -30,7 +31,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 ProcessListItem.propTypes = {
     process: PropTypes.object.isRequired,
-    isSelected: PropTypes.bool
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProcessListItem);

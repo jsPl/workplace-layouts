@@ -10,7 +10,6 @@ const OPERATION_REMOVE_ALL = 'OPERATION_REMOVE_ALL';
 const initialState = {
     byProcess: {},
     selected: [],
-    loading: false,
 }
 
 // Reducers
@@ -20,11 +19,6 @@ export default function reducer(state = initialState, action) {
         case OPERATION_REMOVE:
         case OPERATION_REMOVE_ALL:
             return { ...state, byProcess: operationsByProcess(state.byProcess, action) }
-        case OPERATIONS_FETCH:
-            return { ...state, loading: true }
-        case OPERATIONS_FETCH_SUCCESS:
-        case OPERATIONS_FETCH_FAILURE:
-            return { ...state, loading: false }
         default:
             return state
     }
@@ -63,12 +57,11 @@ export const addOperation = (process_id, data) => ({ type: OPERATION_ADD, proces
 export const removeOperation = (id, process_id) => ({ type: OPERATION_REMOVE, id, process_id })
 export const removeAllOperations = process_id => ({ type: OPERATION_REMOVE_ALL, process_id })
 export const fetchOperations = payload => ({ type: OPERATIONS_FETCH, payload })
-export const fetchOperationsSuccess = data => ({ type: OPERATIONS_FETCH_SUCCESS, data })
-export const fetchOperationsFailure = error => ({ type: OPERATIONS_FETCH_FAILURE, error })
+export const fetchOperationsSuccess = payload => ({ type: OPERATIONS_FETCH_SUCCESS, payload })
+export const fetchOperationsFailure = payload => ({ type: OPERATIONS_FETCH_FAILURE, payload })
 
 // Selectors
 export const getOperationsOfSelectedProcesses = state => {
     return getSelectedProcessesId(state).flatMap(id => getOperationsByProcess(state, id) || [])
 }
 export const getOperationsByProcess = (state, processId) => state.operation.byProcess[processId];
-export const isLoadingOperations = state => state.operation.loading;

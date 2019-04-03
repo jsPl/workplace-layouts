@@ -1,11 +1,11 @@
 import React from 'react';
 import Draggable from 'react-draggable';
-import { Card } from 'antd';
+import { Card, Icon } from 'antd';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-export const SelectedItems = ({ position, visible, handleDragStop, tabList, activeTab, 
-    activeTabContent, handleTabChange }) => {
+export const SelectedItems = ({ position, visible, handleDragStop, tabList, activeTab,
+    activeTabContent, handleTabChange, handleClose }) => {
 
     const panelClass = classNames({
         collapseSelected: true,
@@ -29,6 +29,7 @@ export const SelectedItems = ({ position, visible, handleDragStop, tabList, acti
                     onTabChange={handleTabChange}
                 >
                     {activeTabContent}
+                    <Icon type='close' className='close' onClick={handleClose} title='Close' />
                 </Card>
             </div>
         </Draggable>

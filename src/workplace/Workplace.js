@@ -175,9 +175,9 @@ export const handleWorkplacesStateChange = (current, prev = []) => {
 export const handleWorkplaceSelectionStateChange = (toIds, fromIds) => {
     //console.log('handleWorkplaceSelectionStateChange from ', fromIds, 'to', toIds)
     let selectedWorkplaces = workplaceRepository.findByIds(toIds);
-    if (selectedWorkplaces.length > 0) {
+    //if (selectedWorkplaces.length > 0) {
         selection.current = selectedWorkplaces.map(o => o.svg.node);
-    }
+    //}
 }
 
 export const handleWorkplacePictureVisibilityChange = visible => {

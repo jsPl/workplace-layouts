@@ -74,16 +74,16 @@ const fetchOperationsIfNeeded = ({ processId, fetchedOperations }) => {
     ];
 
     return fetchedOperations !== undefined ?
-        [fetchOperationsSuccess(fetchedOperations), ...selectActions(fetchedOperations)]
+        [fetchOperationsSuccess({ processId, fetchedOperations }), ...selectActions(fetchedOperations)]
         :
         api.fetchOperationsByProcess(processId).pipe(
             flatMap(operations => of(
-                fetchOperationsSuccess(operations),
+                fetchOperationsSuccess({ processId, fetchedOperations: operations }),
                 removeAllOperations(processId),
                 ...operations.map(o => addOperation(processId, o)),
                 ...selectActions(operations)
             )),
-            catchError(error => of(fetchOperationsFailure(error)))
+            catchError(error => of(fetchOperationsFailure({ processId, error })))
         )
 }
 

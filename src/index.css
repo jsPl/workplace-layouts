@@ -160,13 +160,26 @@ body {
 
 .panelDetails .ant-card-head {
   cursor: move;
-  min-width: 18em;
+  min-width: 19em;
 }
 
 .panelDetails .position {
   color: #aeaeae;
   margin-right: 0.4em;
   font-weight: 400;
+}
+
+.panelDetails .close {
+  right: 0.4em;
+  top: 0.7em;
+  position: absolute;
+  color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  padding: 0.3em;
+}
+
+.panelDetails .close:hover {
+  color: #333;
 }
 
 kbd {

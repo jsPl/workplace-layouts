@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { SelectedItems } from './SelectedItems';
-import { getSelectedWorkplaces } from '../../redux/workplace';
+import { getSelectedWorkplaces, selectWorkplace } from '../../redux/workplace';
+import { selectProcess } from '../../redux/process';
 import { getOperationsOfSelectedProcesses } from '../../redux/operation';
 import { getSelectedItemsActiveTab, setSelectedItemsActiveTab } from '../../redux/ui';
 import PropTypes from 'prop-types';
@@ -23,7 +24,7 @@ class SelectedItemsContainer extends React.Component {
     }
 
     render() {
-        const { selectedWorkplaces, operations, activeTab, handleTabChange } = this.props;
+        const { selectedWorkplaces, operations, activeTab, handleTabChange, handleClose } = this.props;
         const { x, y } = this.state;
 
         const tabListContent = getTabListContent(selectedWorkplaces, operations);
@@ -42,6 +43,7 @@ class SelectedItemsContainer extends React.Component {
                 activeTab={activeTab}
                 activeTabContent={activeTabContent}
                 handleTabChange={handleTabChange}
+                handleClose={handleClose}
             />
         )
     }
@@ -85,6 +87,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     handleTabChange(activeTab) {
         dispatch(setSelectedItemsActiveTab(activeTab));
+    },
+    handleClose() {
+        dispatch(selectWorkplace({ ids: [] }));
+        dispatch(selectProcess({ ids: [] }));
     }
 });
 
