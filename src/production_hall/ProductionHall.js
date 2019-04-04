@@ -21,10 +21,7 @@ class ProductionHall {
         const hallSvg = getPanZoomSvgEl().svg(svgString).select('svg').first().back();
         this.svg = hallSvg;
 
-        // const { w, h } = hallSvg.rbox();
-        // store.dispatch(updateProductionHall({ width: toFixed(w), height: toFixed(h) }));
-
-        panZoom.updateBBox().fit().center();//.zoomBy(0.9);
+        panZoom.updateBBox().fit().center();
         return this;
     }
 
@@ -45,33 +42,11 @@ export const handleProductionHallStateChange = (current, prev) => {
     if (current) {
         if (!productionHall) {
             productionHall = new ProductionHall(current);
-            //console.log('new productionHall', productionHall);
         }
-
-        // if (current.polygonPoints && !productionHall.svg) {
-        //     //console.log('render with points', current);
-        //     productionHall.drawSvg(current.polygonPoints);
-        // }
 
         if (current.svgPath && !productionHall.svg) {
             productionHall.importSvg(current.svgPath);
         }
-
-        // else if (productionHall.svg && !current.polygonPoints) {
-        //     productionHall.svg.remove();
-        // }
-
-        // if (current.svgPath && !productionHall.svg) {
-        //     console.log('current.svgPath', current.svgPath)
-
-        //     fetch(current.svgPath)
-        //         .then(response => response.text())
-        //         .then(text => {
-        //             const hallSvg = getPanZoomSvgEl().svg(text);
-        //             const { w, h } = hallSvg.rbox();
-        //             //store.dispatch(updateProductionHall({ width: toFixed(w), height: toFixed(h) }));
-        //         });
-        // }
     }
 }
 

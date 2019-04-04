@@ -10,13 +10,18 @@ const WorkplaceSelectedPanel = ({ selectedWorkplaces }) => {
 }
 
 const hint =
-    <span>
-        Use <kbd>&#8592;</kbd><kbd>&#8593;</kbd>
-        <kbd>&#8594;</kbd><kbd>&#8595;</kbd> to move selected workplaces around
-        (hold <kbd>Shift</kbd> for quicker movement).<br/>
-        <kbd>Esc</kbd> to unselect.<br/>
-        You can hold <kbd>Ctrl</kbd> and mouse click to select multiple workplaces.
-    </span>;
+    <dl>
+        <dt>Moving workplaces around</dt>
+        <dd>Drag with mouse or use <kbd>&#8592;</kbd><kbd>&#8593;</kbd>
+            <kbd>&#8594;</kbd><kbd>&#8595;</kbd><br />
+            Hold <kbd>Shift</kbd> for quicker movement.
+        </dd>
+        <dt>Selecting workplaces</dt>
+        <dd>
+            You can hold <kbd>Ctrl</kbd> for multiple selection.
+            <br /><kbd>Esc</kbd> to unselect.
+        </dd>
+    </dl>
 
 const hintConfig = ({ selectedWorkplaces }) => ({
     content: hint,

@@ -1,3 +1,6 @@
+/* eslint-disable */
+import SVG from 'svg.js'; 
+
 // svg.topath.js 0.4 - Copyright (c) 2014 Wout Fierens - Licensed under the MIT license
 ;(function() {
 

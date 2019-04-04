@@ -259,3 +259,36 @@ button.appSettings {
 .panelDrag {
   font-size: 120%;
 }
+
+.panelProcesses .list .ant-spin-nested-loading {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.panelProcesses .list .ant-spin-nested-loading:last-child {
+  border-bottom: none;
+}
+
+.operationFlow path {
+  stroke: #0642e3;
+  stroke-width: 5px;
+  stroke-linecap: round;
+}
+
+.operationFlow .position {
+  font-size: 4em;
+  text-anchor: end;
+  fill: #0642e3;
+}
+
+#connectable-marker-triangle {
+  fill: #0642e3;
+}
+
+dt {
+  margin-bottom: 0.1em;
+}
+
+dd {
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+}

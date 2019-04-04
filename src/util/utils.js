@@ -59,3 +59,5 @@ export function openPopup(url, w = 1000, h = 600) {
 export const parseIdsFromDataset = (elements, propName) => {
     return elements.map(o => parseInt(o.dataset[propName])).filter(value => !isNaN(value));
 }
+
+export const isNullOrEmpty = value => value === null || value.trim() === '';

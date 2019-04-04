@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { OPERATIONS_FETCH, OPERATIONS_FETCH_SUCCESS, OPERATIONS_FETCH_FAILURE } from './operation';
+import { isNullOrEmpty } from '../util/utils';
 
 const PROCESS_ADD = 'PROCESS_ADD';
 const PROCESS_SELECT = 'PROCESS_SELECT';
@@ -67,9 +68,7 @@ export const isLoadingOperations = (state, processId) => getProcessById(state, p
 export const getProcessesByFilter = createSelector(
     getProcesses, (state, props) => props.filter,
     (processes, filter) => {
-        if (filter === null || filter.trim() === '') {
-            return processes;
-        }
-        return processes.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()))
+        return isNullOrEmpty(filter) ?
+            processes : processes.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()))
     }
 )

@@ -42,14 +42,11 @@ class Selection {
 
         processElementsToUnselect(toUnselect);
         processElementsToSelect(toSelect);
-        const toDispatch = processWorkplacesSelection(this._currentEl, selected);
+        const actionsToDispatch = processWorkplacesSelection(this._currentEl, selected);
 
         this._currentEl = selected;
 
-        if (toDispatch) {
-            //console.log('dispatch action ', JSON.stringify(toDispatch));
-            toDispatch.forEach(action => store.dispatch(action));
-        }
+        actionsToDispatch.forEach(action => store.dispatch(action));
     }
 
     currentWorkplaceIds = () => parseIdsFromDataset(this._currentEl, 'workplaceId');
@@ -131,7 +128,7 @@ const processWorkplacesSelection = (currentSelectionElements, newSelectionElemen
     }
 
     return isEqual(prevIds.sort(), nextIds.sort()) ?
-        null
+        []
         :
         [selectWorkplace({ ids: nextIds, activeTab: 'workplaces' }), selectProcess({ ids: [] })];
 }
