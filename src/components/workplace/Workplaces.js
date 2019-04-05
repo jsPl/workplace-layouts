@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import WorkplaceControls from './controls/WorkplaceControls';
+import WorkplaceControls from './WorkplaceControls';
 import WorkplaceList from './WorkplaceList';
-import withListFiltering from '../panel/withListFiltering';
+import FilteredList from '../panel/FilteredList';
 
 const Workplaces = props => (
     <>
-        <WorkplaceListWithFiltering {...props} />
+        <FilteredList isLoading={props.isLoading}>
+            {filter => <WorkplaceList filter={filter} />}
+        </FilteredList>
         <WorkplaceControls />
     </>
 )
-
-const WorkplaceListWithFiltering = withListFiltering(WorkplaceList)
 
 Workplaces.propTypes = {
     selectedWorkplaces: PropTypes.array,

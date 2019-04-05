@@ -2,8 +2,8 @@ import SVG from 'svg.js';
 import svgPanZoom from 'svg-pan-zoom';
 import './selection';
 import debounce from 'lodash/debounce';
-import { isPanningBlocked } from '../redux/ui';
-import { store } from '../redux/configureStore';
+import { isPanningBlocked } from '../../redux/ui';
+import { store } from '../../redux/configureStore';
 
 const configurePanZoom = gridPattern => ({
     minZoom: 0.1,

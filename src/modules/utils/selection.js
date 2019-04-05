@@ -1,13 +1,12 @@
 import SVG from 'svg.js';
-import { store } from '../redux/configureStore';
-import { isMeasureToolMode } from '../redux/ui';
-import { getSelectedWorkplacesId, selectWorkplace } from '../redux/workplace';
-import { selectProcess } from '../redux/process';
-import { ensureElementIsInView } from '../util/utils';
+import { store } from '../../redux/configureStore';
+import { isMeasureToolMode } from '../../redux/ui';
+import { getSelectedWorkplacesId, selectWorkplace } from '../../redux/workplace';
+import { selectProcess } from '../../redux/process';
+import { ensureElementIsInView, parseIdsFromDataset } from './utils';
 import { workplaceRepository } from '../workplace/workplaceRepository';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
-import { parseIdsFromDataset } from './utils';
 
 class Selection {
     constructor() {

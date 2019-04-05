@@ -1,12 +1,13 @@
 import { store } from './configureStore';
-import { handleProductionHallStateChange } from '../production_hall/ProductionHall';
-import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange, handleWorkplacePictureVisibilityChange } from '../workplace/Workplace';
-import { handleMeasure } from '../util/measureTool';
+import { handleProductionHallStateChange } from '../modules/ProductionHall';
+import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange, 
+    handleWorkplacePictureVisibilityChange } from '../modules/workplace/Workplace';
+import { handleMeasure } from '../modules/MeasureTool';
 import { getSelectedWorkplacesId, getWorkplaces } from './workplace';
 import { getSelectedProcessesId } from './process';
 import { getProductionHall } from './productionHall';
 import { isMeasureToolMode, isSvgWorkplacePictureVisible } from './ui';
-import { handleProcessSelectionStateChange } from '../workplace/operationFlow';
+import { handleProcessSelectionStateChange } from '../modules/OperationFlow';
 
 /**
  * https://github.com/reduxjs/redux/issues/303#issuecomment-125184409

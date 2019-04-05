@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
-import { sendHallWithWorkplaces, isSaving, isLoadingWorkplaces } from '../../../redux/workplace';
+import { sendHallWithWorkplaces, isSaving, isLoadingWorkplaces } from '../../redux/workplace';
 
 const WorkplaceControls = ({ isSaving, isLoading, sendHallWithWorkplaces }) => {
     return (

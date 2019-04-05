@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { isLoadingWorkplaces } from '../../redux/workplace';
 import { getMessage } from '../../redux/ui';
 import ControlPanel from './ControlPanel';
-import { settings } from '../../util/settings';
+import { settings } from '../../modules/utils/settings';
 
 class ControlPanelContainer extends React.Component {
 

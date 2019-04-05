@@ -2,8 +2,8 @@ import SVG from 'svg.js';
 import { SvgClassname } from './draw';
 import { selection } from './selection';
 import { workplaceRepository } from '../workplace/workplaceRepository';
-import { store } from '../redux/configureStore';
-import { selectProcess } from '../redux/process';
+import { store } from '../../redux/configureStore';
+import { selectProcess } from '../../redux/process';
 
 export default function () {
     document.addEventListener('keydown', evt => {

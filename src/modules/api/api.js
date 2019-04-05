@@ -1,8 +1,8 @@
 import { ajax } from 'rxjs/ajax';
 import { of, throwError } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
-import { getProductionHallIdFromUrl } from './util/utils';
-import * as apiAdapter from './util/apiAdapterProedims';
+import { getProductionHallIdFromUrl } from '../utils/utils';
+import * as apiAdapter from './apiAdapterProedims';
 
 const httpHeaders = { 'Content-Type': 'application/json' };
 

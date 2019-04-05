@@ -1,7 +1,7 @@
 import { ofType, combineEpics } from 'redux-observable';
 import { flatMap, switchMap, catchError, map, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
-import * as api from '../api';
+import * as api from '../modules/api/api';
 import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
     sendHallWithWorkplacesFailure

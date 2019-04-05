@@ -1,9 +1,9 @@
-import { drawSvg, SvgClassname } from '../util/draw';
-import { getPanZoomSvgEl } from '../util/panZoom';
+import { drawSvg, SvgClassname } from './utils/draw';
+import { getPanZoomSvgEl } from './utils/panZoom';
 import '../assets/svg.connectable';
 import { store } from '../redux/configureStore';
 import { getOperationsByProcess } from '../redux/operation';
-import { workplaceRepository } from './workplaceRepository';
+import { workplaceRepository } from './workplace/workplaceRepository';
 import isEqual from 'lodash/isEqual';
 
 class OperationFlow {

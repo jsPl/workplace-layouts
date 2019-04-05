@@ -27,6 +27,7 @@ const mapStateToProps = (state, props) => ({
 WorkplaceList.propTypes = {
     workplaces: PropTypes.array.isRequired,
     selectedWorkplaces: PropTypes.array,
+    filter: PropTypes.string,
 }
 
 export default connect(mapStateToProps)(WorkplaceList)

@@ -1,4 +1,4 @@
-import { isRectColliding } from '../util/collisions'
+import { isRectColliding } from '../utils/collisions'
 
 class WorkplaceRepository {
     constructor() {

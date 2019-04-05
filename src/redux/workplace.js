@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { isNullOrEmpty } from '../util/utils';
+import { isNullOrEmpty } from '../modules/utils/utils';
 
 // Action types
 export const PRODUCTION_HALL_WITH_WORKPLACES_FETCH = 'PRODUCTION_HALL_WITH_WORKPLACES_FETCH';

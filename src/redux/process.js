@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { OPERATIONS_FETCH, OPERATIONS_FETCH_SUCCESS, OPERATIONS_FETCH_FAILURE } from './operation';
-import { isNullOrEmpty } from '../util/utils';
+import { isNullOrEmpty } from '../modules/utils/utils';
 
 const PROCESS_ADD = 'PROCESS_ADD';
 const PROCESS_SELECT = 'PROCESS_SELECT';

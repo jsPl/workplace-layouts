@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import InitKeyboardEventHandlers from './util/keyboard';
+import InitKeyboardEventHandlers from './modules/utils/keyboard';
 import { store } from './redux/configureStore';
 import './redux/observeStore';
 import { Provider } from 'react-redux';

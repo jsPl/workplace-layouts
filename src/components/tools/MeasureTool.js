@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { connect } from 'react-redux';
 import { isMeasureToolMode, toggleMeasureTool } from '../../redux/ui';
 import { isLoadingWorkplaces } from '../../redux/workplace';
-import { settings } from '../../util/settings';
+import { settings } from '../../modules/utils/settings';
 import withPopoverHint from '../panel/withPopoverHint';
 
 const MeasureTool = ({ isMeasureMode, isLoading, toggleMeasureTool }) => {

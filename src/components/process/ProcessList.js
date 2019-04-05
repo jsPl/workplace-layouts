@@ -25,6 +25,7 @@ const mapStateToProps = (state, props) => ({
 
 ProcessList.propTypes = {
     processes: PropTypes.array.isRequired,
+    filter: PropTypes.string,
 }
 
 export default connect(mapStateToProps)(ProcessList)

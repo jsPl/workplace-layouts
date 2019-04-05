@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ProcessList from './ProcessList';
-import withListFiltering from '../panel/withListFiltering';
+import FilteredList from '../panel/FilteredList';
 
 const Processes = props => (
-    <ProcessListWithFiltering {...props} />
+    <FilteredList isLoading={props.isLoading}>
+        {filter => <ProcessList filter={filter} />}
+    </FilteredList>
 )
-
-const ProcessListWithFiltering = withListFiltering(ProcessList)
 
 Processes.propTypes = {
     isLoading: PropTypes.bool,

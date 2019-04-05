@@ -1,12 +1,12 @@
-import { drawSvg, SvgClassname } from '../util/draw';
-import { getPanZoomSvgEl } from '../util/panZoom';
+import { drawSvg, SvgClassname } from '../utils/draw';
+import { getPanZoomSvgEl } from '../utils/panZoom';
 import 'svg.draggy.js';
-import { toFixed } from '../util/conversion';
-import { selection } from '../util/selection';
+import { toFixed } from '../utils/conversion';
+import { selection } from '../utils/selection';
 import throttle from 'lodash/throttle';
-import { updateWorkplace, removeWorkplace } from '../redux/workplace';
-import { isSvgWorkplacePictureVisible, blockPanning } from '../redux/ui';
-import { store } from '../redux/configureStore';
+import { updateWorkplace, removeWorkplace } from '../../redux/workplace';
+import { isSvgWorkplacePictureVisible, blockPanning } from '../../redux/ui';
+import { store } from '../../redux/configureStore';
 import { workplaceRepository } from './workplaceRepository';
 import difference from 'lodash/difference';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import WorkplaceSelectedList from './WorkplaceSelectedList';
-import { settings } from '../../../util/settings';
+import { settings } from '../../../modules/utils/settings';
 import withPopoverHint from '../../panel/withPopoverHint';
 
 const WorkplaceSelectedPanel = ({ selectedWorkplaces }) => {

@@ -60,4 +60,4 @@ export const parseIdsFromDataset = (elements, propName) => {
     return elements.map(o => parseInt(o.dataset[propName])).filter(value => !isNaN(value));
 }
 
-export const isNullOrEmpty = value => value === null || value.trim() === '';
+export const isNullOrEmpty = value => value === null || !value || value.trim() === '';

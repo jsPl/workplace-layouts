@@ -1,6 +1,6 @@
-import { getProductionHall } from '../redux/productionHall';
-import { getWorkplaces } from '../redux/workplace';
-import { toFloat, metersToPixels } from './conversion';
+import { getProductionHall } from '../../redux/productionHall';
+import { getWorkplaces } from '../../redux/workplace';
+import { toFloat, metersToPixels } from '../utils/conversion';
 
 const mapWorkplace = workplace => ({
     id: parseInt(workplace.id_system_object, 10) || 0,

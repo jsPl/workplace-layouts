@@ -1,16 +1,15 @@
-import { drawSvg, GRID_SIZE, panZoom, SvgClassname } from '../util/draw';
+import { drawSvg, GRID_SIZE, panZoom, SvgClassname } from './utils/draw';
 import 'svg.draw.js';
 import { store } from '../redux/configureStore';
 import { toggleMeasureTool, blockPanning } from '../redux/ui';
 import { getProductionHall } from '../redux/productionHall';
-import { getPanZoomSvgEl } from '../util/panZoom';
-import { toFixed } from '../util/conversion';
+import { getPanZoomSvgEl } from './utils/panZoom';
 import { lengthBetweenTwoPoints } from 'svg.intersections.js';
-import { pixelsToMeters, getAngleFromPoint } from './conversion';
+import { pixelsToMeters, getAngleFromPoint, toFixed } from './utils/conversion';
 import isEqual from 'lodash/isEqual';
 import '../assets/lineable';
-import { selection } from '../util/selection';
-import { workplaceRepository } from '../workplace/workplaceRepository';
+import { selection } from './utils/selection';
+import { workplaceRepository } from './workplace/workplaceRepository';
 
 export class MeasureTool {
     constructor(options = { scale: 0.02 }) {

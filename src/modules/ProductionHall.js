@@ -1,6 +1,6 @@
-import { panZoom } from '../util/draw';
-import { isPathColliding } from '../util/collisions';
-import { getPanZoomSvgEl } from '../util/panZoom';
+import { panZoom } from './utils/draw';
+import { isPathColliding } from './utils/collisions';
+import { getPanZoomSvgEl } from './utils/panZoom';
 
 class ProductionHall {
     constructor(options = {}) {
@@ -8,9 +8,7 @@ class ProductionHall {
     }
 
     isCollidingWith(obj) {
-        let coll = isPathColliding(this.svg, obj.getSvgForCollisionCalculation());
-        //console.log('hall isCollidingWith', obj.getSvgForCollisionCalculation().node, coll)
-        return coll;
+        return isPathColliding(this.svg, obj.getSvgForCollisionCalculation());
     }
 
     drawSvg = svgString => {

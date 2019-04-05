@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import { settings } from '../../util/settings';
+import { settings } from '../../modules/utils/settings';
 
 class RestoreDefaults extends React.Component {
     render() {
