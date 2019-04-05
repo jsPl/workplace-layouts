@@ -30,8 +30,16 @@ export function ensureElementIsInView(container, element) {
 }
 
 export function openPopup(url, w = 1000, h = 600) {
-    const aw = window.screen.availWidth - 30;
-    const ah = window.screen.availHeight - 30;
+    const { availWidth, availHeight } = window.screen;
+    const aw = availWidth - 30;
+    const ah = availHeight - 30;
+
+    if (w === '100%') {
+        w = availWidth;
+    }
+    if (h === '100%') {
+		h = availHeight;
+	}
 
     const windowFeatures =
         "left=" + (aw - w) / 2 + ","
@@ -61,3 +69,11 @@ export const parseIdsFromDataset = (elements, propName) => {
 }
 
 export const isNullOrEmpty = value => value === null || !value || value.trim() === '';
+
+export const isInFrame = () => {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
+}

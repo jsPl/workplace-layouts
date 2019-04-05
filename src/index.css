@@ -221,7 +221,7 @@ kbd {
   max-height: 80px;
 }
 
-button.appSettings {
+.ant-btn-group.appSettings {
   position: absolute;
   right: 1em;
   top: 1em;

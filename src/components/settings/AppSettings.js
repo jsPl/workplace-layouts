@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Drawer, Button, List } from 'antd';
 import ToggleWorkplaceImageVisibility from './ToggleWorkplaceImageVisibility';
 import RestoreDefaults from './RestoreDefaults';
+import { isInFrame, openPopup } from '../../modules/utils/utils';
+
+const ButtonGroup = Button.Group;
 
 class AppSettings extends React.Component {
     constructor(props) {
@@ -29,13 +32,13 @@ class AppSettings extends React.Component {
                         renderItem={o => <List.Item>{o}</List.Item>}
                     />
                 </Drawer>
-                <Button
-                    title='Settings'
-                    shape='circle'
-                    icon='setting'
-                    className='appSettings'
-                    onClick={onDrawerShow}
-                />
+                <ButtonGroup className='appSettings'>
+                    {isInFrame() &&
+                        <Button title='Fullscreen' icon='fullscreen'
+                            onClick={() => openPopup(window.location.href, '100%', '100%')}
+                        />}
+                    <Button title='Settings' icon='setting' onClick={onDrawerShow} />
+                </ButtonGroup>
             </>
         )
     }
