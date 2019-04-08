@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { openPopup } from '../../../modules/utils/utils';
-import { List } from 'antd';
+import { List, Tag } from 'antd';
 
 export default function WorkplaceDetails({ workplace }) {
 
@@ -34,8 +34,13 @@ const Title = ({ workplace }) => (
 
 const Details = ({ workplace }) => (
     <div>
-        długość: {workplace.strefa_robocza_dlugosc + 'm, '}
-        szerokość: {workplace.strefa_robocza_szerokosc + 'm'}
+        <div>
+            długość: {workplace.strefa_robocza_dlugosc + 'm, '}
+            szerokość: {workplace.strefa_robocza_szerokosc + 'm'}
+        </div>
+        <Tag color={workplace.state.code} className='wpState' visible={workplace.state.label !== ''} title='State'>
+            {workplace.state.label}
+        </Tag>
     </div>
 )
 

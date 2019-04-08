@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Button, List } from 'antd';
 import ToggleWorkplaceImageVisibility from './ToggleWorkplaceImageVisibility';
+import ToggleWorkplaceStateVisibility from './ToggleWorkplaceStateVisibility';
 import RestoreDefaults from './RestoreDefaults';
 import { isInFrame, openPopup } from '../../modules/utils/utils';
 
@@ -27,6 +28,7 @@ class AppSettings extends React.Component {
                         split={false}
                         dataSource={[
                             <ToggleWorkplaceImageVisibility restoreDefaultsBtnRef={this.restoreDefaultsBtnRef} />,
+                            <ToggleWorkplaceStateVisibility restoreDefaultsBtnRef={this.restoreDefaultsBtnRef} />,
                             <RestoreDefaults ref={this.restoreDefaultsBtnRef} />
                         ]}
                         renderItem={o => <List.Item>{o}</List.Item>}

@@ -1,8 +1,9 @@
 import { store } from '../../redux/configureStore';
-import { changeSvgWorkplacePictureVisibility } from '../../redux/ui';
+import { changeSvgWorkplacePictureVisibility, changeSvgWorkplaceStateVisibility } from '../../redux/ui';
 
 const storage_cp_active_items = 'control_panel_active_items';
 const storage_svg_workplace_image_visible = 'storage_svg_workplace_image_visible';
+const storage_svg_workplace_state_visible = 'storage_svg_workplace_state_visible';
 const storage_cp_hint_measure_tool_visible = 'storage_cp_hint_measure_tool_visible';
 const storage_cp_hint_multiple_selection_visible = 'storage_cp_hint_multiple_selection_visible';
 
@@ -22,6 +23,16 @@ export const settings = {
 
     getSvgWorkplaceImageVisible() {
         const result = localStorage.getItem(storage_svg_workplace_image_visible) || 'true';
+        // eslint-disable-next-line
+        return result == 'true';
+    },
+
+    setSvgWorkplaceStateVisible(visible) {
+        localStorage.setItem(storage_svg_workplace_state_visible, visible)
+    },
+
+    getSvgWorkplaceStateVisible() {
+        const result = localStorage.getItem(storage_svg_workplace_state_visible) || 'true';
         // eslint-disable-next-line
         return result == 'true';
     },
@@ -48,6 +59,7 @@ export const settings = {
 
     restoreDefaults(callback) {
         store.dispatch(changeSvgWorkplacePictureVisibility(true));
+        store.dispatch(changeSvgWorkplaceStateVisibility(true));
         this.clear();
 
         callback && callback();

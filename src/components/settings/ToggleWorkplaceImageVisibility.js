@@ -5,7 +5,7 @@ import { isSvgWorkplacePictureVisible, changeSvgWorkplacePictureVisibility } fro
 
 const ToggleWorkplaceImageVisibility = ({ isWorkplacePictureVisible, handleWorkplacePictureVisibilityToggle,
     restoreDefaultsBtnRef }) => (
-    <label className='workplaceImagesToggle' title='Show pictures of workplaces on layout'>
+    <label className='workplaceSettingToggle' title='Show pictures of workplaces on layout'>
         <Switch
             checked={isWorkplacePictureVisible}
             onChange={visible => handleWorkplacePictureVisibilityToggle(visible, restoreDefaultsBtnRef)}

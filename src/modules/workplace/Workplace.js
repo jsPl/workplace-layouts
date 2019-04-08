@@ -4,8 +4,8 @@ import 'svg.draggy.js';
 import { toFixed } from '../utils/conversion';
 import { selection } from '../utils/selection';
 import throttle from 'lodash/throttle';
-import { updateWorkplace, removeWorkplace } from '../../redux/workplace';
-import { isSvgWorkplacePictureVisible, blockPanning } from '../../redux/ui';
+import { updateWorkplace } from '../../redux/workplace';
+import { isSvgWorkplacePictureVisible, isSvgWorkplaceStateVisible, blockPanning } from '../../redux/ui';
 import { store } from '../../redux/configureStore';
 import { workplaceRepository } from './workplaceRepository';
 import difference from 'lodash/difference';
@@ -18,7 +18,7 @@ export default class Workplace {
         this._isDragEnabled = false;
     }
 
-    handleDragStart(evt) {
+    handleDragStart = evt => {
         //console.log('workplace start drag', evt.type);
         evt.type !== 'keydown' && store.dispatch(blockPanning(true));
         this.svg.front();
@@ -26,12 +26,12 @@ export default class Workplace {
         this.startY = this.svg.y();
     }
 
-    handleDragMove() {
+    handleDragMove = () => {
         //console.log('workplace drag');
         this.handleDetectCollisionThrottled();
     }
 
-    handleDragEnd(evt) {
+    handleDragEnd = evt => {
         //console.log('dragend', evt.type);
         evt.type !== 'keydown' && store.dispatch(blockPanning(false));
 
@@ -45,10 +45,6 @@ export default class Workplace {
             let y = toFixed(this.svg.y());
             store.dispatch(updateWorkplace({ id: this.id, x, y }));
         }
-    }
-
-    handleDelete() {
-        store.dispatch(removeWorkplace(this.id));
     }
 
     handleDetectCollision() {
@@ -85,32 +81,17 @@ export default class Workplace {
 
         this.rectBbox = group.rect(this.width, this.height)
             .toPath(true)
-            .fill(this.color)
-            .stroke({ color: this.color, width: 2 })
             .addClass('workplaceBBox')
 
-        group.on('dragstart', evt => this.handleDragStart(evt));
-        group.on('dragmove', evt => this.handleDragMove(evt));
-        group.on('dragend', evt => this.handleDragEnd(evt));
+        this.drawState(group);
+        this.drawPicture(group);
+        this.drawTitle(group);
+
+        group.on('dragstart', this.handleDragStart);
+        group.on('dragmove', this.handleDragMove);
+        group.on('dragend', this.handleDragEnd);
 
         selection.addSelectable(group, this.handleSelection);
-
-        if (this.imgPath) {
-            const image = group.image(process.env.PUBLIC_URL + this.imgPath)
-                .addClass('workplaceImage')
-                .loaded(loader => {
-                    image.size(loader.width * 0.35);
-                    if (!isSvgWorkplacePictureVisible(store.getState())) {
-                        this.hidePicture()
-                    }
-                })
-                .dmove(5, 5);
-            this.picture = image;
-        }
-
-        if (this.title) {
-            group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(5, this.height - 10);
-        }
 
         group.move(this.x, this.y).data('workplace-id', this.id);
 
@@ -121,6 +102,42 @@ export default class Workplace {
         SvgClassname.set(this.svg, 'Workplace');
 
         return this;
+    }
+
+    drawState(group) {
+        if (this.state && this.state.code !== '') {
+            const radius = 25, pad = 4, el = group.group();
+            const stateEl = el.circle(radius).addClass('state').fill(this.state.code)
+                .dmove(this.width - radius - pad, pad);
+            const titleEl = drawSvg.element('title').words('State: ' + this.state.label);
+            el.add(stateEl).add(titleEl);
+            this.stateEl = stateEl;
+
+            if (!isSvgWorkplaceStateVisible(store.getState())) {
+                this.stateVisibility(false)
+            }
+        }
+    }
+
+    drawPicture(group) {
+        if (this.imgPath) {
+            const image = group.image(process.env.PUBLIC_URL + this.imgPath)
+                .addClass('workplaceImage')
+                .loaded(loader => {
+                    image.size(loader.width * 0.35);
+                    if (!isSvgWorkplacePictureVisible(store.getState())) {
+                        this.pictureVisibility(false)
+                    }
+                })
+                .dmove(5, 5);
+            this.picture = image;
+        }
+    }
+
+    drawTitle(group) {
+        if (this.title) {
+            group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(5, this.height - 10);
+        }
     }
 
     enableDrag() {
@@ -139,13 +156,13 @@ export default class Workplace {
         return this._isDragEnabled;
     }
 
-    showPicture() {
-        this.picture && this.picture.show();
+    pictureVisibility(visible) {
+        this.picture && (visible ? this.picture.show() : this.picture.hide());
         return this;
     }
 
-    hidePicture() {
-        this.picture && this.picture.hide();
+    stateVisibility(visible) {
+        this.stateEl && (visible ? this.stateEl.show() : this.stateEl.hide());
         return this;
     }
 }
@@ -174,12 +191,13 @@ export const handleWorkplacesStateChange = (current, prev = []) => {
 
 export const handleWorkplaceSelectionStateChange = (toIds, fromIds) => {
     //console.log('handleWorkplaceSelectionStateChange from ', fromIds, 'to', toIds)
-    let selectedWorkplaces = workplaceRepository.findByIds(toIds);
-    //if (selectedWorkplaces.length > 0) {
-        selection.current = selectedWorkplaces.map(o => o.svg.node);
-    //}
+    selection.current = workplaceRepository.findByIds(toIds).map(o => o.svg.node);
 }
 
 export const handleWorkplacePictureVisibilityChange = visible => {
-    workplaceRepository.list().forEach(o => visible ? o.showPicture() : o.hidePicture())
+    workplaceRepository.list().forEach(o => o.pictureVisibility(visible))
+}
+
+export const handleWorkplaceStateVisibilityChange = visible => {
+    workplaceRepository.list().forEach(o => o.stateVisibility(visible))
 }

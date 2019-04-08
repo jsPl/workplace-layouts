@@ -228,7 +228,7 @@ kbd {
   z-index: 1000;
 }
 
-.ant-drawer .workplaceImagesToggle span {
+.ant-drawer .workplaceSettingToggle span {
   margin-left: 0.5em;
 }
 
@@ -291,4 +291,14 @@ dt {
 dd {
   margin-bottom: 0.5em;
   margin-left: 0.5em;
+}
+
+g[data-className="Workplace"] .state {
+  stroke-width: 0.7px;
+  stroke: #85144b;
+}
+
+.ant-tag.wpState {
+  color: #001f3f;
+  cursor: default;
 }

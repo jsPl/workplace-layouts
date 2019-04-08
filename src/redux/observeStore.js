@@ -1,12 +1,12 @@
 import { store } from './configureStore';
 import { handleProductionHallStateChange } from '../modules/ProductionHall';
 import { handleWorkplacesStateChange, handleWorkplaceSelectionStateChange, 
-    handleWorkplacePictureVisibilityChange } from '../modules/workplace/Workplace';
+    handleWorkplacePictureVisibilityChange, handleWorkplaceStateVisibilityChange } from '../modules/workplace/Workplace';
 import { handleMeasure } from '../modules/MeasureTool';
 import { getSelectedWorkplacesId, getWorkplaces } from './workplace';
 import { getSelectedProcessesId } from './process';
 import { getProductionHall } from './productionHall';
-import { isMeasureToolMode, isSvgWorkplacePictureVisible } from './ui';
+import { isMeasureToolMode, isSvgWorkplacePictureVisible, isSvgWorkplaceStateVisible } from './ui';
 import { handleProcessSelectionStateChange } from '../modules/OperationFlow';
 
 /**
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     observeStore(getSelectedWorkplacesId, handleWorkplaceSelectionStateChange);
     observeStore(getWorkplaces, handleWorkplacesStateChange);
     observeStore(isSvgWorkplacePictureVisible, handleWorkplacePictureVisibilityChange);
+    observeStore(isSvgWorkplaceStateVisible, handleWorkplaceStateVisibilityChange);
     observeStore(isMeasureToolMode, handleMeasure);
     observeStore(getSelectedProcessesId, handleProcessSelectionStateChange);
 });

@@ -11,7 +11,8 @@ const mapWorkplace = workplace => ({
     x: toFloat(workplace.polozenie_stanowiska_w_hali.x) || 0,
     y: toFloat(workplace.polozenie_stanowiska_w_hali.y) || 0,
     strefa_robocza_dlugosc: workplace.version_fields.strefa_robocza_dlugosc,
-    strefa_robocza_szerokosc: workplace.version_fields.strefa_robocza_szerokosc
+    strefa_robocza_szerokosc: workplace.version_fields.strefa_robocza_szerokosc,
+    state: { code: workplace.version_fields.state || '', label: workplace.version_fields.state_label || '' },
 })
 
 const mapWorkplaces = workplaces => workplaces.map(o => mapWorkplace(o));
