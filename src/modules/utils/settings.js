@@ -1,4 +1,5 @@
 import { store } from '../../redux/configureStore';
+import { batch } from 'react-redux';
 import { changeSvgWorkplacePictureVisibility, changeSvgWorkplaceStateVisibility } from '../../redux/ui';
 
 const storage_cp_active_items = 'control_panel_active_items';
@@ -58,8 +59,10 @@ export const settings = {
     },
 
     restoreDefaults(callback) {
-        store.dispatch(changeSvgWorkplacePictureVisibility(true));
-        store.dispatch(changeSvgWorkplaceStateVisibility(true));
+        batch(() => {
+            store.dispatch(changeSvgWorkplacePictureVisibility(true));
+            store.dispatch(changeSvgWorkplaceStateVisibility(true));
+        })
         this.clear();
 
         callback && callback();

@@ -7,6 +7,7 @@ import { ensureElementIsInView, parseIdsFromDataset } from './utils';
 import { workplaceRepository } from '../workplace/workplaceRepository';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
+import { batch } from 'react-redux';
 
 class Selection {
     constructor() {
@@ -45,7 +46,9 @@ class Selection {
 
         this._currentEl = selected;
 
-        actionsToDispatch.forEach(action => store.dispatch(action));
+        batch(() => {
+            actionsToDispatch.forEach(action => store.dispatch(action));
+        })
     }
 
     currentWorkplaceIds = () => parseIdsFromDataset(this._currentEl, 'workplaceId');

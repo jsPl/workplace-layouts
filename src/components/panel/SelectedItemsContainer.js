@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, batch } from 'react-redux';
 import { SelectedItems } from './SelectedItems';
 import { getSelectedWorkplaces, selectWorkplace } from '../../redux/workplace';
 import { selectProcess } from '../../redux/process';
@@ -89,8 +89,10 @@ const mapDispatchToProps = dispatch => ({
         dispatch(setSelectedItemsActiveTab(activeTab));
     },
     handleClose() {
-        dispatch(selectWorkplace({ ids: [] }));
-        dispatch(selectProcess({ ids: [] }));
+        batch(() => {
+            dispatch(selectWorkplace({ ids: [] }));
+            dispatch(selectProcess({ ids: [] }));
+        })
     }
 });
 

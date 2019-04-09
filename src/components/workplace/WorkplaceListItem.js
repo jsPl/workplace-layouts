@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { List } from 'antd';
 import { selectWorkplace } from '../../redux/workplace';
 import { selectProcess } from '../../redux/process';
-import { connect } from 'react-redux';
+import { connect, batch } from 'react-redux';
 
 const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => (
     <List.Item className={isSelected ? 'selected' : null} onClick={() => handleWorkplaceClick(workplace.id)}
@@ -15,8 +15,10 @@ const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => (
 
 const mapDispatchToProps = dispatch => ({
     handleWorkplaceClick(id) {
-        dispatch(selectWorkplace({ ids: [id], activeTab: 'workplaces' }));
-        dispatch(selectProcess({ ids: [] }))
+        batch(() => {
+            dispatch(selectWorkplace({ ids: [id], activeTab: 'workplaces' }));
+            dispatch(selectProcess({ ids: [] }))
+        })
     }
 });
 
