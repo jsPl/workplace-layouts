@@ -61,6 +61,7 @@ export const selectProcess = payload => ({ type: PROCESS_SELECT, payload })
 
 // Selectors
 export const getProcesses = state => Object.values(state.process.byId).map(o => o.process);
+export const getProcessesIds = state => getProcesses(state).map(o => o.id);
 export const getProcessById = (state, processId) => state.process.byId[processId];
 export const getSelectedProcessesId = state => state.process.selected;
 export const isLoadingOperations = (state, processId) => getProcessById(state, processId).loading;

@@ -1,6 +1,7 @@
-import { getSelectedProcessesId } from './process';
+import { getSelectedProcessesId, getProcessesIds } from './process';
 
 export const OPERATIONS_FETCH = 'OPERATIONS_FETCH';
+export const OPERATIONS_FETCH_ALL = 'OPERATIONS_FETCH_ALL';
 export const OPERATIONS_FETCH_SUCCESS = 'OPERATIONS_FETCH_SUCCESS';
 export const OPERATIONS_FETCH_FAILURE = 'OPERATIONS_FETCH_FAILURE';
 const OPERATION_ADD = 'OPERATION_ADD';
@@ -57,6 +58,7 @@ export const addOperation = (process_id, data) => ({ type: OPERATION_ADD, proces
 export const removeOperation = (id, process_id) => ({ type: OPERATION_REMOVE, id, process_id })
 export const removeAllOperations = process_id => ({ type: OPERATION_REMOVE_ALL, process_id })
 export const fetchOperations = payload => ({ type: OPERATIONS_FETCH, payload })
+export const fetchAllOperations = payload => ({ type: OPERATIONS_FETCH_ALL, payload })
 export const fetchOperationsSuccess = payload => ({ type: OPERATIONS_FETCH_SUCCESS, payload })
 export const fetchOperationsFailure = payload => ({ type: OPERATIONS_FETCH_FAILURE, payload })
 
@@ -64,4 +66,13 @@ export const fetchOperationsFailure = payload => ({ type: OPERATIONS_FETCH_FAILU
 export const getOperationsOfSelectedProcesses = state => {
     return getSelectedProcessesId(state).flatMap(id => getOperationsByProcess(state, id) || [])
 }
-export const getOperationsByProcess = (state, processId) => state.operation.byProcess[processId];
+export const getOperationsByProcess = (state, processId) => {
+    if (processId) {
+        return state.operation.byProcess[processId];
+    }
+    else {
+        const operationsByProcess = {};
+        getProcessesIds(state).forEach(id => operationsByProcess[id] = getOperationsByProcess(state, id));
+        return operationsByProcess;
+    }
+}

@@ -1,25 +1,27 @@
 import { ofType, combineEpics } from 'redux-observable';
-import { flatMap, switchMap, catchError, map, withLatestFrom } from 'rxjs/operators';
-import { of } from 'rxjs';
+import {
+    mergeMap, switchMap, catchError, map, withLatestFrom, tap, exhaustMap, take, concat, concatMap, mapTo, mergeAll,
+    takeUntil, finalize, ignoreElements, startWith, delay
+} from 'rxjs/operators';
+import { of, forkJoin, zip, merge, from } from 'rxjs';
 import * as api from '../modules/api/api';
 import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
     sendHallWithWorkplacesFailure
 } from './workplace';
-import { addProcess, selectProcess } from './process';
+import { addProcess } from './process';
 import { updateProductionHall } from './productionHall';
-import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation } from './operation';
+import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation, getOperationsByProcess, fetchOperations } from './operation';
 import { setSelectedItemsActiveTab } from './ui';
 import {
-    selectWorkplace,
     PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT
 } from './workplace';
-import { OPERATIONS_FETCH } from './operation';
+import { OPERATIONS_FETCH, OPERATIONS_FETCH_ALL, OPERATIONS_FETCH_SUCCESS } from './operation';
 
 // const fetchWorkplaceEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACE'),
 //     switchMap(action => api.fetchWorkplace(action.id).pipe(
-//         flatMap(workplace => of(actions.fetchWorkplaceSuccess(workplace), actions.addWorkplace(workplace))),
+//         mergeMap(workplace => of(actions.fetchWorkplaceSuccess(workplace), actions.addWorkplace(workplace))),
 //         catchError(error => of(actions.fetchWorkplaceFailure(error)))
 //     ))
 // );
@@ -27,7 +29,7 @@ import { OPERATIONS_FETCH } from './operation';
 // const fetchWorkplacesEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACES'),
 //     switchMap(() => api.fetchWorkplaces().pipe(
-//         flatMap(workplaces => of(actions.fetchWorkplaceSuccess(workplaces), ...workplaces.map(o => actions.addWorkplace(o)))),
+//         mergeMap(workplaces => of(actions.fetchWorkplaceSuccess(workplaces), ...workplaces.map(o => actions.addWorkplace(o)))),
 //         catchError(error => of(actions.fetchWorkplaceFailure(error)))
 //     ))
 // );
@@ -43,7 +45,7 @@ import { OPERATIONS_FETCH } from './operation';
 const fetchProductionHallWithWorkplacesFromApiEpic = action$ => action$.pipe(
     ofType(PRODUCTION_HALL_WITH_WORKPLACES_FETCH),
     switchMap(() => api.fetchProductionHallWithWorkplaces().pipe(
-        flatMap(({ productionHall, workplaces, processes }) => of(
+        mergeMap(({ productionHall, workplaces, processes }) => of(
             fetchHallWithWorkplacesSuccess(workplaces),
             ...workplaces.map(o => addWorkplace(o)),
             ...processes.map(o => addProcess(o)),
@@ -62,26 +64,34 @@ const sendProductionHallWithWorkplacesToApiEpic = (action$, state$) => action$.p
     ))
 );
 
-const fetchProcessOperationsFromApiEpic = action$ => action$.pipe(
+const fetchProcessOperationsFromApiEpic = (action$, state$) => action$.pipe(
     ofType(OPERATIONS_FETCH),
-    switchMap(({ payload }) => fetchOperationsIfNeeded(payload))
+    switchMap(({ payload }) => fetchOperationsIfNeeded(payload.processId, state$.value, payload.selectActions))
 )
 
-const fetchOperationsIfNeeded = ({ processId, fetchedOperations }) => {
-    const selectActions = operations => [
-        selectWorkplace({ ids: operations.map(o => o.default_workplace_id), activeTab: 'operations' }),
-        selectProcess({ ids: [processId] })
-    ];
+const fetchMultipleProcessOperationsFromApiEpic = (action$, state$) => action$.pipe(
+    ofType(OPERATIONS_FETCH_ALL),
+    mergeMap(({ payload }) => {
+        const stream = of(...payload.processesIds.map(id => fetchOperationsIfNeeded(id, state$.value)));
+        return stream.pipe(
+            mergeMap(innerObservable => innerObservable),
+            finalize(payload.callback)
+        )
+    })
+)
+
+const fetchOperationsIfNeeded = (processId, state, selectActions = () => []) => {
+    const fetchedOperations = getOperationsByProcess(state, processId);
 
     return fetchedOperations !== undefined ?
-        [fetchOperationsSuccess({ processId, fetchedOperations }), ...selectActions(fetchedOperations)]
+        of(fetchOperationsSuccess({ processId, fetchedOperations }), ...selectActions(processId, fetchedOperations))
         :
         api.fetchOperationsByProcess(processId).pipe(
-            flatMap(operations => of(
+            mergeMap(operations => of(
                 fetchOperationsSuccess({ processId, fetchedOperations: operations }),
                 removeAllOperations(processId),
                 ...operations.map(o => addOperation(processId, o)),
-                ...selectActions(operations)
+                ...selectActions(processId, operations)
             )),
             catchError(error => of(fetchOperationsFailure({ processId, error })))
         )
@@ -102,5 +112,6 @@ export default combineEpics(
     fetchProductionHallWithWorkplacesFromApiEpic,
     sendProductionHallWithWorkplacesToApiEpic,
     fetchProcessOperationsFromApiEpic,
-    selectWorkplaceEpic
+    selectWorkplaceEpic,
+    fetchMultipleProcessOperationsFromApiEpic
 )

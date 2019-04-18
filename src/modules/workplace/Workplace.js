@@ -101,6 +101,10 @@ export default class Workplace {
 
         SvgClassname.set(this.svg, 'Workplace');
 
+        // const centroid = Craft.getCentroid(this);
+        // console.log('centroid of ', this.title, centroid);
+        // drawSvg.circle(5).fill('#f06').center(centroid.x, centroid.y).addTo(getPanZoomSvgEl())
+
         return this;
     }
 
@@ -136,7 +140,7 @@ export default class Workplace {
 
     drawTitle(group) {
         if (this.title) {
-            group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(5, this.height - 10);
+            this.titleEl = group.plain(this.title).font('family', '').addClass('workplaceTitle').dmove(5, this.height - 10);
         }
     }
 

@@ -1,9 +1,13 @@
 import React from 'react';
 import MeasureTool from './MeasureTool';
+import CraftTool from './CraftTool';
 
 const Tools = () => {
     return (
-        <MeasureTool />
+        <>
+            <MeasureTool />
+            <CraftTool />
+        </>
     )
 }
 
