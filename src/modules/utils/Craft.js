@@ -1,7 +1,7 @@
 // import SVG from 'svg.js';
 // import { drawSvg, panZoom } from './draw';
 import { getPanZoomSvgEl } from './panZoom';
-import { calculateDistanceData } from './craft.calculation';
+import { calculateDistanceData, claculateFlowPairs, claculateFlowData } from './craft.calculation';
 
 class Craft {
     constructor(options = {}) {
@@ -9,7 +9,7 @@ class Craft {
         this.workplaces = options.workplaces || [];
         this.operationsByProcess = options.operationsByProcess || {};
 
-        console.log('operationsByProcess', this.operationsByProcess)
+        //console.log('operationsByProcess', this.operationsByProcess)
     }
 
     static getCentroid = (workplace, relativeTo = getPanZoomSvgEl()) => {
@@ -33,6 +33,11 @@ class Craft {
     }
 
     calculateFlowData = () => {
+        const pairs = Object.values(this.operationsByProcess).flatMap(operations => claculateFlowPairs(operations));
+        const flowData = claculateFlowData(pairs);
+        console.log('pairs', pairs, 'flowData', flowData)
+
+
 
     }
 

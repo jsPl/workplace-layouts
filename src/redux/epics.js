@@ -1,9 +1,6 @@
 import { ofType, combineEpics } from 'redux-observable';
-import {
-    mergeMap, switchMap, catchError, map, withLatestFrom, tap, exhaustMap, take, concat, concatMap, mapTo, mergeAll,
-    takeUntil, finalize, ignoreElements, startWith, delay
-} from 'rxjs/operators';
-import { of, forkJoin, zip, merge, from } from 'rxjs';
+import { mergeMap, switchMap, catchError, map, withLatestFrom, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 import * as api from '../modules/api/api';
 import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
@@ -11,12 +8,12 @@ import {
 } from './workplace';
 import { addProcess } from './process';
 import { updateProductionHall } from './productionHall';
-import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation, getOperationsByProcess, fetchOperations } from './operation';
+import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation, getOperationsByProcess } from './operation';
 import { setSelectedItemsActiveTab } from './ui';
 import {
     PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT
 } from './workplace';
-import { OPERATIONS_FETCH, OPERATIONS_FETCH_ALL, OPERATIONS_FETCH_SUCCESS } from './operation';
+import { OPERATIONS_FETCH, OPERATIONS_FETCH_ALL } from './operation';
 
 // const fetchWorkplaceEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACE'),

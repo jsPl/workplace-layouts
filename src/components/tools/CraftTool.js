@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     fetchAllOperations(processesIds) {
-        const callback = () => { console.log('callback all done'); }
+        const callback = () => runCraft()
         dispatch(fetchAllOperations({ processesIds, callback }))
     }
 })
@@ -33,8 +33,9 @@ const runCraft = () => {
     const operationsByProcess = getOperationsByProcess(store.getState());
 
     const craft = new Craft({ workplaces: workplaceRepository.list(), operationsByProcess })
-    craft.logCentroids({ draw: true })
-    console.log('distances', craft.calculateDistanceData())
+    //craft.logCentroids({ draw: true })
+    //console.log('distances', craft.calculateDistanceData())
+    craft.calculateFlowData();
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CraftTool)
