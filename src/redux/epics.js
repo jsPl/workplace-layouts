@@ -1,6 +1,6 @@
 import { ofType, combineEpics } from 'redux-observable';
 import { mergeMap, switchMap, catchError, map, withLatestFrom, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, merge } from 'rxjs';
 import * as api from '../modules/api/api';
 import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
@@ -69,11 +69,9 @@ const fetchProcessOperationsFromApiEpic = (action$, state$) => action$.pipe(
 const fetchMultipleProcessOperationsFromApiEpic = (action$, state$) => action$.pipe(
     ofType(OPERATIONS_FETCH_ALL),
     mergeMap(({ payload }) => {
-        const stream = of(...payload.processesIds.map(id => fetchOperationsIfNeeded(id, state$.value)));
-        return stream.pipe(
-            mergeMap(innerObservable => innerObservable),
-            finalize(payload.callback)
-        )
+        const observables = [...payload.processesIds.map(id => fetchOperationsIfNeeded(id, state$.value))];
+        return merge(...observables)
+            .pipe(finalize(payload.callback))
     })
 )
 
