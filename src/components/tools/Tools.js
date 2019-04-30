@@ -4,10 +4,10 @@ import CraftTool from './CraftTool';
 
 const Tools = () => {
     return (
-        <>
+        <div className='tools'>
             <MeasureTool />
             <CraftTool />
-        </>
+        </div>
     )
 }
 

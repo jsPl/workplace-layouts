@@ -11,7 +11,7 @@ class RestoreDefaults extends React.Component {
                 title='Restore all hint notifications and other settings'
                 onClick={() => { settings.restoreDefaults(); this.forceUpdate(); }}
             >
-                restore defaults
+                Restore defaults
             </Button>
         )
     }

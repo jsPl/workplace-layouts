@@ -63,7 +63,7 @@ const sendProductionHallWithWorkplacesToApiEpic = (action$, state$) => action$.p
 
 const fetchProcessOperationsFromApiEpic = (action$, state$) => action$.pipe(
     ofType(OPERATIONS_FETCH),
-    switchMap(({ payload }) => fetchOperationsIfNeeded(payload.processId, state$.value, payload.selectActions))
+    mergeMap(({ payload }) => fetchOperationsIfNeeded(payload.processId, state$.value, payload.selectActions))
 )
 
 const fetchMultipleProcessOperationsFromApiEpic = (action$, state$) => action$.pipe(
@@ -75,6 +75,27 @@ const fetchMultipleProcessOperationsFromApiEpic = (action$, state$) => action$.p
     })
 )
 
+// const fetchMultipleProcessOperationsFromApiEpic = action$ => action$.pipe(
+//     ofType(OPERATIONS_FETCH_ALL),
+//     switchMap(({ payload }) =>
+//         merge(...payload.processesIds.map(processId =>
+//             concat(
+//                 of(fetchOperations({ processId })),
+//                 // Note: This keeps the observable running until either
+//                 // the corresponding "success" or "failure" action is dispatched:
+//                 action$.pipe(
+//                     ofType(OPERATIONS_FETCH_SUCCESS, OPERATIONS_FETCH_FAILURE),
+//                     filter(action => action.payload.processId === processId),
+//                     first(),
+//                     ignoreElements(),
+//                 ),
+//             )
+//         )).pipe(
+//             finalize(payload.callback),
+//         )
+//     )
+// )
+
 const fetchOperationsIfNeeded = (processId, state, selectActions = () => []) => {
     const fetchedOperations = getOperationsByProcess(state, processId);
 
@@ -83,9 +104,9 @@ const fetchOperationsIfNeeded = (processId, state, selectActions = () => []) => 
         :
         api.fetchOperationsByProcess(processId).pipe(
             mergeMap(operations => of(
-                fetchOperationsSuccess({ processId, fetchedOperations: operations }),
                 removeAllOperations(processId),
                 ...operations.map(o => addOperation(processId, o)),
+                fetchOperationsSuccess({ processId, fetchedOperations: operations }),
                 ...selectActions(processId, operations)
             )),
             catchError(error => of(fetchOperationsFailure({ processId, error })))

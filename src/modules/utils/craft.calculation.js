@@ -20,7 +20,7 @@ export const calculateDistanceData = (idsArray, distanceCalculationFunction) => 
 export const claculateFlowData = pairs => {
     return pairs.reduce((flowData, pair) => {
         const [first, second] = pair;
-        flowData[first] = [...new Set([...flowData[first] || [], second])] // Set for unique values
+        flowData[first] = [...flowData[first] || [], second]
         return flowData
     }, {})
 }

@@ -68,6 +68,8 @@ import SVG from 'svg.js';
         con.source = elmSource; //'center', 'perifery'
         con.target = elmTarget;
         con.type = options.type || 'straight' //'straight', 'curved'
+        con.targetAttachPosition = options.targetAttachPosition;
+        con.sourceAttachPosition = options.sourceAttachPosition;
 
         if(options.connector) {
             var target = SVG.get(options.connector.node.attributes.href.value.slice(1))
@@ -166,7 +168,14 @@ import SVG from 'svg.js';
             var tPos = con.target.rbox();
 
             if(con.sourceAttach == 'center') {
-                temp.point1 = [con.source.cx(), con.source.cy()]
+                if (con.sourceAttachPosition) {
+                    const { x, y } = con.sourceAttachPosition;
+                    temp.point1 = [x, y]
+                }
+                else {
+                    temp.point1 = [con.source.cx(), con.source.cy()]
+                }
+                //console.log('sourceAttachPosition',con.sourceAttachPosition,temp.point1)                
             }
             else if(con.source.type == 'ellipse'){
                 // Get ellipse radius
@@ -215,7 +224,14 @@ import SVG from 'svg.js';
 
 
             if(con.targetAttach == 'center') {
-                temp.point2 = [con.target.cx(), con.target.cy()]
+                if (con.targetAttachPosition) {
+                    const { x, y } = con.targetAttachPosition;
+                    temp.point2 = [x, y]
+                }
+                else {
+                    temp.point2 = [con.target.cx(), con.target.cy()]
+                }
+                //console.log('targetAttachPosition',con.targetAttachPosition,temp.point2)
             }
             else if(con.target.type == 'ellipse'){
                 // Get ellipse radius

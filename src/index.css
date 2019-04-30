@@ -302,3 +302,8 @@ g[data-className="Workplace"] .state {
   color: #001f3f;
   cursor: default;
 }
+
+.tools {
+  display: flex;
+  justify-content: space-evenly;
+}

@@ -5,6 +5,7 @@ import { store } from '../redux/configureStore';
 import { getOperationsByProcess } from '../redux/operation';
 import { workplaceRepository } from './workplace/workplaceRepository';
 import isEqual from 'lodash/isEqual';
+import Craft from '../modules/utils/Craft';
 
 class OperationFlow {
     constructor(options = {}) {
@@ -33,13 +34,15 @@ class OperationFlow {
 
         pairs.forEach(pair => {
             const [first, second] = pair;
-            first.connectable({
+            first.svg.connectable({
                 container: links,
                 markers: markers,
                 marker: 'use:connectable-marker-triangle',
                 targetAttach: 'center',
+                targetAttachPosition: Craft.getCentroid(second),
                 sourceAttach: 'center',
-            }, second);
+                sourceAttachPosition: Craft.getCentroid(first),
+            }, second.svg);
         })
 
         this.svg = g;
@@ -55,11 +58,11 @@ class OperationFlow {
     createConnectablePairs = operations => {
         let pairs = [];
         if (operations.length > 1) {
-            let prev = operations[0].workplace.svg;
+            let prev = operations[0].workplace;
 
             for (let i = 1; i < operations.length; i++) {
                 const o = operations[i];
-                const current = o.workplace.svg;
+                const current = o.workplace;
                 pairs.push([prev, current]);
                 prev = current;
             }
