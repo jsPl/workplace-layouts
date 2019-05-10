@@ -19,19 +19,32 @@ export const calculateDistanceData = (idsArray, distanceCalculationFunction) => 
 
 export const claculateFlowData = pairs => {
     return pairs.reduce((flowData, pair) => {
-        const [first, second] = pair;
+        const [first, second] = pair.map(o => o.default_workplace_id);
         flowData[first] = [...flowData[first] || [], second]
         return flowData
+    }, {})
+}
+
+export const calculateCostData = pairs => {
+    return pairs.reduce((costData, pair) => {
+        const [first, second] = pair;
+        const cost = first.koszt_transportu === 0 ? 1 : first.koszt_transportu;
+
+        costData[first.default_workplace_id] = {
+            ...costData[first.default_workplace_id],
+            [second.default_workplace_id]: cost
+        };
+        return costData
     }, {})
 }
 
 export const claculateFlowPairs = operations => {
     let pairs = [];
     if (operations.length > 1) {
-        let prev = operations[0].default_workplace_id;
+        let prev = operations[0];
 
         for (let i = 1; i < operations.length; i++) {
-            const current = operations[i].default_workplace_id;
+            const current = operations[i];
             pairs.push([prev, current]);
             prev = current;
         }

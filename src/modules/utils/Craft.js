@@ -1,14 +1,11 @@
-// import SVG from 'svg.js';
-// import { drawSvg, panZoom } from './draw';
 import { getPanZoomSvgEl } from './panZoom';
-import { calculateDistanceData, claculateFlowPairs, claculateFlowData } from './craft.calculation';
+import { calculateDistanceData, claculateFlowPairs, claculateFlowData, calculateCostData } from './craft.calculation';
 
 class Craft {
     constructor(options = {}) {
         this.options = options;
         this.workplaces = options.workplaces || [];
         this.operationsByProcess = options.operationsByProcess || {};
-
         //console.log('operationsByProcess', this.operationsByProcess)
     }
 
@@ -22,6 +19,13 @@ class Craft {
         return Math.abs(centroid2.x - centroid1.x) + Math.abs(centroid2.y - centroid1.y)
     }
 
+    calculateFlowPairs = () => {
+        if (!this.flowPairs) {
+            this.flowPairs = Object.values(this.operationsByProcess).flatMap(operations => claculateFlowPairs(operations));
+        }
+        return this.flowPairs;
+    }
+
     calculateDistanceData = () => {
         const distanceCalculationFun = (id1, id2) => {
             const centroid1 = Craft.getCentroid(this.workplaces.find(o => o.id === id1));
@@ -33,22 +37,37 @@ class Craft {
     }
 
     calculateCostData = () => {
-
+        const costData = calculateCostData(this.calculateFlowPairs());
+        //console.log('calculateCostData', costData)
+        return costData
     }
 
     calculateFlowData = () => {
-        const pairs = Object.values(this.operationsByProcess).flatMap(operations => claculateFlowPairs(operations));
-        const flowData = claculateFlowData(pairs);
-        //console.log('pairs', pairs, 'flowData', flowData)
+        const flowData = claculateFlowData(this.calculateFlowPairs());
+        //console.log('calculateFlowData', flowData)
         return flowData
     }
 
     calculateLayoutCost = () => {
         const distanceData = this.calculateDistanceData();
         const flowData = this.calculateFlowData();
+        const costData = this.calculateCostData();
+
+        console.log('distanceData', distanceData)
+        console.log('flowData', flowData)
+        console.log('costData', costData)
+
         const sum = (a, c) => a + c;
-        const distance = (id1, id2) => (distanceData[id1] && distanceData[id1][id2]) || distanceData[id2][id1];
-        const cost = (id1, id2) => 1;
+        const distance = (id1, id2) => {
+            const result = (distanceData[id1] && distanceData[id1][id2]) || distanceData[id2][id1];
+            //console.log('distance ', id1, ' - ', id2, result);
+            return result;
+        };
+        const cost = (id1, id2) => {
+            const result = (costData[id1] && costData[id1][id2]) || costData[id2][id1];
+            //console.log('cost ', id1, ' - ', id2, result);
+            return result;
+        };
 
         const summands = Object.entries(flowData).map(([idFrom, idsTo]) => {
             const movementCost = idsTo.map(idTo => distance(idFrom, idTo) * cost(idFrom, idTo));
@@ -56,7 +75,9 @@ class Craft {
             console.log(idFrom, ' to ', idsTo, 'movementCost', movementCost, 'total', total)
             return total
         })
-        console.log(summands, summands.reduce(sum))
+        const layoutCost = parseInt(summands.reduce(sum), 10);
+        console.log(summands, layoutCost);
+        return layoutCost;
     }
 
     logCentroids = (options = { draw: false }) => {

@@ -30,6 +30,7 @@ export const mapOperation = operation => ({
     description: operation.version_fields.desc || '',
     default_workplace_id: parseInt(operation.version_fields.default_workplace, 10) || 0,
     default_workplace_title: operation.default_workplace_title || '',
+    koszt_transportu: toFloat(operation.koszt_transportu) || 0
 })
 
 const mapProductionHall = hall => ({
