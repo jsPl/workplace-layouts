@@ -41,6 +41,9 @@ const Details = ({ workplace }) => (
         <Tag color={workplace.state.code} className='wpState' visible={workplace.state.label !== ''} title='State'>
             {workplace.state.label}
         </Tag>
+        <Tag color='#d5af91' className='wpFixedPosition' visible={workplace.fixedPosition} title='Not moveable'>
+            fixed
+        </Tag>        
     </div>
 )
 

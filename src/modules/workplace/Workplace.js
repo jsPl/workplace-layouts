@@ -76,6 +76,11 @@ export default class Workplace {
         return this.rectBbox;
     }
 
+    getCenter = (relativeTo = getPanZoomSvgEl()) => {
+        const box = this.rectBbox.rbox(relativeTo);
+        return { x: box.cx, y: box.cy }
+    }
+
     drawSvg = () => {
         let group = drawSvg.group();
 
@@ -92,19 +97,18 @@ export default class Workplace {
         group.on('dragend', this.handleDragEnd);
 
         selection.addSelectable(group, this.handleSelection);
+        if (this.fixedPosition) {
+            group.addClass('fixed');
+        }
 
-        group.move(this.x, this.y).data('workplace-id', this.id);
+        group.move(this.x, this.y)
+            .data('workplace-id', this.id)
+            .addTo(getPanZoomSvgEl());
 
-        group.addTo(getPanZoomSvgEl());
         this.svg = group;
         this.enableDrag();
 
         SvgClassname.set(this.svg, 'Workplace');
-
-        // const centroid = Craft.getCentroid(this);
-        // console.log('centroid of ', this.title, centroid);
-        // drawSvg.circle(5).fill('#f06').center(centroid.x, centroid.y).addTo(getPanZoomSvgEl())
-
         return this;
     }
 
@@ -145,13 +149,14 @@ export default class Workplace {
     }
 
     enableDrag() {
-        this.svg.draggy();
-        this._isDragEnabled = true;
+        if (!this.fixedPosition) {
+            this.svg.draggy();
+            this._isDragEnabled = true;
+        }
         return this;
     }
 
     disableDrag() {
-        this.svg.fixed();
         this._isDragEnabled = false;
         return this;
     }

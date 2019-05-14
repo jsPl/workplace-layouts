@@ -10,8 +10,7 @@ class Craft {
     }
 
     static getCentroid = (workplace, relativeTo = getPanZoomSvgEl()) => {
-        const box = workplace.rectBbox.rbox(relativeTo);
-        return { x: box.cx, y: box.cy }
+       return workplace.getCenter(relativeTo)
     }
 
     static getDistance = (centroid1, centroid2) => {
@@ -48,7 +47,7 @@ class Craft {
         return flowData
     }
 
-    calculateLayoutCost = () => {
+    calculateLayoutCost = () => new Promise(resolve => {
         const distanceData = this.calculateDistanceData();
         const flowData = this.calculateFlowData();
         const costData = this.calculateCostData();
@@ -77,8 +76,8 @@ class Craft {
         })
         const layoutCost = parseInt(summands.reduce(sum), 10);
         console.log(summands, layoutCost);
-        return layoutCost;
-    }
+        resolve(layoutCost);
+    })
 
     logCentroids = (options = { draw: false }) => {
         this.workplaces.forEach(o => {

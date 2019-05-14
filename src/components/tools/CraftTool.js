@@ -42,7 +42,7 @@ const runCraft = () => {
     //const k = Object.values(distanceData).map(o => Object.keys(o).length).sort((a, b) => a - b)
     //console.log(k, k.reduce((a, c) => a + c))
 
-    craft.calculateLayoutCost()
+    craft.calculateLayoutCost().then(cost => console.log('layout cost = ' + cost))
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CraftTool)

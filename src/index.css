@@ -55,8 +55,34 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
+#grad-workplace {
+  --color-start: #f5fafc;
+  --color-mid: #add9e5;
+  --color-end: #c9e6ed;
+}
+
+#grad-workplace-colliding {
+  --color-start: #ffdada;
+  --color-end: #ffacac;
+}
+
+#grad-workplace-selected {
+  --color-start: #d4efd5;
+  --color-end: #72d176;
+}
+
+#grad-workplace-fixed {
+  --color-start: #fce3ce;
+  --color-mid: #d5af91;
+  --color-end: #d5ad8d;
+}
+
 .selectable.selected.colliding .workplaceBBox {
   fill: url(#grad-workplace-colliding);
+}
+
+.selectable.fixed .workplaceBBox {
+  fill: url(#grad-workplace-fixed);
 }
 
 .selectable.selected .workplaceBBox {
@@ -298,7 +324,7 @@ g[data-className="Workplace"] .state {
   stroke: #85144b;
 }
 
-.ant-tag.wpState {
+.ant-tag.wpState, .ant-tag.wpFixedPosition {
   color: #001f3f;
   cursor: default;
 }

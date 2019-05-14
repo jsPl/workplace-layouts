@@ -9,7 +9,8 @@ import withPopoverHint from '../panel/withPopoverHint';
 
 const MeasureTool = ({ isMeasureMode, isLoading, toggleMeasureTool }) => {
     return (
-        <Button onClick={toggleMeasureTool} icon='colum-height' disabled={isMeasureMode || isLoading}>
+        <Button onClick={toggleMeasureTool} icon='colum-height' disabled={isMeasureMode || isLoading}
+            title='Measure distance'>
             Measure
         </Button>
     )

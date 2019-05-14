@@ -30,19 +30,23 @@ export const snapToGrid = (x, y, elem) => ({
 const drawGradientsAndMarkers = draw => {
     draw.defs().svg(`
         <linearGradient id="grad-workplace" gradientTransform="rotate(90 0.5 0.5)">
-            <stop offset="0" stop-color="#f5fafc" stop-opacity="1"/>
-            <stop offset="0.74" stop-color="#add9e5" stop-opacity="1"/>
-            <stop offset="0.83" stop-color="#add9e5" stop-opacity="1"/>
-            <stop offset="1" stop-color="#c9e6ed" stop-opacity="1"/>
+            <stop offset="0" stop-color="var(--color-start)" />
+            <stop offset="0.8" stop-color="var(--color-mid)" />
+            <stop offset="1" stop-color="var(--color-end)" />
         </linearGradient>
         <linearGradient id="grad-workplace-selected" gradientTransform="rotate(90 0.5 0.5)">
-            <stop offset="0" stop-color="#d4efd5" />
-            <stop offset="1" stop-color="#72d176" />
+            <stop offset="0" stop-color="var(--color-start)" />
+            <stop offset="1" stop-color="var(--color-end)" />
         </linearGradient>
         <linearGradient id="grad-workplace-colliding" gradientTransform="rotate(90 0.5 0.5)">
-            <stop offset="0" stop-color="#ffdada" />
-            <stop offset="1" stop-color="#ffacac" />
+            <stop offset="0" stop-color="var(--color-start)" />
+            <stop offset="1" stop-color="var(--color-end)" />
         </linearGradient>
+        <linearGradient id="grad-workplace-fixed" gradientTransform="rotate(90 0.5 0.5)">
+            <stop offset="0" stop-color="var(--color-start)" />
+            <stop offset="0.8" stop-color="var(--color-mid)" />
+            <stop offset="1" stop-color="var(--color-end)" />
+        </linearGradient>        
         <marker id="marker-ruler" markerWidth="1" markerHeight="6" refY="3" orient="auto">
             <rect width="1" height="6" />
         </marker>
