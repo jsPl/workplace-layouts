@@ -10,7 +10,7 @@ const ToggleWorkplaceImageVisibility = ({ isWorkplacePictureVisible, handleWorkp
             checked={isWorkplacePictureVisible}
             onChange={visible => handleWorkplacePictureVisibilityToggle(visible, restoreDefaultsBtnRef)}
         />
-        <span>workplace pictures</span>
+        <span>Workplace pictures</span>
     </label>
 )
 

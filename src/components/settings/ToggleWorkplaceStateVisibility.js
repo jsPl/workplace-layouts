@@ -10,7 +10,7 @@ const ToggleWorkplaceStateVisibility = ({ isWorkplaceStateVisible, handleWorkpla
             checked={isWorkplaceStateVisible}
             onChange={visible => handleWorkplaceStateVisibilityToggle(visible, restoreDefaultsBtnRef)}
         />
-        <span>workplace state icons</span>
+        <span>Workplace state icons</span>
     </label>
 )
 

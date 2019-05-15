@@ -1,5 +1,8 @@
 import { getPanZoomSvgEl } from './panZoom';
-import { calculateDistanceData, claculateFlowPairs, claculateFlowData, calculateCostData } from './craft.calculation';
+import {
+    calculateDistanceData, claculateFlowPairs, claculateFlowData, calculateCostData,
+    claculatePossibleSwapsFromFlowData, claculatePossibleSwapsFromDistanceData
+} from './craft.calculation';
 
 class Craft {
     constructor(options = {}) {
@@ -10,7 +13,7 @@ class Craft {
     }
 
     static getCentroid = (workplace, relativeTo = getPanZoomSvgEl()) => {
-       return workplace.getCenter(relativeTo)
+        return workplace.getCenter(relativeTo)
     }
 
     static getDistance = (centroid1, centroid2) => {
@@ -18,14 +21,14 @@ class Craft {
         return Math.abs(centroid2.x - centroid1.x) + Math.abs(centroid2.y - centroid1.y)
     }
 
-    calculateFlowPairs = () => {
+    calculateFlowPairs() {
         if (!this.flowPairs) {
             this.flowPairs = Object.values(this.operationsByProcess).flatMap(operations => claculateFlowPairs(operations));
         }
         return this.flowPairs;
     }
 
-    calculateDistanceData = () => {
+    calculateDistanceData() {
         const distanceCalculationFun = (id1, id2) => {
             const centroid1 = Craft.getCentroid(this.workplaces.find(o => o.id === id1));
             const centroid2 = Craft.getCentroid(this.workplaces.find(o => o.id === id2));
@@ -35,16 +38,26 @@ class Craft {
         return calculateDistanceData(this.workplaces.map(o => o.id), distanceCalculationFun)
     }
 
-    calculateCostData = () => {
+    calculateCostData() {
         const costData = calculateCostData(this.calculateFlowPairs());
         //console.log('calculateCostData', costData)
         return costData
     }
 
-    calculateFlowData = () => {
+    calculateFlowData() {
         const flowData = claculateFlowData(this.calculateFlowPairs());
         //console.log('calculateFlowData', flowData)
         return flowData
+    }
+
+    calculatePossibleSwaps() {
+        const swapsFromFlow = claculatePossibleSwapsFromFlowData(this.calculateFlowData());
+        //const swapsFromDistance = claculatePossibleSwapsFromDistanceData(this.calculateDistanceData());
+
+        console.log('claculatePossibleSwapsFromFlowData', swapsFromFlow)
+        //console.log('claculatePossibleSwapsFromDistanceData', swapsFromDistance)
+        // console.log(swapsFromFlow.map(pair => pair.map(o => o.title)))
+        return swapsFromFlow;
     }
 
     calculateLayoutCost = () => new Promise(resolve => {
@@ -71,7 +84,7 @@ class Craft {
         const summands = Object.entries(flowData).map(([idFrom, idsTo]) => {
             const movementCost = idsTo.map(idTo => distance(idFrom, idTo) * cost(idFrom, idTo));
             const total = movementCost.reduce(sum);
-            console.log(idFrom, ' to ', idsTo, 'movementCost', movementCost, 'total', total)
+            //console.log(idFrom, ' to ', idsTo, 'movementCost', movementCost, 'total', total)
             return total
         })
         const layoutCost = parseInt(summands.reduce(sum), 10);

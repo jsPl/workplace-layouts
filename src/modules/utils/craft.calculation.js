@@ -38,6 +38,19 @@ export const calculateCostData = pairs => {
     }, {})
 }
 
+export const claculatePossibleSwapsFromFlowData = flowData => {
+    return Object.keys(flowData).flatMap(id1 =>
+        [...new Set(flowData[id1])] // distinct
+            .reduce((pairs, id) => [...pairs, [parseInt(id1, 10), parseInt(id, 10)]], [])
+    )
+}
+
+export const claculatePossibleSwapsFromDistanceData = distanceData => {
+    return Object.keys(distanceData).flatMap(id1 =>
+        Object.keys(distanceData[id1]).reduce((pairs, id) => [...pairs, [parseInt(id1, 10), parseInt(id, 10)]], [])
+    )
+}
+
 export const claculateFlowPairs = operations => {
     let pairs = [];
     if (operations.length > 1) {

@@ -46,8 +46,11 @@ const swapWorkplacesPosition = (wp1, wp2) => {
     // console.log(box1, sbox1, delta1)
     // console.log(box2, sbox2, delta2)
 
-    wp2.svg.center(c1.x - delta2.x, c1.y - delta2.y)
-    wp1.svg.center(c2.x - delta1.x, c2.y - delta1.y)
+    wp2.svg.center(c1.x - delta2.x, c1.y - delta2.y);
+    wp1.svg.center(c2.x - delta1.x, c2.y - delta1.y);
+
+    wp1.dispatchPositionUpdate();
+    wp2.dispatchPositionUpdate();
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SwapTool)

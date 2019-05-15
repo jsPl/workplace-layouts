@@ -21,6 +21,10 @@ const hint =
             You can hold <kbd>Ctrl</kbd> for multiple selection.
             <br /><kbd>Esc</kbd> to unselect.
         </dd>
+        <dt>Swapping workplaces</dt>
+        <dd>
+            You can swap position of two selected (non fixed) workplaces using the swap tool.
+        </dd>        
     </dl>
 
 const hintConfig = ({ selectedWorkplaces }) => ({

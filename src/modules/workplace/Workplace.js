@@ -14,7 +14,7 @@ export default class Workplace {
     constructor(options) {
         Object.assign(this, options);
 
-        this.handleDetectCollisionThrottled = throttle(this.handleDetectCollision, 100);
+        this.handleDetectCollisionThrottled = throttle(this.detectCollision, 100);
         this._isDragEnabled = false;
     }
 
@@ -41,13 +41,11 @@ export default class Workplace {
         }
 
         if (this.hasMoved()) {
-            let x = toFixed(this.svg.x());
-            let y = toFixed(this.svg.y());
-            store.dispatch(updateWorkplace({ id: this.id, x, y }));
+            this.dispatchPositionUpdate();
         }
     }
 
-    handleDetectCollision() {
+    detectCollision() {
         let collisions = workplaceRepository.findCollisionsWith(this);
 
         let isColliding = collisions.length > 0;
@@ -56,11 +54,8 @@ export default class Workplace {
             this.svg.addClass('colliding');
         } else {
             this.svg.removeClass('colliding');
-            //this.startX = this.svg.x();
-            //this.startY = this.svg.y();
         }
-
-        //console.log('isColliding', isColliding, 'collisions', collisions);
+        return isColliding;
     }
 
     handleSelection = evt => {
@@ -70,6 +65,12 @@ export default class Workplace {
 
     hasMoved() {
         return this.startX !== this.svg.x() || this.startY !== this.svg.y();
+    }
+
+    dispatchPositionUpdate = () => {
+        let x = toFixed(this.svg.x());
+        let y = toFixed(this.svg.y());
+        store.dispatch(updateWorkplace({ id: this.id, x, y }));
     }
 
     getSvgForCollisionCalculation() {
