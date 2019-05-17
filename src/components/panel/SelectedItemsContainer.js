@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect, batch } from 'react-redux';
+import { connect } from 'react-redux';
 import { SelectedItems } from './SelectedItems';
-import { getSelectedWorkplaces, selectWorkplace } from '../../redux/workplace';
-import { selectProcess } from '../../redux/process';
+import { getSelectedWorkplaces } from '../../redux/workplace';
 import { getOperationsOfSelectedProcesses } from '../../redux/operation';
-import { getSelectedItemsActiveTab, setSelectedItemsActiveTab } from '../../redux/ui';
+import { getSelectedItemsActiveTab, setSelectedItemsActiveTab, boundClearCurrentSelection } from '../../redux/ui';
 import PropTypes from 'prop-types';
 import { Badge } from 'antd';
 import WorkplaceSelectedPanel from '../workplace/selected/WorkplaceSelectedPanel';
@@ -89,10 +88,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(setSelectedItemsActiveTab(activeTab));
     },
     handleClose() {
-        batch(() => {
-            dispatch(selectWorkplace({ ids: [] }));
-            dispatch(selectProcess({ ids: [] }));
-        })
+        boundClearCurrentSelection(dispatch)
     }
 });
 

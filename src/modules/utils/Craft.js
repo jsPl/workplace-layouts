@@ -3,6 +3,7 @@ import {
     calculateDistanceData, claculateFlowPairs, claculateFlowData, calculateCostData,
     claculatePossibleSwapsFromFlowData, claculatePossibleSwapsFromDistanceData
 } from './craft.calculation';
+import { Observable } from 'rxjs';
 
 class Craft {
     constructor(options = {}) {
@@ -51,23 +52,33 @@ class Craft {
     }
 
     calculatePossibleSwaps() {
-        const swapsFromFlow = claculatePossibleSwapsFromFlowData(this.calculateFlowData());
-        //const swapsFromDistance = claculatePossibleSwapsFromDistanceData(this.calculateDistanceData());
+        //const swapsFromFlow = claculatePossibleSwapsFromFlowData(this.calculateFlowData());
+        const swapsFromDistance = claculatePossibleSwapsFromDistanceData(this.calculateDistanceData());
 
-        console.log('claculatePossibleSwapsFromFlowData', swapsFromFlow)
+        //console.log('claculatePossibleSwapsFromFlowData', swapsFromFlow)
         //console.log('claculatePossibleSwapsFromDistanceData', swapsFromDistance)
         // console.log(swapsFromFlow.map(pair => pair.map(o => o.title)))
-        return swapsFromFlow;
+        return swapsFromDistance;
     }
 
-    calculateLayoutCost = () => new Promise(resolve => {
+    calculateLayoutCostPromise = () => new Promise(resolve => {
+        resolve(this.calculateLayoutCost());
+    })
+
+    calculateLayoutCostObservable = () => new Observable(subscriber => {
+        subscriber.next(this.calculateLayoutCost());
+        subscriber.complete();
+    })
+
+    calculateLayoutCost() {
+        //console.log('calculateLayoutCost')
         const distanceData = this.calculateDistanceData();
         const flowData = this.calculateFlowData();
         const costData = this.calculateCostData();
 
-        console.log('distanceData', distanceData)
-        console.log('flowData', flowData)
-        console.log('costData', costData)
+        // console.log('distanceData', distanceData)
+        // console.log('flowData', flowData)
+        // console.log('costData', costData)
 
         const sum = (a, c) => a + c;
         const distance = (id1, id2) => {
@@ -88,9 +99,9 @@ class Craft {
             return total
         })
         const layoutCost = parseInt(summands.reduce(sum), 10);
-        console.log(summands, layoutCost);
-        resolve(layoutCost);
-    })
+        //console.log(summands, layoutCost);
+        return layoutCost
+    }
 
     logCentroids = (options = { draw: false }) => {
         this.workplaces.forEach(o => {

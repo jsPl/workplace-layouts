@@ -331,5 +331,10 @@ g[data-className="Workplace"] .state {
 
 .tools {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tools>* {
+  margin: 0.25em 0.3em;
 }

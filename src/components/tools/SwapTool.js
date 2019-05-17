@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { isLoadingWorkplaces, getSelectedWorkplaces } from '../../redux/workplace';
 import { workplaceRepository } from '../../modules/workplace/workplaceRepository';
 import { getPanZoomSvgEl } from '../../modules/utils/panZoom';
+import { Observable } from 'rxjs';
 
 const SwapTool = ({ disabled, swapWorkplaces, selectedWorkplaces }) => {
     return (
@@ -28,8 +29,8 @@ const mapDispatchToProps = dispatch => ({
     }
 })
 
-const swapWorkplacesPosition = (wp1, wp2) => {
-    //console.log('swap', wp1, wp2)
+export const swapWorkplacesPosition = (wp1, wp2) => {
+    //console.log('swapWorkplacesPosition', wp1.title, wp2.title)
     const c1 = wp1.getCenter(), c2 = wp2.getCenter();
 
     const relativeTo = getPanZoomSvgEl();
@@ -52,5 +53,16 @@ const swapWorkplacesPosition = (wp1, wp2) => {
     wp1.dispatchPositionUpdate();
     wp2.dispatchPositionUpdate();
 }
+
+export const swapWorkplacesPositionObservable = workplaces => new Observable(subscriber => {
+    if (workplaces && workplaces.length > 0) {
+        //console.log('swap workplaces', workplaces.map(o => o.title).join(' <-> '))
+        swapWorkplacesPosition(...workplaces)
+    }
+    else {
+        //console.log('swap workplaces: none')
+    }
+    subscriber.complete();
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SwapTool)
