@@ -3,9 +3,12 @@ import { Button } from 'antd';
 import { connect } from 'react-redux';
 import { isLoadingWorkplaces } from '../../redux/workplace';
 import { getProcessesIds } from '../../redux/process';
-import { calculateCurrentLayoutCostSuccess, boundClearCurrentSelection } from '../../redux/ui';
+import { boundClearCurrentSelection } from '../../redux/ui';
+import { calculateCurrentLayoutCostComplete, startCraftSingleIteration, cancelCraftSingleIteration } from "../../redux/craft";
 import { fetchAllOperations, getOperationsByProcess } from '../../redux/operation';
+import { isIterationRunning } from '../../redux/craft';
 import Craft from '../../modules/utils/Craft';
+import CraftNotification from '../panel/CraftNotification';
 import { workplaceRepository } from '../../modules/workplace/workplaceRepository';
 import { store } from '../../redux/configureStore';
 import { swapWorkplacesPosition, swapWorkplacesPositionObservable } from './SwapTool';
@@ -13,7 +16,7 @@ import minBy from 'lodash/minBy';
 import { tap, finalize, delay, map, mergeMap, concatMap, takeUntil } from 'rxjs/operators';
 import { of, concat, merge, from, Observable, timer } from 'rxjs';
 
-const CraftTool = ({ disabled, processesIds, runCraftIteration, calculateLayoutCost }) => {
+const CraftTool = ({ disabled, processesIds, runCraftIteration, calculateLayoutCost, cancelCraftIteration }) => {
     return (
         <>
             <Button onClick={() => runCraftIteration(processesIds)} icon='calculator' disabled={disabled}>
@@ -23,13 +26,17 @@ const CraftTool = ({ disabled, processesIds, runCraftIteration, calculateLayoutC
                 title='Calculate cost of current layout using Craft algorithm'>
                 Layout cost
             </Button>
+            {/* <Button onClick={cancelCraftIteration} icon='calculator'>
+                Cancel
+            </Button> */}
+            <CraftNotification />
         </>
     )
 }
 
 const mapStateToProps = state => ({
-    disabled: isLoadingWorkplaces(state),
-    processesIds: getProcessesIds(state)
+    disabled: isLoadingWorkplaces(state) || isIterationRunning(state),
+    processesIds: getProcessesIds(state),
 })
 
 const mapDispatchToProps = dispatch => {
@@ -43,7 +50,10 @@ const mapDispatchToProps = dispatch => {
         },
         calculateLayoutCost(processesIds) {
             fetchOperationsAndRunCallback(processesIds, () => calculateLayoutCost(dispatch))
-        }
+        },
+        cancelCraftIteration() {
+            dispatch(cancelCraftSingleIteration())
+        },
     }
 }
 
@@ -55,7 +65,7 @@ const calculateLayoutCost = dispatch => {
 
     craft.calculateLayoutCostPromise().then(cost => {
         console.log('layout cost = ' + cost)
-        dispatch(calculateCurrentLayoutCostSuccess({ cost }))
+        dispatch(calculateCurrentLayoutCostComplete({ cost }))
     })
 }
 
@@ -64,10 +74,12 @@ const runCraftIteration = dispatch => {
     const operationsByProcess = getOperationsByProcess(store.getState());
 
     const craftIterations = createCraftIterations(workplaces, operationsByProcess);
-    console.log('craftIterations', craftIterations);
+    //console.log('craftIterations', craftIterations);
+
+    dispatch(startCraftSingleIteration({ craftIterations }))
 
     //iterateAsPromises(craftIterations, dispatch);
-    iterateAsObservables(craftIterations)
+    //iterateAsObservables(craftIterations)
 }
 
 const createCraftIterations = (workplaces, operationsByProcess) => {
@@ -97,7 +109,7 @@ const iterateAsObservables = craftIterations => {
             swapWorkplacesPositionObservable(o.exchange.workplaces),
             o.calculateLayoutCost().pipe(
                 map(cost => { o.cost = cost; return o; }),
-                delay(1000)
+                delay(100)
             ),
             swapWorkplacesPositionObservable(o.exchange.workplaces)
         ])

@@ -7,14 +7,13 @@ import {
 import { OPERATIONS_FETCH_FAILURE, OPERATIONS_FETCH_SUCCESS } from './operation';
 import { selectWorkplace } from './workplace';
 import { selectProcess } from './process';
+import { CRAFT_CALCULATE_CURRENT_LAYOUT_COST_COMPLETE } from './craft';
 
 const TOOLS_MEASURE_TOGGLE = 'TOOLS_MEASURE_TOGGLE';
 const SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE = 'SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE';
 const SVG_WORKPLACE_STATE_VISIBILITY_CHANGE = 'SVG_WORKPLACE_STATE_VISIBILITY_CHANGE';
 const UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE = 'UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE';
 const PANNING_BLOCK = 'PANNING_BLOCK';
-//const CRAFT_CALCULATE_CURRENT_LAYOUT_COST_START = 'CRAFT_CALCULATE_CURRENT_LAYOUT_COST_START';
-const CRAFT_CALCULATE_CURRENT_LAYOUT_COST_SUCCESS = 'CRAFT_CALCULATE_CURRENT_LAYOUT_COST_SUCCESS';
 
 const initialState = {
     isMeasureToolMode: false,
@@ -49,7 +48,7 @@ export default function reducer(state = initialState, action) {
         case PRODUCTION_HALL_WITH_WORKPLACES_FETCH_SUCCESS:
             return { ...state, message: null }
 
-        case CRAFT_CALCULATE_CURRENT_LAYOUT_COST_SUCCESS:
+        case CRAFT_CALCULATE_CURRENT_LAYOUT_COST_COMPLETE:
             return { ...state, message: action.message }
         default:
             return state
@@ -68,13 +67,6 @@ export const changeSvgWorkplaceStateVisibility = visible => {
     return { type: SVG_WORKPLACE_STATE_VISIBILITY_CHANGE, visible }
 }
 export const blockPanning = block => ({ type: PANNING_BLOCK, block })
-export const calculateCurrentLayoutCostSuccess = payload => ({
-    type: CRAFT_CALCULATE_CURRENT_LAYOUT_COST_SUCCESS,
-    message: {
-        type: 'info',
-        message: `Current layout cost: ${payload.cost}`
-    }
-});
 export const boundClearCurrentSelection = dispatch => batch(() => {
     dispatch(selectWorkplace({ ids: [] }));
     dispatch(selectProcess({ ids: [] }));

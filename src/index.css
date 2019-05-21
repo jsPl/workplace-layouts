@@ -338,3 +338,8 @@ g[data-className="Workplace"] .state {
 .tools>* {
   margin: 0.25em 0.3em;
 }
+
+.ant-notification-notice-description .text {
+  margin-left: 0.8em;
+  display: inline-block;
+}
