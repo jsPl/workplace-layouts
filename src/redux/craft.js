@@ -12,6 +12,7 @@ export const CRAFT_SINGLE_ITERATION_COMPLETE = 'CRAFT_SINGLE_ITERATION_COMPLETE'
 const currentIterationState = {
     running: false,
     complete: false,
+    canceled: false,
     values: [],
     total: 0,
 }
@@ -30,14 +31,17 @@ export default function reducer(state = initialState, action) {
 const currentIteration = (state = currentIterationState, action) => {
     switch (action.type) {
         case CRAFT_SINGLE_ITERATION_START:
-            return { ...state, running: true, complete: false, total: action.payload.craftIterations.length, values: [] }
+            return {
+                ...state, running: true, complete: false, canceled: false,
+                total: action.payload.craftIterations.length, values: []
+            }
         case CRAFT_SINGLE_ITERATION_CANCEL:
-            return { ...state, running: false, complete: false }
+            return { ...state, running: false, complete: false, canceled: true }
         case CRAFT_SINGLE_ITERATION_NEXT:
-            const { exchange, cost } = action.payload.craftIteration;
-            return { ...state, values: [...state.values, { cost, exchange }] }
+            const { craftIteration } = action.payload;
+            return { ...state, values: [...state.values, craftIteration] }
         case CRAFT_SINGLE_ITERATION_COMPLETE:
-            return { ...state, running: false, complete: true }
+            return { ...state, running: false, complete: true, canceled: false }
         default:
             return state
     }
@@ -61,7 +65,7 @@ export const calculateCurrentLayoutCostComplete = payload => ({
 // Selectors
 export const isIterationRunning = ({ craft }) => craft.currentIteration.running;
 export const isIterationComplete = ({ craft }) => craft.currentIteration.complete;
-export const isIterationCanceled = createSelector(isIterationRunning, isIterationComplete, (running, complete) => !running && !complete)
+export const isIterationCanceled = ({ craft }) => craft.currentIteration.canceled;
 export const getCurrentIterationItems = ({ craft }) => craft.currentIteration.values;
 export const getCurrentIterationTotalCount = ({ craft }) => craft.currentIteration.total;
 export const getCurrentIterationCurrentCount = state => getCurrentIterationItems(state).length;

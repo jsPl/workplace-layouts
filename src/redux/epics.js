@@ -1,9 +1,8 @@
 import { ofType, combineEpics } from 'redux-observable';
 import {
-    mergeMap, switchMap, concatMap, catchError, map, withLatestFrom, finalize, delay, mapTo, tap,
-    first, ignoreElements, takeUntil, take, endWith, takeWhile
+    mergeMap, switchMap, concatMap, catchError, map, withLatestFrom, finalize, delay, tap, takeUntil
 } from 'rxjs/operators';
-import { of, merge, concat, race } from 'rxjs';
+import { of, merge, concat } from 'rxjs';
 import * as api from '../modules/api/api';
 import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
@@ -14,15 +13,13 @@ import { updateProductionHall } from './productionHall';
 import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation, getOperationsByProcess } from './operation';
 import { setSelectedItemsActiveTab } from './ui';
 import {
-    CRAFT_SINGLE_ITERATION_START, CRAFT_SINGLE_ITERATION_CANCEL, CRAFT_SINGLE_ITERATION_COMPLETE,
-    completeCraftSingleIteration, nextCraftSingleIteration
+    CRAFT_SINGLE_ITERATION_START, CRAFT_SINGLE_ITERATION_CANCEL, completeCraftSingleIteration, nextCraftSingleIteration
 } from './craft';
 import {
     PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT
 } from './workplace';
 import { OPERATIONS_FETCH, OPERATIONS_FETCH_ALL } from './operation';
 import { swapWorkplacesPositionObservable } from '../components/tools/SwapTool';
-import minBy from 'lodash/minBy';
 
 // const fetchWorkplaceEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACE'),
@@ -88,7 +85,7 @@ const runCraftSingleIteration = action$ => action$.pipe(
     ofType(CRAFT_SINGLE_ITERATION_START),
     concatMap(({ payload }) => {
         const { craftIterations } = payload;
-        console.log('craftIterations', craftIterations);
+        //console.log('craftIterations', craftIterations);
 
         const iterate$ = concat(
             ...craftIterations.flatMap(o => [
