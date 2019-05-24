@@ -62,7 +62,7 @@ const NotificationButtons = ({ minimalCostItem, complete, canceled, cancelCraftI
     nextCraftIteration, saveCurrentLayout, craftIterations, isSavingLayout }) => {
     const btns = [];
 
-    if (minimalCostItem) {
+    if (complete && minimalCostItem) {
         const { exchange } = minimalCostItem;
         if (exchange.ids) {
             const runNextIteration = () => nextCraftIteration(exchange, craftIterations)
@@ -134,8 +134,8 @@ const mapDispatchToProps = dispatch => ({
     cancelCraftIteration() {
         dispatch(cancelCraftSingleIteration())
     },
-    nextCraftIteration(exchange, craftIterations) {
-        swapWorkplacesPosition(...exchange.workplaces)
+    nextCraftIteration(bestExchange, craftIterations) {
+        swapWorkplacesPosition(...bestExchange.workplaces)
         dispatch(startCraftSingleIteration({ craftIterations }))
     },
     saveCurrentLayout() {

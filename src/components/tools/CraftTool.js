@@ -12,7 +12,7 @@ import CraftNotification from '../panel/CraftNotification';
 import { workplaceRepository } from '../../modules/workplace/workplaceRepository';
 import { store } from '../../redux/configureStore';
 
-const CraftTool = ({ disabled, processesIds, runCraftIteration, calculateLayoutCost, cancelCraftIteration }) => {
+const CraftTool = ({ disabled, processesIds, runCraftIteration, calculateLayoutCost }) => {
     return (
         <>
             <Button onClick={() => calculateLayoutCost(processesIds)} icon='calculator' disabled={disabled}

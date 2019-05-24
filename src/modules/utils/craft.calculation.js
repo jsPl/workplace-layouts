@@ -38,17 +38,30 @@ export const calculateCostData = pairs => {
     }, {})
 }
 
-export const claculatePossibleSwapsFromFlowData = flowData => {
+const claculatePossibleSwapsFromFlowData = flowData => {
     return Object.keys(flowData).flatMap(id1 =>
         [...new Set(flowData[id1])] // distinct
             .reduce((pairs, id) => [...pairs, [parseInt(id1, 10), parseInt(id, 10)]], [])
     )
 }
 
-export const claculatePossibleSwapsFromDistanceData = distanceData => {
+const claculatePossibleSwapsFromDistanceData = distanceData => {
     return Object.keys(distanceData).flatMap(id1 =>
         Object.keys(distanceData[id1]).reduce((pairs, id) => [...pairs, [parseInt(id1, 10), parseInt(id, 10)]], [])
     )
+}
+
+export const claculatePossibleSwaps = (flowData, distanceData, fixedWorkplaces) => {
+    const swapsFromFlow = claculatePossibleSwapsFromFlowData(flowData);
+    const swapsFromDistance = claculatePossibleSwapsFromDistanceData(distanceData);
+
+    const idsFromFlow = [...new Set(swapsFromFlow.flat())];
+    const idsFixed = fixedWorkplaces.map(o => o.id);
+
+    const isPairUsedInFlow = pair => pair.every(id => idsFromFlow.includes(id));
+    const isFixed = pair => pair.some(id => idsFixed.includes(id));
+
+    return swapsFromDistance.filter(pair => isPairUsedInFlow(pair) && !isFixed(pair));
 }
 
 export const claculateFlowPairs = operations => {

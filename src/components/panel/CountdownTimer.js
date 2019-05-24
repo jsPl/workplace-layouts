@@ -5,7 +5,8 @@ import { interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 export const CountdownTimer = props => {
-    const [count, setCount] = useState(props.seconds);
+    const seconds = Math.max(0, props.seconds);
+    const [count, setCount] = useState(seconds);
     const countdown$ = interval(1000).pipe(take(count));
     const decrement = () => setCount(count - 1);
     const subscription = useRef(null);
@@ -20,7 +21,7 @@ export const CountdownTimer = props => {
                 decrement();
             },
             complete() {
-                if (count === 0) {
+                if (count === 0 && seconds > 0) {
                     props.onCountdownComplete();
                 }
             }

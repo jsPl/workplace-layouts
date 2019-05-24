@@ -1,7 +1,6 @@
 import { getPanZoomSvgEl } from './panZoom';
 import {
-    calculateDistanceData, claculateFlowPairs, claculateFlowData, calculateCostData,
-    claculatePossibleSwapsFromFlowData, claculatePossibleSwapsFromDistanceData
+    calculateDistanceData, claculateFlowPairs, claculateFlowData, calculateCostData, claculatePossibleSwaps
 } from './craft.calculation';
 import { Observable } from 'rxjs';
 
@@ -52,13 +51,20 @@ class Craft {
     }
 
     calculatePossibleSwaps() {
-        //const swapsFromFlow = claculatePossibleSwapsFromFlowData(this.calculateFlowData());
-        const swapsFromDistance = claculatePossibleSwapsFromDistanceData(this.calculateDistanceData());
+        const flowData = this.calculateFlowData();
+        const distanceData = this.calculateDistanceData();
+        const fixedWorkplaces = this.workplaces.filter(o => o.fixedPosition);
 
-        //console.log('claculatePossibleSwapsFromFlowData', swapsFromFlow)
-        //console.log('claculatePossibleSwapsFromDistanceData', swapsFromDistance)
-        // console.log(swapsFromFlow.map(pair => pair.map(o => o.title)))
-        return swapsFromDistance;
+        // console.log('flowData', flowData)
+        // console.log('distanceData', distanceData)
+        // const swapsFromFlow = claculatePossibleSwapsFromFlowData(flowData);
+        // const swapsFromDistance = claculatePossibleSwapsFromDistanceData(distanceData);
+        const swaps = claculatePossibleSwaps(flowData, distanceData, fixedWorkplaces);
+
+        // console.log('claculatePossibleSwapsFromFlowData', swapsFromFlow)
+        // console.log('claculatePossibleSwapsFromDistanceData', swapsFromDistance)
+        // console.log('swaps', swaps)
+        return swaps;
     }
 
     calculateLayoutCostPromise = () => new Promise(resolve => {

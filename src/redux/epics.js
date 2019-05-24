@@ -92,7 +92,7 @@ const runCraftSingleIteration = action$ => action$.pipe(
                 swapWorkplacesPositionObservable(o.exchange.workplaces),
                 o.calculateLayoutCost().pipe(
                     map(cost => { o.cost = cost; return nextCraftSingleIteration({ craftIteration: o }) }),
-                    delay(300)
+                    delay(150)
                 ),
                 swapWorkplacesPositionObservable(o.exchange.workplaces)
             ]),
@@ -104,7 +104,7 @@ const runCraftSingleIteration = action$ => action$.pipe(
         //return merge(iterate$, cancel$).pipe(takeWhile(action => action.type !== CRAFT_SINGLE_ITERATION_CANCEL, true))
         return iterate$.pipe(takeUntil(cancel$))
     }),
-    tap(o => console.log('tap', o)),
+    //tap(o => console.log('tap', o)),
 )
 
 // const fetchMultipleProcessOperationsFromApiEpic = action$ => action$.pipe(
