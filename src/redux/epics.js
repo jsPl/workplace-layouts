@@ -104,7 +104,7 @@ const runCraftSingleIteration = action$ => action$.pipe(
         //return merge(iterate$, cancel$).pipe(takeWhile(action => action.type !== CRAFT_SINGLE_ITERATION_CANCEL, true))
         return iterate$.pipe(takeUntil(cancel$))
     }),
-    //tap(o => console.log('tap', o)),
+    tap(o => console.log('tap', o)),
 )
 
 // const fetchMultipleProcessOperationsFromApiEpic = action$ => action$.pipe(

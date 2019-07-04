@@ -2,11 +2,15 @@ import React from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { openPopup } from '../../../modules/utils/utils';
 import { List, Tag } from 'antd';
+import WorkplaceApiConnector from './WorkplaceApiConnector';
+import { workplaceRepository } from '../../../modules/workplace/workplaceRepository';
 
 export default function WorkplaceDetails({ workplace }) {
+    const apiClient = workplaceRepository.findById(workplace.id).apiClient;
+    const actions = apiClient ? [<WorkplaceApiConnector workplace={workplace} api={apiClient} />] : null
 
     return (
-        <List.Item>
+        <List.Item actions={actions}>
             <List.Item.Meta
                 avatar={<Image workplace={workplace} />}
                 title={<Title workplace={workplace} />}
@@ -43,7 +47,7 @@ const Details = ({ workplace }) => (
         </Tag>
         <Tag color='#d5af91' className='wpFixedPosition' visible={workplace.fixedPosition} title='Not moveable'>
             fixed
-        </Tag>        
+        </Tag>
     </div>
 )
 

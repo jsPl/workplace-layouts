@@ -14,6 +14,7 @@ const SVG_WORKPLACE_PICTURE_VISIBILITY_CHANGE = 'SVG_WORKPLACE_PICTURE_VISIBILIT
 const SVG_WORKPLACE_STATE_VISIBILITY_CHANGE = 'SVG_WORKPLACE_STATE_VISIBILITY_CHANGE';
 const UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE = 'UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE';
 const PANNING_BLOCK = 'PANNING_BLOCK';
+const MESSAGE_SHOW = 'MESSAGE_SHOW';
 
 const initialState = {
     isMeasureToolMode: false,
@@ -50,6 +51,9 @@ export default function reducer(state = initialState, action) {
 
         case CRAFT_CALCULATE_CURRENT_LAYOUT_COST_COMPLETE:
             return { ...state, message: action.message }
+
+        case MESSAGE_SHOW:
+            return { ...state, message: action.payload }
         default:
             return state
     }
@@ -71,6 +75,7 @@ export const boundClearCurrentSelection = dispatch => batch(() => {
     dispatch(selectWorkplace({ ids: [] }));
     dispatch(selectProcess({ ids: [] }));
 })
+export const showMessage = (payload = { type: 'info', message: '' }) => ({ type: MESSAGE_SHOW, payload })
 
 // Selectors
 export const getMessage = state => state.ui.message;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { isLoadingWorkplaces } from '../../redux/workplace';
 import { getProcessesIds } from '../../redux/process';
 import { boundClearCurrentSelection } from '../../redux/ui';
-import { calculateCurrentLayoutCostComplete, startCraftSingleIteration, cancelCraftSingleIteration } from "../../redux/craft";
+import { calculateCurrentLayoutCostComplete, startCraftSingleIteration } from "../../redux/craft";
 import { fetchAllOperations, getOperationsByProcess } from '../../redux/operation';
 import { isIterationRunning } from '../../redux/craft';
 import Craft from '../../modules/utils/Craft';
@@ -44,10 +44,7 @@ const mapDispatchToProps = dispatch => {
         },
         calculateLayoutCost(processesIds) {
             fetchOperationsAndRunCallback(processesIds, () => calculateLayoutCost(dispatch))
-        },
-        cancelCraftIteration() {
-            dispatch(cancelCraftSingleIteration())
-        },
+        }
     }
 }
 

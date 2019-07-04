@@ -264,7 +264,7 @@ kbd {
   color: #1890ff;
 }
 
-.hintDismiss:hover {
+.hintDismiss:hover, .anticon.list-action:hover {
   color: #40a9ff;
 }
 
@@ -346,4 +346,28 @@ g[data-className="Workplace"] .state {
 
 .countdownBagde {
   cursor: pointer;
+}
+
+.selectedList .ant-list-item-action {
+  margin-left: 25px;
+}
+
+.ant-badge-dot {
+  width: 8px;
+  height: 8px;
+  cursor: default;
+}
+
+.ant-badge-status-connecting {
+  animation: connecting 1s infinite;
+  background-color: #03a9f4;
+}
+
+@keyframes connecting {
+  from, to {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }

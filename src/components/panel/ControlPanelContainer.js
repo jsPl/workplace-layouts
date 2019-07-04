@@ -11,7 +11,7 @@ class ControlPanelContainer extends React.Component {
     showUiMessage(prevProps) {
         const { uiMessage } = this.props;
         if (uiMessage && uiMessage !== prevProps.uiMessage) {
-            message[uiMessage.type || 'info'](uiMessage.message, 5);
+            message[uiMessage.type || 'info'](uiMessage.message, uiMessage.duration || 5);
         }
     }
 
