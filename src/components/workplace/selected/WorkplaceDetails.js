@@ -2,12 +2,10 @@ import React from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { openPopup } from '../../../modules/utils/utils';
 import { List, Tag } from 'antd';
-import WorkplaceApiConnector from './WorkplaceApiConnector';
-import { workplaceRepository } from '../../../modules/workplace/workplaceRepository';
+import WorkplaceApiConnector from '../WorkplaceApiConnector';
 
 export default function WorkplaceDetails({ workplace }) {
-    const apiClient = workplaceRepository.findById(workplace.id).apiClient;
-    const actions = apiClient ? [<WorkplaceApiConnector workplace={workplace} api={apiClient} />] : null
+    const actions = [<WorkplaceApiConnector workplace={workplace} />]
 
     return (
         <List.Item actions={actions}>

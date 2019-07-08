@@ -4,14 +4,21 @@ import { List } from 'antd';
 import { selectWorkplace } from '../../redux/workplace';
 import { selectProcess } from '../../redux/process';
 import { connect, batch } from 'react-redux';
+import WorkplaceApiConnector from './WorkplaceApiConnector';
 
-const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => (
-    <List.Item className={isSelected ? 'selected' : null} onClick={() => handleWorkplaceClick(workplace.id)}
-        data-id={workplace.id}>
-        {/* <Tag color={workplace.color} className='colorBox' /> */}
-        {workplace.title}
-    </List.Item>
-);
+const WorkplaceListItem = ({ workplace, isSelected, handleWorkplaceClick }) => {
+    const extra = workplace.api &&
+        <span className='apiConnector'>
+            <WorkplaceApiConnector workplace={workplace} />
+        </span>
+
+    return (
+        <List.Item className={isSelected ? 'selected' : null} onClick={() => handleWorkplaceClick(workplace.id)}
+            data-id={workplace.id} extra={extra}>
+            {workplace.title}
+        </List.Item>
+    )
+}
 
 const mapDispatchToProps = dispatch => ({
     handleWorkplaceClick(id) {

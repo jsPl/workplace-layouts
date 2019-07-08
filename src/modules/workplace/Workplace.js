@@ -9,7 +9,6 @@ import { isSvgWorkplacePictureVisible, isSvgWorkplaceStateVisible, blockPanning 
 import { store } from '../../redux/configureStore';
 import { workplaceRepository } from './workplaceRepository';
 import difference from 'lodash/difference';
-import WebSocketApi from '../api/WebSocketApi';
 
 export default class Workplace {
     constructor(options) {
@@ -17,16 +16,6 @@ export default class Workplace {
 
         this.handleDetectCollisionThrottled = throttle(this.detectCollision, 100);
         this._isDragEnabled = false;
-
-        if (this.api) {
-            switch (this.api.type) {
-                case 'ur':
-                    this.apiClient = new WebSocketApi(this.api.endpoint);
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     handleDragStart = evt => {

@@ -1,8 +1,9 @@
 import React from 'react';
 
 export default class WebSocketApi {
-    constructor(endpoint) {
+    constructor(endpoint, type = 'ur') {
         this.endpoint = endpoint;
+        this.type = type;
         this.unsubscribeHandlers();
     }
 

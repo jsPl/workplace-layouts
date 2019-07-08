@@ -14,6 +14,7 @@ const WorkplaceList = ({ workplaces, selectedWorkplaces }) => {
             <List
                 size='small' className='list'
                 dataSource={workplaces}
+                itemLayout='vertical'
                 renderItem={wp => <WorkplaceListItem key={wp.id} workplace={wp} isSelected={selectedWorkplaces.includes(wp)} />}
             />
     )

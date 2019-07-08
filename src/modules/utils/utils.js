@@ -38,8 +38,8 @@ export function openPopup(url, w = 1000, h = 600) {
         w = availWidth;
     }
     if (h === '100%') {
-		h = availHeight;
-	}
+        h = availHeight;
+    }
 
     const windowFeatures =
         "left=" + (aw - w) / 2 + ","
@@ -68,6 +68,10 @@ export const parseIdsFromDataset = (elements, propName) => {
     return elements.map(o => parseInt(o.dataset[propName])).filter(value => !isNaN(value));
 }
 
+/**
+ * 
+ * @param {String} value 
+ */
 export const isNullOrEmpty = value => value === null || !value || value.trim() === '';
 
 export const isInFrame = () => {

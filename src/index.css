@@ -41,6 +41,11 @@ body {
   margin-left: 0.5em;
 }
 
+.apiConnector {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
 .vmiddle {
   vertical-align: middle;
 }
