@@ -46,7 +46,7 @@ export default class WebSocketApi {
             this._updateConnectionState();
             console.log('connection close', evt);
             const { code, reason } = evt;
-            this.handleClose(code, reason, this._createCloseDefaultMessage(code, reason));
+            this.handleClose(code, reason, this._createCloseDefaultMessage(code, reason, this.endpoint));
         });
 
         this.socket.addEventListener('error', evt => {
@@ -99,13 +99,21 @@ export default class WebSocketApi {
         this.handleConnectionStateChanged(state || this.connectionStateAsText());
     }
 
-    _createCloseDefaultMessage = (code, reason) => {
-        let text = <div>WebSocket connection closed with status code {code}</div>;
-        let reas = reason !== '' ? <div>Reason: {reason}</div> : null;
-        let desc = null;
-        if (code === 1006) {
-            desc = <div>Is API endpoint <em>{this.endpoint}</em> correct?</div>
-        }
-        return <div>{text}{reas}{desc}</div>;
+    _createCloseDefaultMessage = (code, reason, endpoint) => (
+        <SocketCloseMessage code={code} reason={reason} endpoint={endpoint} />
+    )
+}
+
+export const SocketCloseMessage = props => {
+    const workplace = props.workplace ? props.workplace.title : null;
+
+    let text = <div>WebSocket connection {workplace ? ' to ' + workplace : ''} closed with status code {props.code}</div>;
+    let reason = props.reason !== '' ? <div>Reason: {props.reason}</div> : null;
+    let desc = null;
+    if (props.code === 1006) {
+        desc = <div>Is API endpoint {props.endpoint ? <em>{props.endpoint}</em> : ''} correct?</div>
     }
+    return <div>
+        {text}{reason}{desc}
+    </div>
 }

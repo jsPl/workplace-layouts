@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 const API_ADD = 'API_ADD';
 const API_CONNECTION_STATE_UPDATE = 'API_CONNECTION_STATE_UPDATE';
 const API_RTDE_DATA_RECEIVE = 'API_RTDE_DATA_RECEIVE';
@@ -9,7 +11,6 @@ const API_RTDE_DATA_RECEIVE = 'API_RTDE_DATA_RECEIVE';
 // 				endpoint: 'ws://proedims:8080/ur10',
 // 				type: 'ur',
 // 				connectionState: 'OPEN',
-// 				error: null,
 // 			},
 // 			rtdeData: {	...	}
 // 		}
@@ -64,4 +65,10 @@ export const receiveRtdeData = (workplace_id, data) =>
     ({ type: API_RTDE_DATA_RECEIVE, payload: { workplace_id, data } })
 
 // Selectors
-export const getApiByWorkplace = (state, workplaceId) => state.api.byWorkplace[workplaceId]
+const getApis = ({ api }) => api.byWorkplace;
+export const getApiByWorkplace = (state, workplaceId) => getApis(state)[workplaceId];
+export const getRtdeDataByWorkplace = (state, workplaceId) => getApiByWorkplace(state, workplaceId).rtdeData;
+export const getConnectedApis = createSelector(
+    getApis,
+    apis => Object.fromEntries(Object.entries(apis).filter(o => o[1].api.connectionState === 'OPEN'))
+)

@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon, Badge } from 'antd';
 import { connect } from 'react-redux';
 import { showMessage } from '../../redux/ui';
 import { addApi, updateApiConnectionState, receiveRtdeData, getApiByWorkplace } from '../../redux/api';
-import WebSocketApi from '../../modules/api/WebSocketApi';
+import WebSocketApi, { SocketCloseMessage } from '../../modules/api/WebSocketApi';
 
 const WorkplaceApiConnector = ({ workplace, showMessage, addApi, updateApiConnectionState, receiveRtdeData,
     existingApi }) => {
@@ -20,8 +21,6 @@ const WorkplaceApiConnector = ({ workplace, showMessage, addApi, updateApiConnec
     const badgeStatus = getConnectionBadgeStatus(connectionState);
     const badgeTitle = getConnectionBadgeTitle(connectionState, api);
     const isConnPending = isConnectionStatePending(connectionState);
-
-    //console.log('existingApi', existingApi)
 
     if (!existingApi) {
         addApi({
@@ -44,41 +43,17 @@ const WorkplaceApiConnector = ({ workplace, showMessage, addApi, updateApiConnec
                         break;
                 }
             })
-            .onClose((code, reason, defaultMessage) => {
+            .onClose((code, reason) => {
                 if (code > 1000) {
-                    const message = <div>{workplace.title}{defaultMessage}</div>
+                    const message = <SocketCloseMessage workplace={workplace} code={code}
+                        reason={reason} endpoint={api.endpoint} />;
                     showMessage({ type: 'error', message, duration: 12 })
                 }
             })
             .onConnectionStateChanged(connState => {
-                console.log('onConnectionStateChanged', connState)
                 updateApiConnectionState(workplace.id, connState);
             })
     }
-
-    // useEffect(() => {
-    //     console.log('useEffect');
-
-    // api
-    //     .onMessage(json => console.log(json))
-    //     .onClose((code, reason, defaultMessage) => {
-    //         if (code > 1000) {
-    //             showMessage({ type: 'error', message: defaultMessage, duration: 12 })
-    //         }
-    //     })
-    //     .onConnectionStateChanged(state => {
-    //         console.log('onConnectionStateChanged', state)
-    //         //setConnectionState(state);
-    //         updateApi({ workplace_id: workplace.id, connectionState: state })
-    //     })
-
-    // return () => {
-    //     console.log('unsubscribeHandlers and disconnect')
-    //     api.unsubscribeHandlers().disconnect();
-    //     //setConnectionState('DISCONNECTED');
-    //     updateApi({ workplace_id: workplace.id, connectionState: 'DISCONNECTED' })
-    // }
-    // }, [api, workplace.id, showMessage, updateApi])
 
     const handleConnect = evt => {
         switch (connectionState) {
@@ -155,6 +130,10 @@ const mapDispatchToProps = {
     addApi,
     updateApiConnectionState,
     receiveRtdeData,
+}
+
+WorkplaceApiConnector.propTypes = {
+    workplace: PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkplaceApiConnector);

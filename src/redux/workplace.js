@@ -89,6 +89,11 @@ export const getSelectedWorkplacesId = ({ workplace }) => workplace.selected;
 export const isSaving = ({ workplace }) => workplace.saving;
 export const isLoadingWorkplaces = ({ workplace }) => workplace.loading;
 
+export const getWorkplacesByIds = createSelector(
+    getWorkplaces, (state, props) => props.workplacesIds,
+    (workplaces, ids) => workplaces.filter(o => ids.includes(o.id))
+)
+
 export const getWorkplacesByFilter = createSelector(
     getWorkplaces, (state, props) => props.filter,
     (workplaces, filter) => {

@@ -170,10 +170,15 @@ body {
   color: #1890ff;
 }
 
-.panelWorkplaces .ant-collapse-content-box, .panelDetails .ant-collapse-content-box, .panelProcesses .ant-collapse-content-box, .panelDetails .ant-card-body {
+.panelWorkplaces .ant-collapse-content-box, .panelDetails .ant-collapse-content-box,
+ .panelProcesses .ant-collapse-content-box, .panelDetails .ant-card-body {
   padding-top: 0.2em;
   padding-left: 0.2em;
   padding-right: 0.2em;
+}
+
+.panelApis .ant-collapse-content-box {
+  padding: 0;
 }
 
 .panelDetails .ant-collapse-content-box, .panelDetails .ant-card-body {
@@ -375,4 +380,8 @@ g[data-className="Workplace"] .state {
   50% {
     opacity: 1;
   }
+}
+
+pre.rtdeData {
+  font-size: 80%;
 }

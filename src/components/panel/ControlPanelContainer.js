@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { message } from 'antd';
 import { isLoadingWorkplaces } from '../../redux/workplace';
 import { getMessage } from '../../redux/ui';
+import { getConnectedApis } from '../../redux/api';
 import ControlPanel from './ControlPanel';
 import { settings } from '../../modules/utils/settings';
 
@@ -20,12 +21,13 @@ class ControlPanelContainer extends React.Component {
     }
 
     render() {
-        const { isLoading } = this.props;
+        const { isLoading, connectedApis } = this.props;
         return (
             <ControlPanel
                 isLoading={isLoading}
                 handleCollapseChange={activeItems => settings.setControlPanelCollapseItems(activeItems)}
                 collapseDefaultActiveKey={settings.getControlPanelCollapseItems()}
+                connectedApis={connectedApis}
             />
         )
     }
@@ -33,7 +35,8 @@ class ControlPanelContainer extends React.Component {
 
 const mapStateToProps = state => ({
     isLoading: isLoadingWorkplaces(state),
-    uiMessage: getMessage(state)
+    uiMessage: getMessage(state),
+    connectedApis: getConnectedApis(state),
 });
 
 export default connect(mapStateToProps)(ControlPanelContainer)
