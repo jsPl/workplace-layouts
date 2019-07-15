@@ -72,7 +72,7 @@ export const parseIdsFromDataset = (elements, propName) => {
  * 
  * @param {String} value 
  */
-export const isNullOrEmpty = value => value === null || !value || value.trim() === '';
+export const isNullOrEmptyString = value => value === null || !value || value.trim() === '';
 
 export const isInFrame = () => {
     try {

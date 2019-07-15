@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import minBy from 'lodash/minBy';
 import {
     isIterationRunning, isIterationComplete, isIterationCanceled, cancelCraftSingleIteration,
-    getPercentCompletionOfRunningIteration, getCurrentIterationItems, startCraftSingleIteration
+    getPercentCompletionOfRunningIteration, getCurrentIterationItems, startCraftSingleIteration, setStatusCraftSingleIteration
 } from '../../redux/craft';
 import { sendHallWithWorkplaces, isSaving as isSavingLayout } from '../../redux/workplace';
 import { swapWorkplacesPosition } from '../tools/SwapTool';
@@ -13,7 +13,7 @@ import { CountdownTimer } from './CountdownTimer';
 const key = 'craft-notification';
 
 const CraftNotification = ({ running, complete, canceled, percentComplete, items,
-    cancelCraftIteration, nextCraftIteration, saveCurrentLayout, isSavingLayout }) => {
+    cancelCraftIteration, nextCraftIteration, saveCurrentLayout, isSavingLayout, setStatusCraftIteration }) => {
     const isInitialMount = useRef(true);
 
     useEffect(() => {
@@ -50,6 +50,11 @@ const CraftNotification = ({ running, complete, canceled, percentComplete, items
                     message: `Craft iteration: ${stateText}`,
                     description, key, btn,
                     duration: 0,
+                    onClose: () => {
+                        if (complete || canceled) {
+                            setStatusCraftIteration({ complete: false, canceled: false })
+                        }
+                    }
                 });
             }
         }
@@ -140,6 +145,9 @@ const mapDispatchToProps = dispatch => ({
     },
     saveCurrentLayout() {
         dispatch(sendHallWithWorkplaces())
+    },
+    setStatusCraftIteration(payload) {
+        dispatch(setStatusCraftSingleIteration(payload))
     },
 })
 

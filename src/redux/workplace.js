@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { isNullOrEmpty } from '../modules/utils/utils';
+import { isNullOrEmptyString } from '../modules/utils/utils';
 
 // Action types
 export const PRODUCTION_HALL_WITH_WORKPLACES_FETCH = 'PRODUCTION_HALL_WITH_WORKPLACES_FETCH';
@@ -97,7 +97,7 @@ export const getWorkplacesByIds = createSelector(
 export const getWorkplacesByFilter = createSelector(
     getWorkplaces, (state, props) => props.filter,
     (workplaces, filter) => {
-        return isNullOrEmpty(filter) ?
+        return isNullOrEmptyString(filter) ?
             workplaces : workplaces.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()))
     }
 )

@@ -2,18 +2,19 @@ import React from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import { sendHallWithWorkplaces, isSaving, isLoadingWorkplaces } from '../../redux/workplace';
+import { isIterationRunning as isCraftRunning } from '../../redux/craft';
 
-const WorkplaceControls = ({ isSaving, isLoading, sendHallWithWorkplaces }) => {
+const WorkplaceControls = ({ isSaving, disabled, sendHallWithWorkplaces }) => {
     return (
         <div className='wpControls'>
-            <Button loading={isSaving} disabled={isLoading} type='primary' onClick={sendHallWithWorkplaces}>Save</Button>
+            <Button loading={isSaving} disabled={disabled} type='primary' onClick={sendHallWithWorkplaces}>Save</Button>
         </div>
     )
 }
 
 const mapStateToProps = state => ({
     isSaving: isSaving(state),
-    isLoading: isLoadingWorkplaces(state),
+    disabled: isLoadingWorkplaces(state) || isCraftRunning(state),
 })
 
 const mapDispatchToProps = {

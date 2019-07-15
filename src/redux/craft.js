@@ -8,6 +8,7 @@ export const CRAFT_SINGLE_ITERATION_START = 'CRAFT_SINGLE_ITERATION_START';
 export const CRAFT_SINGLE_ITERATION_CANCEL = 'CRAFT_SINGLE_ITERATION_CANCEL';
 export const CRAFT_SINGLE_ITERATION_NEXT = 'CRAFT_SINGLE_ITERATION_NEXT';
 export const CRAFT_SINGLE_ITERATION_COMPLETE = 'CRAFT_SINGLE_ITERATION_COMPLETE';
+const CRAFT_SINGLE_ITERATION_SET_STATUS = 'CRAFT_SINGLE_ITERATION_SET_STATUS';
 
 const currentIterationState = {
     running: false,
@@ -42,6 +43,9 @@ const currentIteration = (state = currentIterationState, action) => {
             return { ...state, values: [...state.values, craftIteration] }
         case CRAFT_SINGLE_ITERATION_COMPLETE:
             return { ...state, running: false, complete: true, canceled: false }
+        case CRAFT_SINGLE_ITERATION_SET_STATUS:
+            const { running = state.running, complete = state.complete, canceled = state.canceled } = action.payload;
+            return { ...state, running, complete, canceled }
         default:
             return state
     }
@@ -52,6 +56,7 @@ export const startCraftSingleIteration = payload => ({ type: CRAFT_SINGLE_ITERAT
 export const completeCraftSingleIteration = payload => ({ type: CRAFT_SINGLE_ITERATION_COMPLETE, payload });
 export const nextCraftSingleIteration = payload => ({ type: CRAFT_SINGLE_ITERATION_NEXT, payload });
 export const cancelCraftSingleIteration = () => ({ type: CRAFT_SINGLE_ITERATION_CANCEL });
+export const setStatusCraftSingleIteration = payload => ({ type: CRAFT_SINGLE_ITERATION_SET_STATUS, payload });
 
 export const calculateCurrentLayoutCostStart = payload => ({ type: CRAFT_CALCULATE_CURRENT_LAYOUT_COST_START, payload });
 export const calculateCurrentLayoutCostComplete = payload => ({

@@ -7,17 +7,18 @@ export default class WebSocketApi {
         this.unsubscribeHandlers();
     }
 
-    connect() {
+    connect(urlParams = new URLSearchParams()) {
         if (!this.endpoint) {
             console.log('Undefined api endpoint', this.endpoint);
             return this;
         }
 
-        this.socket = new WebSocket(this.endpoint);
+        this.urlParams = urlParams;
+        this.socket = new WebSocket(this.endpoint + '?' + this.urlParams.toString());
         this._attachEvents();
         this._updateConnectionState();
 
-        console.log('Connected to', this.endpoint, this.socket);
+        console.log('Connected to', this.endpoint, this.urlParams.toString(), this.socket);
         return this;
     }
 

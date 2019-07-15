@@ -104,7 +104,7 @@ class Craft {
             //console.log(idFrom, ' to ', idsTo, 'movementCost', movementCost, 'total', total)
             return total
         })
-        const layoutCost = parseInt(summands.reduce(sum), 10);
+        const layoutCost = parseInt(summands.reduce(sum, 0), 10);
         //console.log(summands, layoutCost);
         return layoutCost
     }

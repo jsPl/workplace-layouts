@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { showMessage } from '../../redux/ui';
 import { addApi, updateApiConnectionState, receiveRtdeData, getApiByWorkplace } from '../../redux/api';
 import WebSocketApi, { SocketCloseMessage } from '../../modules/api/WebSocketApi';
+import { isNullOrEmptyString } from '../../modules/utils/utils';
 
 const WorkplaceApiConnector = ({ workplace, showMessage, addApi, updateApiConnectionState, receiveRtdeData,
     existingApi }) => {
@@ -49,6 +50,7 @@ const WorkplaceApiConnector = ({ workplace, showMessage, addApi, updateApiConnec
                         reason={reason} endpoint={api.endpoint} />;
                     showMessage({ type: 'error', message, duration: 12 })
                 }
+                receiveRtdeData(workplace.id, {})
             })
             .onConnectionStateChanged(connState => {
                 updateApiConnectionState(workplace.id, connState);
@@ -62,7 +64,15 @@ const WorkplaceApiConnector = ({ workplace, showMessage, addApi, updateApiConnec
                 break;
             case 'DISCONNECTED':
             case 'CLOSED':
-                apiConnector.connect();
+                const urlParams = new URLSearchParams();
+                if (!isNullOrEmptyString(api.rtde_outputs)) {
+                    urlParams.append('rtde_outputs', api.rtde_outputs)
+                }
+                if (api.rtde_frequency) {
+                    urlParams.append('rtde_frequency', api.rtde_frequency)
+                }
+
+                apiConnector.connect(urlParams);
                 break;
             default:
                 break;
