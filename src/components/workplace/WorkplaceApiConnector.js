@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Badge } from 'antd';
 import { connect } from 'react-redux';
 import { showMessage } from '../../redux/ui';
-import { addApi, updateApiConnectionState, receiveRtdeData, getApiByWorkplace } from '../../redux/api';
+import { addApi, updateApiConnectionState, receiveData, getApiByWorkplace } from '../../redux/api';
 import WebSocketApi, { SocketCloseMessage } from '../../modules/api/WebSocketApi';
 import { isNullOrEmptyString } from '../../modules/utils/utils';
 
@@ -34,10 +34,11 @@ const WorkplaceApiConnector = ({ workplace, showMessage, addApi, updateApiConnec
 
         apiConnector
             .onMessage(data => {
-                console.log(data);
+                //console.log(data);
                 switch (data.type) {
                     case 'rtde_data':
-                        receiveRtdeData(workplace.id, data.payload)
+                    case 'dashboard_data':
+                        receiveRtdeData(workplace.id, data.type, data.payload)
                         break;
 
                     default:
@@ -139,7 +140,7 @@ const mapDispatchToProps = {
     showMessage,
     addApi,
     updateApiConnectionState,
-    receiveRtdeData,
+    receiveRtdeData: receiveData,
 }
 
 WorkplaceApiConnector.propTypes = {

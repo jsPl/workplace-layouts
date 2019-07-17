@@ -170,8 +170,7 @@ body {
   color: #1890ff;
 }
 
-.panelWorkplaces .ant-collapse-content-box, .panelDetails .ant-collapse-content-box,
- .panelProcesses .ant-collapse-content-box, .panelDetails .ant-card-body {
+.panelWorkplaces .ant-collapse-content-box, .panelDetails .ant-collapse-content-box, .panelProcesses .ant-collapse-content-box, .panelDetails .ant-card-body {
   padding-top: 0.2em;
   padding-left: 0.2em;
   padding-right: 0.2em;
@@ -382,6 +381,78 @@ g[data-className="Workplace"] .state {
   }
 }
 
-pre.rtdeData {
+.apiData .ant-card-body {
+  max-height: 30vh;
+  overflow-y: auto;
+  padding-top: 0;
+}
+
+.apiData pre {
   font-size: 80%;
+}
+
+.apiData .ant-card-actions>li>span {
+  font-size: 90%;
+  cursor: default;
+}
+
+.programState:hover {
+  color: rgba(0, 0, 0, 0.45)
+}
+
+.rtdeOutputContainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+fieldset.rtdeOutput {
+  display: inline-block;
+  /* text-align: left; */
+  font-size: 90%;
+}
+
+fieldset.rtdeOutput legend {
+  text-align: center;
+  margin-bottom: 3px;
+  font-size: 1em;
+  color: darkgrey;
+  /* font-weight: 400; */
+}
+
+fieldset.rtdeOutput .item span:first-child {
+  /* width: 1.2em; */
+  margin-right: 0.5em;
+  display: inline-block;
+  text-align: left;
+  /* font-weight: 500; */
+}
+
+fieldset.rtdeOutput .item span.value {
+  /* display: inline-block; */
+  width: 70px;
+  text-align: right;
+  float: right;
+}
+
+fieldset.rtdeOutput .item span.value.deg {
+  width: 50px;
+}
+
+fieldset.rtdeOutput .item span:last-child {
+  margin-left: 5px;
+}
+
+fieldset.rtdeOutput .item span.deg::after {
+  content: "\00B0";
+  margin-left: 1px;
+}
+
+fieldset.rtdeOutput .item span.mm::after {
+  content: "mm";
+  margin-left: 3px;
+}
+
+fieldset.rtdeOutput .item span.rad::after {
+  content: "rad";
+  margin-left: 3px;
 }

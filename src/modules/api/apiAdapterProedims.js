@@ -14,8 +14,8 @@ const mapWorkplace = workplace => ({
     strefa_robocza_szerokosc: workplace.version_fields.strefa_robocza_szerokosc,
     state: { code: workplace.version_fields.state || '', label: workplace.version_fields.state_label || '' },
     fixedPosition: workplace.version_fields.nie_zmienia_polozenia_w_hali === '1',
-    api: workplace.api,
-    //api: getMockApi(workplace),
+    //api: workplace.api,
+    api: getMockApi(workplace),
 })
 
 const getMockApi = workplace => {
@@ -25,8 +25,8 @@ const getMockApi = workplace => {
     return {
         endpoint: 'ws://proedims:8080/ur10',
         type: 'ur',
-        rtde_outputs: workplace.title === 'MIR 100' ? 'actual_q,actual_TCP_pose' : null,
-        rtde_frequency: workplace.title === 'MIR 100' ? 3 : null,
+        rtde_outputs: 'actual_q,actual_TCP_pose', //workplace.title === 'MIR 100' ? 'actual_q,actual_TCP_pose' : null,
+        rtde_frequency: 5, //workplace.title === 'MIR 100' ? 3 : null,
     }
 }
 
