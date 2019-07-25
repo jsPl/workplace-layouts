@@ -11,7 +11,7 @@ const CraftSummaryDrawer = ({ visible, changeCraftSummaryVisibility, children })
             placement='bottom'
             mask={false}
             maskClosable={false}
-            height={300}
+            height={352}
             visible={visible}
             onClose={() => changeCraftSummaryVisibility({ visible: false })}
         >

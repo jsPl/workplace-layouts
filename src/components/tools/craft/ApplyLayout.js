@@ -17,7 +17,10 @@ const mapDispatchToProps = dispatch => {
                 const { id, x, y } = o;
                 const workplace = workplaceRepository.findById(id);
                 if (workplace) {
-                    workplace.svg.animate(200, '>', 0).move(x, y).afterAll(() => dispatch(updateWorkplace(o)))
+                    const { x: oldX, y: oldY } = workplace.getUpperLeftPosition();
+                    if (oldX !== x || oldY !== y) {
+                        workplace.svg.animate(200, '>', 0).move(x, y).afterAll(() => dispatch(updateWorkplace(o)))
+                    }
                 }
             })
         }

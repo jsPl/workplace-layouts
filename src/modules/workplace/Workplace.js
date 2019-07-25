@@ -80,6 +80,10 @@ export default class Workplace {
         return { x: toFixed(box.cx), y: toFixed(box.cy) }
     }
 
+    getUpperLeftPosition() {
+        return { x: toFixed(this.svg.x()), y: toFixed(this.svg.y()) }
+    }
+
     drawSvg = () => {
         let group = drawSvg.group();
 
