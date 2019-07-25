@@ -1,21 +1,23 @@
 import { store } from '../../redux/configureStore';
 import { batch } from 'react-redux';
 import { changeSvgWorkplacePictureVisibility, changeSvgWorkplaceStateVisibility } from '../../redux/ui';
+import { CRAFT_SPEED_OPTIONS } from '../../components/settings/CraftSpeed';
 
-const storage_cp_active_items = 'control_panel_active_items';
-const storage_svg_workplace_image_visible = 'storage_svg_workplace_image_visible';
-const storage_svg_workplace_state_visible = 'storage_svg_workplace_state_visible';
-const storage_cp_hint_measure_tool_visible = 'storage_cp_hint_measure_tool_visible';
-const storage_cp_hint_multiple_selection_visible = 'storage_cp_hint_multiple_selection_visible';
+const storage_panel_active_items = 'collapse_active_items';
+const storage_svg_workplace_image_visible = 'svg_workplace_image_visible';
+const storage_svg_workplace_state_visible = 'svg_workplace_state_visible';
+const storage_hint_measure_tool_visible = 'hint_measure_tool_visible';
+const storage_hint_multiple_selection_visible = 'hint_multiple_selection_visible';
+const storage_craft_speed = 'craft_speed';
 
 export const settings = {
 
     setControlPanelCollapseItems(activeItems) {
-        localStorage.setItem(storage_cp_active_items, JSON.stringify(activeItems))
+        localStorage.setItem(storage_panel_active_items, JSON.stringify(activeItems))
     },
 
     getControlPanelCollapseItems() {
-        return JSON.parse(localStorage.getItem(storage_cp_active_items) || '["1", "2", "3", "4", "5"]')
+        return JSON.parse(localStorage.getItem(storage_panel_active_items) || '["hall", "tools", "workplaces", "apis", "processes"]')
     },
 
     setSvgWorkplaceImageVisible(visible) {
@@ -39,33 +41,45 @@ export const settings = {
     },
 
     setHintMeasureToolVisible(visible) {
-        localStorage.setItem(storage_cp_hint_measure_tool_visible, visible)
+        localStorage.setItem(storage_hint_measure_tool_visible, visible)
     },
 
     getHintMeasureToolVisible() {
-        const result = localStorage.getItem(storage_cp_hint_measure_tool_visible) || 'true';
+        const result = localStorage.getItem(storage_hint_measure_tool_visible) || 'true';
         // eslint-disable-next-line
         return result == 'true';
     },
 
     setHintMultipleSelectionVisible(visible) {
-        localStorage.setItem(storage_cp_hint_multiple_selection_visible, visible)
+        localStorage.setItem(storage_hint_multiple_selection_visible, visible)
     },
 
     getHintMultipleSelectionVisible() {
-        const result = localStorage.getItem(storage_cp_hint_multiple_selection_visible) || 'true';
+        const result = localStorage.getItem(storage_hint_multiple_selection_visible) || 'true';
         // eslint-disable-next-line
         return result == 'true';
     },
 
-    restoreDefaults(callback) {
+    setCraftSpeed(value) {
+        localStorage.setItem(storage_craft_speed, value)
+    },
+
+    getCraftSpeed() {
+        return localStorage.getItem(storage_craft_speed) || 'moderate';
+    },
+
+    getCraftSpeedSettings() {
+        return CRAFT_SPEED_OPTIONS.find(o => o.value === this.getCraftSpeed());
+    },
+
+    restoreDefaults(callback = () => { }) {
         batch(() => {
             store.dispatch(changeSvgWorkplacePictureVisibility(true));
             store.dispatch(changeSvgWorkplaceStateVisibility(true));
         })
         this.clear();
 
-        callback && callback();
+        callback();
     },
 
     hasItems() {
@@ -74,10 +88,10 @@ export const settings = {
 
     clear() {
         [
-            storage_cp_active_items,
+            storage_panel_active_items,
             storage_svg_workplace_image_visible,
-            storage_cp_hint_measure_tool_visible,
-            storage_cp_hint_multiple_selection_visible
+            storage_hint_measure_tool_visible,
+            storage_hint_multiple_selection_visible
         ].forEach(key => localStorage.removeItem(key));
     }
 }

@@ -1,49 +1,96 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Menu, Dropdown, Icon } from 'antd';
 import { connect } from 'react-redux';
-import { isLoadingWorkplaces } from '../../redux/workplace';
-import { getProcessesIds } from '../../redux/process';
-import { boundClearCurrentSelection } from '../../redux/ui';
-import { calculateCurrentLayoutCostComplete, startCraftSingleIteration } from "../../redux/craft";
-import { fetchAllOperations, getOperationsByProcess } from '../../redux/operation';
-import { isIterationRunning } from '../../redux/craft';
-import Craft from '../../modules/utils/Craft';
-import CraftNotification from '../panel/CraftNotification';
-import { workplaceRepository } from '../../modules/workplace/workplaceRepository';
-import { store } from '../../redux/configureStore';
+import { isLoadingWorkplaces } from '../../../redux/workplace';
+import { getProcessesIds } from '../../../redux/process';
+import { boundClearCurrentSelection } from '../../../redux/ui';
+import {
+    calculateCurrentLayoutCostComplete, startCraftSingleIteration, isIterationRunning, isIterationComplete,
+    isIterationCanceled, clearCraftSummaryIteration, getSummaryIterations, changeCraftSummaryVisibility
+} from '../../../redux/craft';
+import { fetchAllOperations, getOperationsByProcess } from '../../../redux/operation';
+import Craft from '../../../modules/utils/Craft';
+import CraftNotification from './CraftNotification';
+import { workplaceRepository } from '../../../modules/workplace/workplaceRepository';
+import { store } from '../../../redux/configureStore';
+import CraftSummaryIterationList from './CraftSummaryIterationList';
+import CraftSummaryDrawer from './CraftSummaryDrawer';
 
-const CraftTool = ({ disabled, processesIds, runCraftIteration, calculateLayoutCost }) => {
+const CraftTool = props => {
+    const { disabled, processesIds, calculateLayoutCost } = props;
     return (
         <>
             <Button onClick={() => calculateLayoutCost(processesIds)} icon='calculator' disabled={disabled}
                 title='Calculate cost of current layout using Craft algorithm'>
                 Layout cost
             </Button>
-            <Button onClick={() => runCraftIteration(processesIds)} icon='calculator' disabled={disabled}
-                title='Try optimizing current layout using Craft algorithm'>
-                Optimize layout
-            </Button>
+            <OptimizeLayoutButton {...props} />
+            
             <CraftNotification />
+            
+            <CraftSummaryDrawer>
+                <CraftSummaryIterationList />
+            </CraftSummaryDrawer>
         </>
     )
 }
 
-const mapStateToProps = state => ({
-    disabled: isLoadingWorkplaces(state) || isIterationRunning(state),
-    processesIds: getProcessesIds(state),
-})
+const CraftDropdownMenu = ({ children, setCraftSummaryVisible }) => {
+    const handleMenuClick = ({ key }) => {
+        if (key === 'summary') {
+            setCraftSummaryVisible(true)
+        }
+    }
+
+    const overlay =
+        <Menu onClick={handleMenuClick}>
+            <Menu.Item key='summary'>
+                <Icon type='bars' />
+                Craft summary
+            </Menu.Item>
+        </Menu>
+
+    return (
+        <Dropdown overlay={overlay}>{children}</Dropdown>
+    )
+}
+
+const OptimizeLayoutButton = ({ disabled, processesIds, runCraftAlgorithm, craftSummaryAvailable, setCraftSummaryVisible }) => {
+    const btn =
+        <Button onClick={() => runCraftAlgorithm(processesIds)} icon='calculator' disabled={disabled}
+            title='Try optimizing current layout using Craft algorithm'>
+            Optimize layout {craftSummaryAvailable && <Icon type='down' />}
+        </Button>
+
+    if (craftSummaryAvailable) {
+        return <CraftDropdownMenu setCraftSummaryVisible={setCraftSummaryVisible}>{btn}</CraftDropdownMenu>
+    }
+    return btn
+}
+
+const mapStateToProps = state => {
+    return {
+        disabled: isLoadingWorkplaces(state) || isIterationRunning(state),
+        processesIds: getProcessesIds(state),
+        craftSummaryAvailable: !isIterationComplete(state) && !isIterationCanceled(state) && !isIterationRunning(state)
+            && getSummaryIterations(state).length > 0,
+    }
+}
 
 const mapDispatchToProps = dispatch => {
     const fetchOperationsAndRunCallback = (processesIds, callback) =>
         dispatch(fetchAllOperations({ processesIds, callback }))
 
     return {
-        runCraftIteration(processesIds) {
+        runCraftAlgorithm(processesIds) {
             boundClearCurrentSelection(dispatch)
             fetchOperationsAndRunCallback(processesIds, () => runCraftIteration(dispatch))
         },
         calculateLayoutCost(processesIds) {
             fetchOperationsAndRunCallback(processesIds, () => calculateLayoutCost(dispatch))
+        },
+        setCraftSummaryVisible(visible) {
+            dispatch(changeCraftSummaryVisibility({ visible }))
         }
     }
 }
@@ -63,10 +110,9 @@ const calculateLayoutCost = dispatch => {
 const runCraftIteration = dispatch => {
     const workplaces = workplaceRepository.list();
     const operationsByProcess = getOperationsByProcess(store.getState());
-
     const craftIterations = createCraftIterations(workplaces, operationsByProcess);
-    //console.log('craftIterations', craftIterations);
 
+    dispatch(clearCraftSummaryIteration());
     dispatch(startCraftSingleIteration({ craftIterations }))
 
     //iterateAsPromises(craftIterations, dispatch);

@@ -14,22 +14,22 @@ const ControlPanel = ({ isLoading, handleCollapseChange, collapseDefaultActiveKe
 
     return (
         <Collapse defaultActiveKey={collapseDefaultActiveKey} onChange={handleCollapseChange}>
-            <Panel header='Production hall' key='1'>
+            <Panel header='Production hall' key='hall'>
                 <ProductionHallDetails />
             </Panel>
-            <Panel header='Tools' key='2'>
+            <Panel header='Tools' key='tools'>
                 <Tools />
             </Panel>
-            <Panel header='Workplaces' key='3' className='panelWorkplaces'>
+            <Panel header='Workplaces' key='workplaces' className='panelWorkplaces'>
                 <Workplaces isLoading={isLoading} />
             </Panel>
             {
                 connectedApisCount > 0 &&
-                <Panel header={`Connected APIs (${connectedApisCount})`} key='5' className='panelApis'>
+                <Panel header={`Connected APIs (${connectedApisCount})`} key='apis' className='panelApis'>
                     <ApiCardList connectedApis={connectedApis} />
                 </Panel>
             }
-            <Panel header='Processes' key='4' className='panelProcesses'>
+            <Panel header='Processes' key='processes' className='panelProcesses'>
                 <Processes isLoading={isLoading} />
             </Panel>
         </Collapse>

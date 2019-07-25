@@ -13,7 +13,7 @@ body {
 }
 
 #ui {
-  margin: 0.5em;
+  margin: 0.3em;
   flex: 1;
 }
 
@@ -52,7 +52,7 @@ body {
 
 #svg-container {
   border: 1px solid #e7e7e7;
-  margin: 0.5em;
+  margin: 0.3em;
   flex: 3;
   background-color: white;
   border-radius: 4px;
@@ -92,7 +92,7 @@ body {
 
 .selectable.selected .workplaceBBox {
   fill: url(#grad-workplace-selected);
-  stroke-width: 1.3;
+  stroke-width: 1;
   stroke-dasharray: 5;
 }
 
@@ -259,12 +259,19 @@ kbd {
 .ant-btn-group.appSettings {
   position: absolute;
   right: 1em;
-  top: 1em;
+  top: 0.6em;
   z-index: 1000;
 }
 
-.ant-drawer .workplaceSettingToggle span {
-  margin-left: 0.5em;
+.ant-drawer .settingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.ant-drawer .settingItem.restoreDefaults {
+  justify-content: center;
 }
 
 .hintDismiss {
@@ -455,4 +462,24 @@ fieldset.rtdeOutput .item span.mm::after {
 fieldset.rtdeOutput .item span.rad::after {
   content: "rad";
   margin-left: 3px;
+}
+
+.ant-collapse>.ant-collapse-item>.ant-collapse-header {
+  line-height: 15px;
+}
+
+.craftSummaryDrawer .ant-drawer-body {
+  padding: 0;
+}
+
+.craftSummaryDrawer .ant-table-row.currentLayout td {
+  background-color: #f6ffed;
+}
+
+.ant-notification-notice-btn button {
+  margin-left: 1em;
+}
+
+i.exchange {
+  margin: 0 1em;
 }

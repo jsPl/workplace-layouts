@@ -2,17 +2,20 @@ import React, { useEffect, useRef } from 'react';
 import { notification, Progress, Button } from 'antd';
 import { connect } from 'react-redux';
 import minBy from 'lodash/minBy';
+import cloneDeep from 'lodash/cloneDeep';
 import {
     isIterationRunning, isIterationComplete, isIterationCanceled, cancelCraftSingleIteration,
-    getPercentCompletionOfRunningIteration, getCurrentIterationItems, startCraftSingleIteration, setStatusCraftSingleIteration
-} from '../../redux/craft';
-import { sendHallWithWorkplaces, isSaving as isSavingLayout } from '../../redux/workplace';
-import { swapWorkplacesPosition } from '../tools/SwapTool';
-import { CountdownTimer } from './CountdownTimer';
+    getPercentCompletionOfRunningIteration, getCurrentIterationItems, startCraftSingleIteration,
+    setStatusCraftSingleIteration, changeCraftSummaryVisibility
+} from '../../../redux/craft';
+import { sendHallWithWorkplaces, isSaving as isSavingLayout } from '../../../redux/workplace';
+import { swapWorkplacesPosition } from '../SwapTool';
+import { CountdownTimer } from '../../panel/CountdownTimer';
+import { settings } from '../../../modules/utils/settings';
 
 const key = 'craft-notification';
 
-const CraftNotification = ({ running, complete, canceled, percentComplete, items,
+const CraftNotification = ({ running, complete, canceled, percentComplete, items, showSummary,
     cancelCraftIteration, nextCraftIteration, saveCurrentLayout, isSavingLayout, setStatusCraftIteration }) => {
     const isInitialMount = useRef(true);
 
@@ -23,6 +26,10 @@ const CraftNotification = ({ running, complete, canceled, percentComplete, items
         else {
             if (running || complete || canceled) {
                 const minimalCostItem = complete && minBy(items, 'cost');
+                // if (minimalCostItem) {
+                //     console.log('CraftNotification minimalCostItem',minimalCostItem);
+                // }
+
                 const type = complete ? 'success' : (canceled ? 'error' : 'info');
                 const stateText = running ? 'in progress...' : (complete ? 'complete' : (canceled ? 'canceled' : ''));
 
@@ -36,6 +43,7 @@ const CraftNotification = ({ running, complete, canceled, percentComplete, items
                         saveCurrentLayout={saveCurrentLayout}
                         craftIterations={items}
                         isSavingLayout={isSavingLayout}
+                        showSummary={showSummary}
                     />
 
                 const description =
@@ -64,31 +72,35 @@ const CraftNotification = ({ running, complete, canceled, percentComplete, items
 }
 
 const NotificationButtons = ({ minimalCostItem, complete, canceled, cancelCraftIteration,
-    nextCraftIteration, saveCurrentLayout, craftIterations, isSavingLayout }) => {
+    nextCraftIteration, saveCurrentLayout, craftIterations, isSavingLayout, showSummary }) => {
     const btns = [];
 
     if (complete && minimalCostItem) {
         const { exchange } = minimalCostItem;
         if (exchange.ids) {
-            const runNextIteration = () => nextCraftIteration(exchange, craftIterations)
+            const runNextIteration = () => nextCraftIteration(exchange, cloneDeep(craftIterations))
 
             btns.push(
-                <CountdownTimer key='1' seconds={5} onCountdownComplete={runNextIteration}>
-                    <Button key='1' type='primary' size='small' onClick={runNextIteration}>
+                <CountdownTimer key='countdown-timer' seconds={settings.getCraftSpeedSettings().iterationDelaySec}
+                    onCountdownComplete={runNextIteration}>
+                    <Button key='exchange-and-run-next-iteration' type='primary' size='small' onClick={runNextIteration}>
                         Exchange and run next iteration
                     </Button>
                 </CountdownTimer>
             )
         }
         else {
-            btns.push(<Button key='3' type='primary' size='small' loading={isSavingLayout}
+            btns.push(<Button key='save-current-layout' type='primary' size='small' loading={isSavingLayout}
                 onClick={saveCurrentLayout}>Save current layout</Button>
             )
+            btns.push(<Button key='summary' size='small' onClick={showSummary}>Summary</Button>)
         }
     }
 
     if (!complete) {
-        btns.push(<Button key='2' type='danger' size='small' disabled={canceled} onClick={cancelCraftIteration}>Cancel</Button>);
+        btns.push(
+            <Button key='cancel' type='danger' size='small' disabled={canceled} onClick={cancelCraftIteration}>Cancel</Button>
+        )
     }
 
     return btns
@@ -140,7 +152,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(cancelCraftSingleIteration())
     },
     nextCraftIteration(bestExchange, craftIterations) {
-        swapWorkplacesPosition(...bestExchange.workplaces)
+        swapWorkplacesPosition(...bestExchange.workplaces);
         dispatch(startCraftSingleIteration({ craftIterations }))
     },
     saveCurrentLayout() {
@@ -148,6 +160,9 @@ const mapDispatchToProps = dispatch => ({
     },
     setStatusCraftIteration(payload) {
         dispatch(setStatusCraftSingleIteration(payload))
+    },
+    showSummary() {
+        dispatch(changeCraftSummaryVisibility({ visible: true }))
     },
 })
 

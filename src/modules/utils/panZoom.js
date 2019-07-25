@@ -6,19 +6,21 @@ import { isPanningBlocked } from '../../redux/ui';
 import { store } from '../../redux/configureStore';
 
 const configurePanZoom = gridPattern => ({
-    minZoom: 0.1,
+    minZoom: 0.29, // przy mniejszych wartościach błędnie działa kalkulacja położenia w SwapTool
     maxZoom: 6,
     fit: false,
     center: false,
     panEnabled: true,
     controlIconsEnabled: true,
-    zoomScaleSensitivity: 0.35,
+    zoomScaleSensitivity: 0.4,
     onUpdatedCTM: newCTM => {
+        //console.log('onUpdatedCTM', newCTM);
         gridPattern.transform(newCTM);
     },
-    // beforeZoom: () => {
-    //     //return !isZoomBlocked();
-    // },
+    //  beforeZoom: (oldScale, newScale) => {
+    // //     //return !isZoomBlocked();
+    //     console.log('beforeZoom from', oldScale, 'to', newScale)
+    //  },
     beforePan: () => {
         return !isPanBlocked();
     }

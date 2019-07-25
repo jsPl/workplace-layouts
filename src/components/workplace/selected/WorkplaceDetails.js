@@ -3,6 +3,7 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 import { openPopup } from '../../../modules/utils/utils';
 import { List, Tag } from 'antd';
 import WorkplaceApiConnector from '../WorkplaceApiConnector';
+//import { workplaceRepository } from '../../../modules/workplace/workplaceRepository';
 
 export default function WorkplaceDetails({ workplace }) {
     const actions = [<WorkplaceApiConnector workplace={workplace} />]
@@ -34,20 +35,28 @@ const Title = ({ workplace }) => (
     </div>
 )
 
-const Details = ({ workplace }) => (
-    <div>
+const Details = ({ workplace }) => {
+    //const workplaceObj = workplaceRepository.findById(workplace.id);
+    //const { x, y } = workplaceObj.getCenter();
+
+    return (
         <div>
-            długość: {workplace.strefa_robocza_dlugosc + 'm, '}
-            szerokość: {workplace.strefa_robocza_szerokosc + 'm'}
+            <div>
+                długość: {workplace.strefa_robocza_dlugosc + 'm, '}
+                szerokość: {workplace.strefa_robocza_szerokosc + 'm'}
+            </div>
+            {/* <div>
+                centroid: {x + ' ' + y}
+            </div> */}
+            <Tag color={workplace.state.code} className='wpState' visible={workplace.state.label !== ''} title='State'>
+                {workplace.state.label}
+            </Tag>
+            <Tag color='#d5af91' className='wpFixedPosition' visible={workplace.fixedPosition} title='Not moveable'>
+                fixed
+            </Tag>
         </div>
-        <Tag color={workplace.state.code} className='wpState' visible={workplace.state.label !== ''} title='State'>
-            {workplace.state.label}
-        </Tag>
-        <Tag color='#d5af91' className='wpFixedPosition' visible={workplace.fixedPosition} title='Not moveable'>
-            fixed
-        </Tag>
-    </div>
-)
+    )
+}
 
 const openWorkplacePopup = (id, evt) => {
     openPopup(`/eoffice/edm_system_object_frames.xml?action=edit&page=resources/edm_resource_workplaces_view.xml&oid=${id}`);

@@ -2,6 +2,7 @@ import { getPanZoomSvgEl } from './panZoom';
 import {
     calculateDistanceData, claculateFlowPairs, claculateFlowData, calculateCostData, claculatePossibleSwaps
 } from './craft.calculation';
+import { toFixed } from '../utils/conversion';
 import { Observable } from 'rxjs';
 
 class Craft {
@@ -18,7 +19,7 @@ class Craft {
 
     static getDistance = (centroid1, centroid2) => {
         // Rectilinear distance
-        return Math.abs(centroid2.x - centroid1.x) + Math.abs(centroid2.y - centroid1.y)
+        return toFixed(Math.abs(centroid2.x - centroid1.x) + Math.abs(centroid2.y - centroid1.y))
     }
 
     calculateFlowPairs() {
@@ -82,15 +83,13 @@ class Craft {
         const flowData = this.calculateFlowData();
         const costData = this.calculateCostData();
 
-        // console.log('distanceData', distanceData)
+        //console.log('distanceData', distanceData)
         // console.log('flowData', flowData)
         // console.log('costData', costData)
 
         const sum = (a, c) => a + c;
         const distance = (id1, id2) => {
-            const result = (distanceData[id1] && distanceData[id1][id2]) || distanceData[id2][id1];
-            //console.log('distance ', id1, ' - ', id2, result);
-            return result;
+            return (distanceData[id1] && distanceData[id1][id2]) || distanceData[id2][id1];
         };
         const cost = (id1, id2) => {
             const result = (costData[id1] && costData[id1][id2]) || costData[id2][id1];
@@ -106,6 +105,7 @@ class Craft {
         })
         const layoutCost = parseInt(summands.reduce(sum, 0), 10);
         //console.log(summands, layoutCost);
+        //console.log('cost', layoutCost)
         return layoutCost
     }
 

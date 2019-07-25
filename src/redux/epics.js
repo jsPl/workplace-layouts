@@ -1,25 +1,28 @@
 import { ofType, combineEpics } from 'redux-observable';
 import {
-    mergeMap, switchMap, concatMap, catchError, map, withLatestFrom, finalize, delay, tap, takeUntil
+    mergeMap, switchMap, concatMap, catchError, map, flatMap, withLatestFrom, finalize, delay, takeUntil
 } from 'rxjs/operators';
 import { of, merge, concat } from 'rxjs';
 import * as api from '../modules/api/api';
 import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
-    sendHallWithWorkplacesFailure
+    sendHallWithWorkplacesFailure, getWorkplaces
 } from './workplace';
 import { addProcess } from './process';
 import { updateProductionHall } from './productionHall';
 import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation, getOperationsByProcess } from './operation';
 import { setSelectedItemsActiveTab } from './ui';
 import {
-    CRAFT_SINGLE_ITERATION_START, CRAFT_SINGLE_ITERATION_CANCEL, completeCraftSingleIteration, nextCraftSingleIteration
+    CRAFT_SINGLE_ITERATION_START, CRAFT_SINGLE_ITERATION_CANCEL, completeCraftSingleIteration, nextCraftSingleIteration,
+    addCraftSummaryIteration, getCurrentIterationItems, getSummaryIterations
 } from './craft';
 import {
     PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT
 } from './workplace';
 import { OPERATIONS_FETCH, OPERATIONS_FETCH_ALL } from './operation';
 import { swapWorkplacesPositionObservable } from '../components/tools/SwapTool';
+import minBy from 'lodash/minBy';
+import { settings } from '../modules/utils/settings';
 
 // const fetchWorkplaceEpic = action$ => action$.pipe(
 //     ofType('FETCH_WORKPLACE'),
@@ -81,22 +84,44 @@ const fetchMultipleProcessOperationsFromApiEpic = (action$, state$) => action$.p
     })
 )
 
-const runCraftSingleIteration = action$ => action$.pipe(
+const runCraftSingleIteration = (action$, state$) => action$.pipe(
     ofType(CRAFT_SINGLE_ITERATION_START),
     concatMap(({ payload }) => {
         const { craftIterations } = payload;
-        //console.log('craftIterations', craftIterations);
 
         const iterate$ = concat(
             ...craftIterations.flatMap(o => [
                 swapWorkplacesPositionObservable(o.exchange.workplaces),
                 o.calculateLayoutCost().pipe(
-                    map(cost => { o.cost = cost; return nextCraftSingleIteration({ craftIteration: o }) }),
-                    delay(150)
+                    withLatestFrom(state$),
+                    map(([cost, state]) => {
+                        o.cost = cost;
+                        o.layout = getWorkplaces(state).map(({ id, x, y }) => ({ id, x, y }));
+                        return nextCraftSingleIteration({ craftIteration: o })
+                    }),
+                    delay(settings.getCraftSpeedSettings().swapDelayMs)
                 ),
                 swapWorkplacesPositionObservable(o.exchange.workplaces)
             ]),
-            of(completeCraftSingleIteration({ craftIterations }))
+            of(completeCraftSingleIteration({ craftIterations })).pipe(
+                withLatestFrom(state$),
+                flatMap(([action, state]) => {
+                    const items = getCurrentIterationItems(state);
+                    const minByCostItem = minBy(items, 'cost');
+                    const summary = getSummaryIterations(state);
+                    const actions = [];
+
+                    if (summary.length === 0) {
+                        actions.push(addCraftSummaryIteration(items[0] || {}))
+                    }
+
+                    if (Object.keys(minByCostItem.exchange).length > 0) {
+                        actions.push(addCraftSummaryIteration(minByCostItem))
+                    }
+
+                    return of(action, ...actions)
+                })
+            ),
         );
 
         const cancel$ = action$.pipe(ofType(CRAFT_SINGLE_ITERATION_CANCEL));
@@ -104,7 +129,7 @@ const runCraftSingleIteration = action$ => action$.pipe(
         //return merge(iterate$, cancel$).pipe(takeWhile(action => action.type !== CRAFT_SINGLE_ITERATION_CANCEL, true))
         return iterate$.pipe(takeUntil(cancel$))
     }),
-    tap(o => console.log('tap', o)),
+    //tap(o => console.log('tap', o)),
 )
 
 // const fetchMultipleProcessOperationsFromApiEpic = action$ => action$.pipe(

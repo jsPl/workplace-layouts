@@ -16,6 +16,11 @@ export const CountdownTimer = props => {
     }
 
     useEffect(() => {
+        if (seconds === 0) {
+            props.onCountdownComplete();
+            return;
+        }
+
         subscription.current = countdown$.subscribe({
             next() {
                 decrement();

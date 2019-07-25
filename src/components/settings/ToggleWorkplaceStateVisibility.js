@@ -5,12 +5,12 @@ import { isSvgWorkplaceStateVisible, changeSvgWorkplaceStateVisibility } from '.
 
 const ToggleWorkplaceStateVisibility = ({ isWorkplaceStateVisible, handleWorkplaceStateVisibilityToggle,
     restoreDefaultsBtnRef }) => (
-    <label className='workplaceSettingToggle' title='Show state icons of workplaces on layout'>
+    <label className='settingItem' title='Show state icons of workplaces on layout'>
+        <span>Workplace state icons</span>
         <Switch
             checked={isWorkplaceStateVisible}
             onChange={visible => handleWorkplaceStateVisibilityToggle(visible, restoreDefaultsBtnRef)}
-        />
-        <span>Workplace state icons</span>
+        />        
     </label>
 )
 

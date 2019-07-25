@@ -67,9 +67,7 @@ export default class Workplace {
         return this.startX !== this.svg.x() || this.startY !== this.svg.y();
     }
 
-    dispatchPositionUpdate = () => {
-        let x = toFixed(this.svg.x());
-        let y = toFixed(this.svg.y());
+    dispatchPositionUpdate = (x = toFixed(this.svg.x()), y = toFixed(this.svg.y())) => {
         store.dispatch(updateWorkplace({ id: this.id, x, y }));
     }
 
@@ -79,7 +77,7 @@ export default class Workplace {
 
     getCenter = (relativeTo = getPanZoomSvgEl()) => {
         const box = this.rectBbox.rbox(relativeTo);
-        return { x: box.cx, y: box.cy }
+        return { x: toFixed(box.cx), y: toFixed(box.cy) }
     }
 
     drawSvg = () => {
@@ -102,7 +100,7 @@ export default class Workplace {
             group.addClass('fixed');
         }
 
-        group.move(this.x, this.y)
+        group.move(toFixed(this.x), toFixed(this.y))
             .data('workplace-id', this.id)
             .addTo(getPanZoomSvgEl());
 
