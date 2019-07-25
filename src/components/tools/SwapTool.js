@@ -26,11 +26,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     swapWorkplaces(selectedWorkplaces) {
-        swapWorkplacesPosition(...workplaceRepository.findByIds(selectedWorkplaces.map(o => o.id)))
+        swapWorkplacesPosition(...workplaceRepository.findByIds(selectedWorkplaces.map(o => o.id)), { animate: true })
     }
 })
 
-export const swapWorkplacesPosition = (wp1, wp2) => {
+export const swapWorkplacesPosition = (wp1, wp2, options = { animate: false }) => {
     //console.log('swapWorkplacesPosition', wp1.title, wp2.title)
     const c1 = wp1.getCenter(), c2 = wp2.getCenter();
 
@@ -49,15 +49,23 @@ export const swapWorkplacesPosition = (wp1, wp2) => {
     const wp1x = toFixed(c2.x - delta1.x), wp1y = toFixed(c2.y - delta1.y);
     const wp2x = toFixed(c1.x - delta2.x), wp2y = toFixed(c1.y - delta2.y);
 
-    wp1.svg.center(wp1x, wp1y);
-    wp2.svg.center(wp2x, wp2y);
+    const center = (el, x, y) => options.animate ? el.animate(200, '>', 0).center(x, y) : el.center(x, y);
+
+    const el1 = center(wp1.svg, wp1x, wp1y);
+    const el2 = center(wp2.svg, wp2x, wp2y);
+
+    if (options.animate) {
+        el1.afterAll(() => wp1.dispatchPositionUpdate());
+        el2.afterAll(() => wp2.dispatchPositionUpdate());
+    }
+    else {
+        wp1.dispatchPositionUpdate();
+        wp2.dispatchPositionUpdate();
+    }
 
     // console.log('swap position', wp1.title, `(${wp1x},${wp1y})`, wp2.title, `(${wp2x},${wp2y})`)
     // console.log('swap position c', wp1.title, c1, wp2.title, c2)
     // console.log('swap position delta', wp1.title, delta1, wp2.title, delta2)
-
-    wp1.dispatchPositionUpdate();
-    wp2.dispatchPositionUpdate();
 }
 
 export const swapWorkplacesPositionObservable = workplaces => new Observable(subscriber => {

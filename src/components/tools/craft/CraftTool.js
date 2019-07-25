@@ -112,6 +112,8 @@ const runCraftIteration = dispatch => {
     const operationsByProcess = getOperationsByProcess(store.getState());
     const craftIterations = createCraftIterations(workplaces, operationsByProcess);
 
+    console.log('craftIterations',craftIterations)    
+
     dispatch(clearCraftSummaryIteration());
     dispatch(startCraftSingleIteration({ craftIterations }))
 
