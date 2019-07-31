@@ -6,7 +6,7 @@ import {
 } from './workplace';
 import { OPERATIONS_FETCH_FAILURE, OPERATIONS_FETCH_SUCCESS } from './operation';
 import { selectWorkplace } from './workplace';
-import { selectProcess } from './process';
+import { unselectAllProcesses } from './process';
 import { CRAFT_CALCULATE_CURRENT_LAYOUT_COST_COMPLETE } from './craft';
 
 const TOOLS_MEASURE_TOGGLE = 'TOOLS_MEASURE_TOGGLE';
@@ -60,7 +60,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // Action creators
-export const toggleMeasureTool = isMeasureMode => ({ type: TOOLS_MEASURE_TOGGLE, isMeasureMode })
+export const toggleMeasureTool = () => ({ type: TOOLS_MEASURE_TOGGLE })
 export const setSelectedItemsActiveTab = selectedItemsActiveTab => ({ type: UI_SELECTED_ITEMS_ACTIVE_TAB_CHANGE, selectedItemsActiveTab })
 export const changeSvgWorkplacePictureVisibility = visible => {
     settings.setSvgWorkplaceImageVisible(visible);
@@ -73,7 +73,7 @@ export const changeSvgWorkplaceStateVisibility = visible => {
 export const blockPanning = block => ({ type: PANNING_BLOCK, block })
 export const boundClearCurrentSelection = dispatch => batch(() => {
     dispatch(selectWorkplace({ ids: [] }));
-    dispatch(selectProcess({ ids: [] }));
+    dispatch(unselectAllProcesses());
 })
 export const showMessage = (payload = { type: 'info', message: '' }) => ({ type: MESSAGE_SHOW, payload })
 

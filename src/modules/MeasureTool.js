@@ -150,7 +150,7 @@ export class MeasureTool {
         document.removeEventListener(...this.keydownEventListener);
         document.removeEventListener(...this.keyupEventListener);
 
-        store.dispatch(toggleMeasureTool(false));
+        store.dispatch(toggleMeasureTool());
     }
 }
 

@@ -13,6 +13,7 @@ const CRAFT_SINGLE_ITERATION_SET_STATUS = 'CRAFT_SINGLE_ITERATION_SET_STATUS';
 const CRAFT_SUMMARY_ITERATION_ADD = 'CRAFT_SUMMARY_ITERATION_ADD';
 const CRAFT_SUMMARY_ITERATION_CLEAR = 'CRAFT_SUMMARY_ITERATION_CLEAR';
 const CRAFT_SUMMARY_VISIBILITY_CHANGE = 'CRAFT_SUMMARY_VISIBILITY_CHANGE';
+export const CRAFT_SUMMARY_APPLY_LAYOUT = 'CRAFT_SUMMARY_APPLY_LAYOUT';
 
 const currentIterationState = {
     running: false,
@@ -97,13 +98,14 @@ export const calculateCurrentLayoutCostComplete = payload => ({
 export const addCraftSummaryIteration = ({ cost, exchange, layout }) => {
     const { ids, titles } = exchange;
     const iteration = { cost, exchange: { ids, titles }, layout };
-  
+
     //console.log('addCraftSummaryIteration ', exchange, iteration);
 
     return { type: CRAFT_SUMMARY_ITERATION_ADD, payload: { iteration } }
 }
 export const clearCraftSummaryIteration = () => ({ type: CRAFT_SUMMARY_ITERATION_CLEAR })
 export const changeCraftSummaryVisibility = ({ visible }) => ({ type: CRAFT_SUMMARY_VISIBILITY_CHANGE, payload: { visible } })
+export const applyCraftLayout = payload => ({ type: CRAFT_SUMMARY_APPLY_LAYOUT, payload })
 
 // Selectors
 export const isIterationRunning = ({ craft }) => craft.currentIteration.running;

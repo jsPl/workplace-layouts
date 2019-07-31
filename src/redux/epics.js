@@ -2,22 +2,22 @@ import { ofType, combineEpics } from 'redux-observable';
 import {
     mergeMap, switchMap, concatMap, catchError, map, flatMap, withLatestFrom, finalize, delay, takeUntil
 } from 'rxjs/operators';
-import { of, merge, concat } from 'rxjs';
+import { Observable, of, merge, concat } from 'rxjs';
 import * as api from '../modules/api/api';
 import {
     fetchHallWithWorkplacesSuccess, fetchHallWithWorkplacesFailure, addWorkplace, sendHallWithWorkplacesSuccess,
-    sendHallWithWorkplacesFailure, getWorkplaces
+    sendHallWithWorkplacesFailure, getWorkplaces, updateWorkplace
 } from './workplace';
-import { addProcess } from './process';
+import { addProcess, selectProcess, getSelectedProcessesId, unselectAllProcesses } from './process';
 import { updateProductionHall } from './productionHall';
 import { fetchOperationsSuccess, fetchOperationsFailure, removeAllOperations, addOperation, getOperationsByProcess } from './operation';
 import { setSelectedItemsActiveTab } from './ui';
 import {
     CRAFT_SINGLE_ITERATION_START, CRAFT_SINGLE_ITERATION_CANCEL, completeCraftSingleIteration, nextCraftSingleIteration,
-    addCraftSummaryIteration, getCurrentIterationItems, getSummaryIterations
+    addCraftSummaryIteration, getCurrentIterationItems, getSummaryIterations, CRAFT_SUMMARY_APPLY_LAYOUT
 } from './craft';
 import {
-    PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT
+    PRODUCTION_HALL_WITH_WORKPLACES_FETCH, PRODUCTION_HALL_WITH_WORKPLACES_SEND, WORKPLACE_SELECT, selectWorkplace
 } from './workplace';
 import { OPERATIONS_FETCH, OPERATIONS_FETCH_ALL } from './operation';
 import { swapWorkplacesPositionObservable } from '../components/tools/SwapTool';
@@ -178,6 +178,40 @@ const selectWorkplaceEpic = action$ => action$.pipe(
     })
 )
 
+const moveAnimateWorkplaceObservable = (workplace, x, y) => new Observable(subscriber => {
+    workplace.svg.animate(200, '>', 0).move(x, y)
+        .afterAll(() => subscriber.complete())
+})
+
+const applyCraftLayoutEpic = (action$, state$) => action$.pipe(
+    ofType(CRAFT_SUMMARY_APPLY_LAYOUT),
+    withLatestFrom(state$),
+    flatMap(([action, state]) => {
+        const { layout } = action.payload;
+        const selectedProcesses = getSelectedProcessesId(state);
+        const unselectActions = [selectWorkplace({ ids: [] }), unselectAllProcesses()];
+        const selectActions = (processId, operations) => [
+            selectWorkplace({ ids: operations.map(o => o.default_workplace_id), activeTab: 'operations' }),
+            selectProcess({ ids: [processId] })
+        ];
+        const moveLayout$ = merge(...layout.filter(o => {
+            const { x, y, workplace } = o;
+            const { x: oldX, y: oldY } = workplace.getUpperLeftPosition();
+            return oldX !== x || oldY !== y;
+        }).map(({ id, x, y, workplace }) =>
+            concat(moveAnimateWorkplaceObservable(workplace, x, y), of(updateWorkplace({ id, x, y })))
+        ))
+
+        const result = concat(unselectActions, moveLayout$);
+
+        if (selectedProcesses.length === 1) {
+            return concat(result, fetchOperationsIfNeeded(...selectedProcesses, state, selectActions))
+        }
+
+        return concat(result);
+    })
+)
+
 export default combineEpics(
     //fetchWorkplaceEpic,
     //fetchWorkplacesEpic,
@@ -187,5 +221,6 @@ export default combineEpics(
     fetchProcessOperationsFromApiEpic,
     selectWorkplaceEpic,
     fetchMultipleProcessOperationsFromApiEpic,
-    runCraftSingleIteration
+    runCraftSingleIteration,
+    applyCraftLayoutEpic,
 )

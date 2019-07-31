@@ -90,8 +90,10 @@ export const settings = {
         [
             storage_panel_active_items,
             storage_svg_workplace_image_visible,
+            storage_svg_workplace_state_visible,
             storage_hint_measure_tool_visible,
-            storage_hint_multiple_selection_visible
+            storage_hint_multiple_selection_visible,
+            storage_craft_speed,
         ].forEach(key => localStorage.removeItem(key));
     }
 }

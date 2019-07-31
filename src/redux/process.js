@@ -3,7 +3,7 @@ import { OPERATIONS_FETCH, OPERATIONS_FETCH_SUCCESS, OPERATIONS_FETCH_FAILURE } 
 import { isNullOrEmptyString } from '../modules/utils/utils';
 
 const PROCESS_ADD = 'PROCESS_ADD';
-const PROCESS_SELECT = 'PROCESS_SELECT';
+export const PROCESS_SELECT = 'PROCESS_SELECT';
 
 const initialState = {
     byId: {},
@@ -58,6 +58,7 @@ const process = (state = { process: [], loading: false }, action) => {
 // Action creators
 export const addProcess = data => ({ type: PROCESS_ADD, data })
 export const selectProcess = payload => ({ type: PROCESS_SELECT, payload })
+export const unselectAllProcesses = () => ({ type: PROCESS_SELECT, payload: { ids: [] } })
 
 // Selectors
 export const getProcesses = state => Object.values(state.process.byId).map(o => o.process);

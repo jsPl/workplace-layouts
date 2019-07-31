@@ -3,7 +3,7 @@ import { SvgClassname } from './draw';
 import { selection } from './selection';
 import { workplaceRepository } from '../workplace/workplaceRepository';
 import { store } from '../../redux/configureStore';
-import { selectProcess } from '../../redux/process';
+import { unselectAllProcesses } from '../../redux/process';
 
 export default function () {
     document.addEventListener('keydown', evt => {
@@ -15,7 +15,7 @@ export default function () {
 
         if (evt.key === 'Escape') {
             selection.clear();
-            store.dispatch(selectProcess({ ids: [] }));
+            store.dispatch(unselectAllProcesses());
         }
 
         if (!selection.isEmpty()) {
