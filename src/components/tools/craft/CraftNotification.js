@@ -81,8 +81,10 @@ const NotificationButtons = ({ minimalCostItem, complete, canceled, cancelCraftI
             const runNextIteration = () => nextCraftIteration(exchange, cloneDeep(craftIterations))
 
             btns.push(
-                <CountdownTimer key='countdown-timer' seconds={settings.getCraftSpeedSettings().iterationDelaySec}
-                    onCountdownComplete={runNextIteration}>
+                <CountdownTimer key='countdown-timer' 
+                    seconds={settings.getCraftSpeedSettings().iterationDelaySec}
+                    onCountdownComplete={runNextIteration}
+                    title='Time left to autorun next iteration. Click to cancel'>
                     <Button key='exchange-and-run-next-iteration' type='primary' size='small' onClick={runNextIteration}>
                         Exchange and run next iteration
                     </Button>

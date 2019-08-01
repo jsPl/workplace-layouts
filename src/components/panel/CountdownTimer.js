@@ -35,8 +35,7 @@ export const CountdownTimer = props => {
     })
 
     return (
-        <Badge count={count} onClick={cancelTimer} className='countdownBagde'
-            title='Time left to autorun next iteration. Click to cancel'>
+        <Badge count={count} onClick={cancelTimer} className='countdownBagde' title={props.title}>
             {props.children}
         </Badge>
     )

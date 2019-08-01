@@ -21,6 +21,9 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <title>Production hall layout</title>
+
+  <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
+  <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
 </head>
 
 <body>
@@ -29,6 +32,13 @@
     <div id="svg-container"></div>
     <div id="ui"></div>
   </div>
+
+  <script>
+    NProgress.configure({ showSpinner: false, trickleSpeed: 50 });
+    NProgress.start();
+
+    window.addEventListener('DOMContentLoaded', () => NProgress.done())
+  </script>
 
   <!--
       This HTML file is a template.
