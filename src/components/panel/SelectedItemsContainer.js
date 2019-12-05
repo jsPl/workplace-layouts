@@ -50,7 +50,7 @@ class SelectedItemsContainer extends React.Component {
 
 const getTabList = (workplaces, operations) => [{
     key: 'workplaces',
-    tab: <SelectedItemHeader size='small' count={workplaces.length} label='Workplaces' />,
+    tab: <SelectedItemHeader size='small' count={workplaces.length} label={workplaces.length === 1 ? 'Workplace' : 'Workplaces'} />,
 }, {
     key: 'operations',
     tab: <SelectedItemHeader size='small' count={operations.length} label='Operations' />,

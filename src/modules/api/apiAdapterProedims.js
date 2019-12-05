@@ -14,8 +14,8 @@ const mapWorkplace = workplace => ({
     strefa_robocza_szerokosc: workplace.version_fields.strefa_robocza_szerokosc,
     state: { code: workplace.version_fields.state || '', label: workplace.version_fields.state_label || '' },
     fixedPosition: workplace.version_fields.nie_zmienia_polozenia_w_hali === '1',
-    //api: workplace.api,
-    api: getMockApi(workplace),
+    api: workplace.api,
+    //api: getMockApi(workplace),
 })
 
 const getMockApi = workplace => {

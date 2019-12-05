@@ -1,6 +1,8 @@
 import { panZoom } from './utils/draw';
 import { isPathColliding } from './utils/collisions';
 import { getPanZoomSvgEl } from './utils/panZoom';
+import { showMessage } from '../redux/ui';
+import { store } from '../redux/configureStore';
 
 class ProductionHall {
     constructor(options = {}) {
@@ -29,8 +31,19 @@ class ProductionHall {
         }
 
         fetch(svgPath)
-            .then(response => response.text())
-            .then(svgString => this.drawSvg(svgString));
+            .then(response => {
+                const expectedContentType = 'image/svg+xml';
+                if (response.headers.get('content-type') !== expectedContentType) {
+                    throw new Error(`Expected content-type '${expectedContentType}', got '${response.headers.get('content-type')}'`);
+                }
+                return response.text()
+            })
+            .then(svgString => this.drawSvg(svgString))
+            .catch(err => {
+                const message = `Production hall fetch svg: ${err.message}`;
+                console.error(message);
+                store.dispatch(showMessage({ type: 'error', message, duration: 12 }));
+            })
     }
 }
 
